@@ -1,0 +1,7 @@
+
+source ~/gits/dotfiles/shell/fish/colors.fish
+source ~/gits/dotfiles/shell/fish/prompt.fish
+source ~/gits/dotfiles/shell/fish/aliases.fish
+
+# set PATH /usr/local/bin $PATH
+
