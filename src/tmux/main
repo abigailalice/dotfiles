@@ -1,0 +1,237 @@
+
+# Replace the existing .tmux.conf file with this single command, replacing
+# $DOTFILES with the directory you keep your dotfiles under. this is useful
+# for keeping them under version control
+# for keeping your dotfiles under version control
+#
+# ~/.tmux.conf:
+# >>> source-file $DOTFILES/tmux/tmux.conf
+
+# unbind all keys. this is useful if you bind a key while playing with your
+# dotfile, and later remove it, as it ensures that removing a binding from your
+# dotfile removes it from tmux. it also ensures that all keybindings are in
+# your dotfile, which I like
+unbind-key -a
+
+bind-key -T prefix_A r source-file ~/.tmux.conf \; \
+                       refresh-client \; \
+                       display-message "source-file done"
+bind-key -T prefix_A d detach
+bind-key -T prefix   A switch-client -T prefix_A
+
+# set the prefix to c-space. i'm honestly not sure how this is different from
+# bind-key -T root 'C-space' switch-client -T prefix
+set-option -g prefix 'C-space'
+
+bind-key -T prefix : command-prompt
+bind-key -T prefix ? list-keys
+
+# these let you send commands to a tmux shell running inside a tmux shell. For
+# instance <C-space><C-space> will send <C-space> to the inner shell, and if
+# <C-space> is the prefix key will thus send the prefix through to the inner
+# shell. Likewise, <C-space><C-h> will send <C-h> to the inner shell.
+#
+# This can be useful if running tmux inside an ssh terminal (to ensure that
+# if the ssh connection drops the shell will still be running), inside another
+# tmux shell (to ensure you can use tmux to manage both your host system and
+# the remote system).
+bind-key -T prefix 'C-space' send-prefix
+bind-key -T prefix 'C-h' send-keys 'C-h'
+bind-key -T prefix 'C-j' send-keys 'C-j'
+bind-key -T prefix 'C-k' send-keys 'C-k'
+bind-key -T prefix 'C-l' send-keys 'C-l'
+
+bind-key -T prefix + select-layout main-vertical
+bind-key -T prefix = select-layout main-horizontal
+bind-key -T prefix z resize-pane -Z
+bind-key -T prefix q display-panes
+bind-key -T prefix ] copy-mode
+
+# turns off all keybindings until C-a is hit again. this is useful for nested
+# tmux sessions, so that you can ensure your commands are getting to the inner
+# session.
+#
+# i tried this with F12, but the terminal seems to act weird with it. sometimes
+# it will display "keybindings on" twice in a row. C-x also had issues, which I
+# believe is because it's slightly magical
+#
+# links:
+# http://stahlke.org/dan/tmux-nested/
+# https://medium.freecodecamp.org/tmux-in-practice-local-and-nested-remote-tmux-sessions-4f7ba5db8795
+bind-key -T root 'C-a' \
+   set-option -g -u prefix \; \
+   unbind-key -T root 'C-h' \; \
+   unbind-key -T root 'C-j' \; \
+   unbind-key -T root 'C-k' \; \
+   unbind-key -T root 'C-l' \; \
+   set-option -g status-bg red \; \
+   set-option -g pane-active-border-bg red \; \
+   set-option -g pane-border-bg red \; \
+   set-option -g status-right '"#{=21:pane_title}"' \; \
+   bind-key -T root 'C-a' source-file ~/.tmux.conf
+# FIXME statusbar
+
+# uname -n
+set-option -g status-right '"#{=21:USER}" %H:%M %d-%b-%y'
+set-option -g status-style "bg=black fg=white"
+
+set-option -g pane-active-border-fg green
+set-option -g pane-active-border-bg black
+set-option -g pane-border-fg default
+set-option -g pane-border-bg default
+
+# the session name
+set-option -g status-left '[#S] '
+set-option -g status-left-length 15
+set-option -g window-status-current-format '#I:#W'
+set-option -g window-status-current-bg green
+
+
+# messages need to display for longer I think, so increase that
+set-option -g display-time 15000
+
+# These let you use <C-h/j/k/l> to switch between tmux panes, or vim panes if
+# running vim. <C-space><C-h/j/k/l> will also accomplish the same thing, duet
+# the other bindings we have, but having this specifically makes movement a
+# little more seemless
+bind -T root C-h run-shell "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys C-h) || tmux select-pane -L"
+bind -T root C-j run-shell "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys C-j) || tmux select-pane -D"
+bind -T root C-k run-shell "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys C-k) || tmux select-pane -U"
+bind -T root C-l run-shell "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys C-l) || tmux select-pane -R"
+# bind -n C-\ run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys 'C-\\') || tmux select-pane -l"
+
+# enable vi mode with <C-a>[
+setw -g mode-keys vi
+
+# fixes issue with terminal colors
+set -g default-terminal "screen-256color"
+
+# set -g window-style 'fg=colour247,bg=colour236'
+# set -g window-active-style 'fg=colour250,bg=black'
+# unbind-key -T root 'C-
+# set -g pane-border-bg colour235
+# set -g pane-border-fg colour238
+# set -g pane-active-border-bg colour236
+# set -g pane-active-border-fg colour51
+
+# remap prefix to C-space
+
+# set history limit to 100k
+set -g history-limit 100000
+
+# set repeat time for keys bound with -n. for instance, having this on the
+# resize-pane command lets you do <prefix>ll rather than <prefix>l<prefix>l
+set-option -g repeat-time 750
+
+set-option -g mouse on
+
+set-option -g main-pane-width 95
+
+# ============================ NEW COMMANDS (c) ===============================
+
+# cw: creates a new named window, based on the user input
+# cs: create a new named session, based on the user input
+
+
+# creating a new window or session will prompt for a name for the
+# session/window, rather than creating one numerically.
+bind-key -T prefix_c w command-prompt "new-window -n '%%' -c '#{pane_current_path}'"
+bind-key -T prefix_c s command-prompt "new -s '%%' -c '#{pane_current_path}'"
+bind-key -T prefix_c p split-window \; \
+                       split-window \; \
+                       split-window \; \
+                       select-layout main-vertical \; \
+                       select-pane -t 0
+bind-key -T prefix   | split-window -h -c '#{pane_current_path}'
+bind-key -T prefix   - split-window -v -c '#{pane_current_path}'
+bind-key -T prefix   c switch-client -T prefix_c
+
+# ========================= KILLING COMMANDS ==================================
+
+# when killing the current session switch to another active session if possible.
+# the default behaviour is to return to a non-tmux terminal instead
+set-option -g detach-on-destroy off
+
+bind-key -T prefix_x p confirm-before -p "kill pane #P? (y/n)" kill-pane
+bind-key -T prefix_x s confirm-before -p "kill session #S? (y/n)" kill-session
+bind-key -T prefix_x w confirm-before -p "kill window #W? (y/n)" kill-window
+bind-key -T prefix_x x confirm-before -p "kill tmux server? (y/n)" kill-server
+bind-key x switch-client -T prefix_x
+
+# ========================= LIST COMMANDS (l) ================================
+
+bind-key -T prefix_s s choose-session
+bind-key -T prefix_s w choose-window
+bind-key -T prefix_s S choose-tree -u
+bind-key -T prefix_s 0 select-pane -t 0
+bind-key -T prefix_s 1 select-pane -t 1
+bind-key -T prefix_s 2 select-pane -t 2
+bind-key -T prefix_s 3 select-pane -t 3
+bind-key -T prefix_s 4 select-pane -t 4
+bind-key -T prefix_s 5 select-pane -t 5
+bind-key -T prefix_s 6 select-pane -t 6
+bind-key -T prefix_s 7 select-pane -t 7
+bind-key -T prefix_s 8 select-pane -t 8
+bind-key -T prefix_s 9 select-pane -t 9
+bind-key -T prefix       f command-prompt "find-window '%%'"
+bind-key -T prefix       s switch-client -T prefix_s
+
+# ========================== RESIZE PANE (r) ==================================
+
+# allows the use of <prefix>jjjj to resize panes
+bind-key -T prefix_r -r k resize-pane -U
+bind-key -T prefix_r -r j resize-pane -D
+bind-key -T prefix_r -r h resize-pane -L
+bind-key -T prefix_r -r l resize-pane -R
+bind-key -T prefix_r s command-prompt "rename-session '%%'"
+bind-key -T prefix_r w command-prompt "rename-window '%%'"
+bind-key r switch-client -T prefix_r
+
+bind-key -T prefix_y 0 swap-pane -d -s 0
+bind-key -T prefix_y 1 swap-pane -d -s 1
+bind-key -T prefix_y 2 swap-pane -d -s 2
+bind-key -T prefix_y 3 swap-pane -d -s 3
+bind-key -T prefix_y 4 swap-pane -d -s 4
+bind-key -T prefix_y 5 swap-pane -d -s 5
+bind-key -T prefix_y 6 swap-pane -d -s 6
+bind-key -T prefix_y 7 swap-pane -d -s 7
+bind-key -T prefix_y 8 swap-pane -d -s 8
+bind-key -T prefix_y 9 swap-pane -d -s 9
+bind-key y switch-client -T prefix_y
+# FIXME
+# bind-key -T prefix Y choose-tree -u "join-pane -v -s '%%'"
+# break-pane 
+# join-pane
+
+# prompt for a window name, then break-pane to that window, creating a new pane
+# in its place
+
+# old = display-message '#D'
+# split-window -h
+# new = display-message '#D'
+# break-pane -d -s old -t '%%'
+# select-pane -t new
+#bind-key -T prefix Z command-prompt "run-shell \"\
+#    set -l oldPane (tmux display-message '#D');\
+#    tmux split-window -h;\
+#    set -l newPane (tmux display-message '#D');\
+#    tmux break-pane -d -s \$oldPane -t '%%';\
+#    tmux select-pane -t \$newPane\
+# \""
+
+
+
+# move current pane to new window, starting a new shell in the old window
+# i would like to be able to have:
+#    !<cr> => break-pane
+#    !.. => break-pane to window
+# bind-key ! break-pane
+
+# visual notification of activity in other windows
+setw -g monitor-activity on
+set -g visual-activity on
+
+# ut8 is on
+# set -g utf8 on
+# set -g status-uft8 on
+
