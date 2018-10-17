@@ -4,12 +4,6 @@ function fish_prompt
 
     set -l last_status $status
 
-    if [ (whoami) = "root" ]
-        printf (set_color red)
-        printf "root"
-        printf $c0
-        printf " "
-    end
 
     # Current time
     printf (date "+$c2%H$c0:$c2%M$c0:$c2%S ")
@@ -71,6 +65,10 @@ function fish_prompt
         set -l git_commits_ahead (git rev-list HEAD...origin ^ /dev/null | wc -l | tr -d ' ')
         set -l git_commits_behind (git rev-list HEAD..origin ^ /dev/null | wc -l | tr -d ' ')
 
+        # set -l git_repo (git config --get remote.origin.url | sed 's/\.git//' | sed 's/.*\///')
+        set -l git_repo (git rev-parse --show-toplevel | sed 's/.*\///')
+        set git_branch "$git_repo/$git_branch"
+
         if test $git_dirty -ne "0"
             set git_branch "$ce$git_branch~$git_dirty"
         end
@@ -84,11 +82,22 @@ function fish_prompt
         section git $git_branch
     end
 
-    printf "\n> "
     set_color black
+    printf "\n> "
 end
 
 function fish_right_prompt
+    if [ (whoami) = "root" ]
+        printf (set_color red)
+        printf "root"
+        printf $c0
+    else
+        printf (whoami)
+    end
+    printf "@"
+    printf (hostname)
+    printf ":"
+    set_color black
     printf $c3
     printf (prompt_pwd)
 end
