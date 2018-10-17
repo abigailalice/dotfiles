@@ -1,0 +1,6 @@
+
+[user]
+    name = Abigail Gooding
+    email = PastelBlueJellybeans@gmail.com
+[core]
+    editor = nvim
