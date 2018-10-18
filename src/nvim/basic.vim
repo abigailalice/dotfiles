@@ -1,8 +1,34 @@
 
+set showcmd
+set nohlsearch
+set incsearch
+
+" {{{ File management
+
+set noswapfile
+" augroup AutoSaveFolds
+"   autocmd!
+"   autocmd BufWinLeave * mkview
+"   autocmd BufWinEnter * silent loadview
+" augroup END
+
+" }}}
+
+
 let mapleader="\<Space>"
+map <leader>so :source $MYVIMRC<cr>
 inoremap jk <Esc>
 inoremap kj <Esc>
 nnoremap <leader>s :source $MYVIMRC<cr>
+
+" the default Y command behaves like yy, yanking the entire line. this change
+" makes it consistent with C and D, though I may change those too, as it seems
+" like a waste of a mapping
+nnoremap Y y$
+
+" {{{ Split/Buffer management
+
+set hidden
 
 " navigate splits or create splits
 noremap <c-h> <c-w><left>
@@ -12,8 +38,11 @@ noremap <c-l> <c-w><right>
 nnoremap <leader>- <c-w>s
 nnoremap <leader><bar> <c-w>v
 
+" }}}
+
 set showmatch                   " show matching parens
 set formatoptions+=o            " continue comment marker in new line
+
 
 " {{{ Terminal settings
 
@@ -26,7 +55,9 @@ tnoremap <c-k> <c-\><c-n><c-w><up>
 tnoremap <c-l> <c-\><c-n><c-w><right>
 tnoremap <c-space>- <c-w>s
 tnoremap <c-space><bar> <c-w>v
-autocmd BufEnter * if &buftype == 'terminal' | :startinsert | endif
+
+" this should also work upon starting a new terminal
+autocmd BufEnter,WinEnter * if &buftype == 'terminal' | :startinsert | endif
 " }}}
 
 " {{{ Line numbering
@@ -60,10 +91,7 @@ hi CursorLine cterm=NONE ctermbg=7 guibg=Grey90
 " }}}
 
 " {{{ Whitespace handling
-set expandtab
-set tabstop=4                   " render tab as 4 spaces
-set softtabstop=4
-set shiftwidth=4                " width for > < commands
+set expandtab tabstop=4 shiftwidth=4 softtabstop=4
 "
 " http://nerditya.com/code/guide-to-neovim/
 

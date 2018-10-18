@@ -11,7 +11,7 @@
 # dotfile, and later remove it, as it ensures that removing a binding from your
 # dotfile removes it from tmux. it also ensures that all keybindings are in
 # your dotfile, which I like
-unbind-key -a
+# ======================
 
 bind-key -T prefix_A r source-file ~/.tmux.conf \; \
                        refresh-client \; \
@@ -35,17 +35,17 @@ bind-key -T prefix ? list-keys
 # if the ssh connection drops the shell will still be running), inside another
 # tmux shell (to ensure you can use tmux to manage both your host system and
 # the remote system).
-bind-key -T prefix 'C-space' send-prefix
-bind-key -T prefix 'C-h' send-keys 'C-h'
-bind-key -T prefix 'C-j' send-keys 'C-j'
-bind-key -T prefix 'C-k' send-keys 'C-k'
-bind-key -T prefix 'C-l' send-keys 'C-l'
+# bind-key -T prefix 'C-space' send-prefix
+# bind-key -T prefix 'C-h' send-keys 'C-h'
+# bind-key -T prefix 'C-j' send-keys 'C-j'
+# bind-key -T prefix 'C-k' send-keys 'C-k'
+# bind-key -T prefix 'C-l' send-keys 'C-l'
 
-bind-key -T prefix + select-layout main-vertical
-bind-key -T prefix = select-layout main-horizontal
-bind-key -T prefix z resize-pane -Z
-bind-key -T prefix q display-panes
-bind-key -T prefix ] copy-mode
+# bind-key -T prefix + select-layout main-vertical
+# bind-key -T prefix = select-layout main-horizontal
+# bind-key -T prefix z resize-pane -Z
+# bind-key -T prefix q display-panes
+# bind-key -T prefix ] copy-mode
 
 # turns off all keybindings until C-a is hit again. this is useful for nested
 # tmux sessions, so that you can ensure your commands are getting to the inner
@@ -234,4 +234,32 @@ set -g visual-activity on
 # ut8 is on
 # set -g utf8 on
 # set -g status-uft8 on
+
+# ====================
+
+
+unbind-key -a
+set-option -g status-position top
+
+set-option -g prefix 'C-space'
+bind-key -T prefix s source-file ~/.tmux.conf \; \
+                     refresh-client \; \
+                     display-message "source-file done"
+bind-key -T prefix : command-prompt
+bind-key -T prefix ? list-keys
+bind-key -T prefix X confirm-before -p "Kill tmux server? (y/n)" kill-server
+
+bind-key -T prefix d detach
+bind-key -T prefix s choose-session
+bind-key -T prefix r command-prompt "rename-session '%%'"
+set-option -g detach-on-destroy off
+bind-key -T prefix x confirm-before -p "kill session #S? (y/n)" kill-session
+bind-key -T prefix c command-prompt "new -s '%%' -c '#{pane_current_path}'"
+
+set-option -g status-left '#(exec tmux ls | sed 's/:.*//' | tr "\\n" " ")'
+set-option -g window-status-current-format ''
+set-option -g status-left-length 60
+set-option -g status-right '"#{=21:USER}@#H" %H:%M %d-%b-%y'
+set-option -g status-style "bg=black fg=white"
+set-option -g display-time 15000
 
