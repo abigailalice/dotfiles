@@ -44,9 +44,14 @@ set showmatch                   " show matching parens
 set formatoptions+=o            " continue comment marker in new line
 
 
+
 " {{{ Terminal settings
 
+" 2 bugs with terminals
+" 2) dont return to absolute line numbers when replacing term with file
+
 autocmd TermOpen * set nonumber norelativenumber
+autocmd BufNew * if &buftype != 'terminal' | :set number | endif
 tnoremap jk <c-\><c-n>
 tnoremap kj <c-\><c-n>
 tnoremap <c-h> <c-\><c-n><c-w><left>
@@ -57,7 +62,7 @@ tnoremap <c-space>- <c-w>s
 tnoremap <c-space><bar> <c-w>v
 
 " this should also work upon starting a new terminal
-autocmd BufEnter,WinEnter * if &buftype == 'terminal' | :startinsert | endif
+autocmd BufEnter,WinEnter,TermOpen * if &buftype == 'terminal' | :startinsert | endif
 " }}}
 
 " {{{ Line numbering
@@ -75,6 +80,7 @@ augroup NumberToggle
     autocmd!
     autocmd InsertLeave * set norelativenumber
     autocmd InsertEnter * set relativenumber
+    autocmd BufWinEnter * if &buftype != 'terminal' | set number | endif
 augroup END
 
 " autocmd WinEnter,InsertLeave * set cursorline cursorcolumn
@@ -86,6 +92,9 @@ nnoremap <leader><leader> :set cursorline!<cr>
                          \:set cursorline!<cr>
                          \:set cursorcolumn!<cr>
 hi CursorLine cterm=NONE ctermbg=7 guibg=Grey90
+
+" set updatetime=5000
+" autocmd CursorHold,CursorHoldI * 
 
 
 " }}}
