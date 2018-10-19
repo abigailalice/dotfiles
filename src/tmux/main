@@ -9,7 +9,7 @@
 
 unbind-key -a
 
-set-option -g status-position top
+set-option -g status-position bottom
 set-option -g prefix 'C-space'
 set-option -g display-time 15000
 set-option -g default-terminal "screen-256color"
@@ -50,6 +50,8 @@ bind-key -T prefix n command-prompt "new-window -n '%%' -c '#{pane_current_path}
 bind-key -T prefix x confirm-before -p "kill window #W? (y/n)" kill-window
 
 bind-key -T prefix f command-prompt "find-window '%%'"
+bind-key -T prefix -r > next-window
+bind-key -T prefix -r < previous-window
 
 setw -g monitor-activity on
 set -g visual-activity on

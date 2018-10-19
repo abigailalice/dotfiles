@@ -16,7 +16,6 @@ set noswapfile
 
 
 let mapleader="\<Space>"
-map <leader>so :source $MYVIMRC<cr>
 inoremap jk <Esc>
 inoremap kj <Esc>
 nnoremap <leader>s :source $MYVIMRC<cr>
