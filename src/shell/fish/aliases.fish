@@ -7,12 +7,6 @@ function haddock
     stack haddock --open #argv[0]
 end
 
-function man
-    vim -c "SuperMan $argv"
-    if [ "$status" != "0" ]
-        echo "No manual entry for $argv"
-    end
-end
 
 # this is necessary to ensure that we are running the right version of cabal.
 # i'm not sure if i want to prefer a version of cabal that is itself sandboxed,
