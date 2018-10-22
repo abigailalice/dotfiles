@@ -18,13 +18,24 @@ SSH
 tmux
     start nvim immediately
     restart shell when pane contents are terminated
-Shells
-    fish
-        fish
-        airline
-        themes
-        fullcolor
-cron
+= shell tools
+== shells
+=== zsh
+==== fish
+==== zsh
+==== xonsh
+== sysadmin
+=== cron
+== shell navigation
+=== ranger
+=== cd
+== search
+also try fzy
+=== fd      #non-interactive #file-name     #regex
+=== fzf     #interactive     #stream        #fuzzy
+=== grep    #non-interactive #stream        #regex
+=== ag      #non-interactive #file-contents #regex
+=== ripgrep #non-interactive #file-contents #regex
     
 fzf examples
     man (man -k . | sed 's/ .*//' | fzf --preview='man {}')
