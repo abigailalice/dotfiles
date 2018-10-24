@@ -59,9 +59,10 @@ Plug 'w0rp/ale'
 " {{{ SETTINGS/KEYMAPS
 
 let mapleader="\<Space>"
-let maplocalleader='\<BS>'
+let maplocalleader="\\"
 inoremap jk <Esc>
 inoremap kj <Esc>
+nnoremap ; :
 command! Reset :source $MYVIMRC
 " the default Y command behaves like yy, yanking the entire line. this change
 " makes it consistent with C and D, though I may change those too, as it
