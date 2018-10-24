@@ -21,15 +21,21 @@
 
 unbind-key -a
 
+# {{{ mouse settings
+set-option -g mouse on
+bind-key -T root MouseDrag1Border resize-pane -M
+bind-key -T root MouseDown1Status select-window -t =
+bind-key -T root MouseDown1Pane select-pane -t = ; send-keys -M
+# }}}
 # {{{ core settings
 set-option -g prefix 'C-space'
 set-option -g default-terminal "screen-256color"
 set-option -g history-limit 100000
 set-option -g repeat-time 750
-set-option -g mouse on
 set-option -g mode-keys vi
 set-option -g status-keys vi
 
+bind-key -T MouseDrag1
 bind-key -T prefix R source-file ~/.tmux.conf \; \
                      refresh-client \; \
                      display-message "source-file done"
