@@ -17,7 +17,7 @@ set-option -g status-left '[#(hostname)] '
 set-option -g status-style "bg=#555555 fg=white"
 set-option -g status-left-length 150
 set-option -g window-status-format "#W"
-set-option -g window-status-current-format "[#W]"
+set-option -g window-status-current-format "#W"
 set-option -g window-status-current-bg green
 
 # }}}
@@ -39,8 +39,8 @@ bind-key -T prefix Q confirm-before -p "Kill tmux server? (y/n)" kill-server
 bind-key -T prefix r command-prompt "rename-window '%%'"
 bind-key -T prefix n command-prompt "new-window -n '%%' -c '#{pane_current_path}'"
 bind-key -T prefix X confirm-before -p "kill window #W? (y/n)" kill-window
-bind-key -T root -r 'C-L' next-window
-bind-key -T root -r 'C-H' previous-window
+bind-key -T prefix -r h previous-window
+bind-key -T prefix -r l next-window
 # }}}
 # {{{ pane controls
 bind-key -T prefix - split-window -v
@@ -78,9 +78,6 @@ bind-key -T root 'c-h' select-pane -L
 setw -g monitor-activity on
 set -g visual-activity on
 set -g status off
-
-set-option -g window-status-current-format '#W'
-set-option -g window-status-current-bg green
 
 set-option -g remain-on-exit on
 set-option -g automatic-rename off
