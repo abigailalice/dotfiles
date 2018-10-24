@@ -8,3 +8,5 @@ echo "source ~/gits/dotfiles/src/nvim/main.vim" > ~/.config/nvim/init.vim
 echo "source ~/gits/dotfiles/src/vim/main" > ~/.vimrc
 echo "[include]\n    path = ~/gits/dotfiles/src/git/main" > ~/.gitconfig
 
+chsh -s /usr/bin/fish
+

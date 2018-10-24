@@ -1,3 +1,4 @@
+#!/usr/bin/fish
 
 function fish_prompt
     # could also do (hostname)
@@ -12,35 +13,7 @@ function fish_prompt
         set -ge status
     end
 
-    # Show if the most recent command took over 10 seconds
-    if test $CMD_DURATION
-        # drop the millisecond portion of CMD_DURATION
-        set -l taken (echo $CMD_DURATION | sed -n 's/...$/s/p')
-        if test $CMD_DURATION -gt 10000
-            error taken $taken
-            # this doesnt seem to make noise anymore
-            tput bel
-        end
-    end
 
-    # Show loadavg when too high
-    set -l load1m (uptime | grep -o '[0-9]\+\.[0-9]\+' | head -n1)
-    set -l load1m_test (math $load1m \* 100 / 1)
-    if test $load1m_test -gt 100
-        error load $load1m
-    end
-
-    # Show number of jobs
-    set -l jobs (jobs | wc -l | tr -d ' ')
-    if test $jobs -ge "1"
-        error jobs $jobs
-    end
-
-    # Show disk usage when low
-    set -l du (df / | tail -n1 | sed "s/  */ /g" | cut -d' ' -f 5 | cut -d'%' -f1)
-    if test $du -gt 80
-        error du $du%%
-    end
 
     if set -q VIRTUAL_ENV
         section env (basename "$VIRTUAL_ENV")
@@ -82,24 +55,75 @@ function fish_prompt
         section git $git_branch
     end
 
-    set_color black
-    printf "\n> "
+    printf "\n"
+    fullpath
+    printf "> "
 end
 
-function fish_right_prompt
+function fullpath
     if [ (whoami) = "root" ]
         printf (set_color red)
-        printf "root"
-        printf $c0
     else
-        printf (whoami)
+        printf (set_color grey)
     end
+
+    printf (whoami)
     printf "@"
     printf (hostname)
     printf ":"
-    set_color black
-    printf $c3
     printf (prompt_pwd)
+end
+
+function low_disk_usage
+    # Show disk usage when low
+    set -l du (df / | tail -n1 | sed "s/  */ /g" | cut -d' ' -f 5 | cut -d'%' -f1)
+    if test $du -gt 80
+        error du $du%%
+    end
+end
+
+function slow_command
+    # Show if the most recent command took over 10 seconds
+    if test $CMD_DURATION
+        # drop the millisecond portion of CMD_DURATION
+        set -l taken (echo $CMD_DURATION | sed -n 's/...$/s/p')
+        if test $CMD_DURATION -gt 10000
+            error taken $taken
+            # this doesnt seem to make noise anymore
+            tput bel
+        end
+    end
+end
+
+# might be worthwhile to show nesting depth
+function nesting_level
+    if [ $SHLVL > $argv ]
+        error nested_shell (math $SHLVL - $argv - 1)
+    end
+end
+
+function load_average_high
+    # Show loadavg when too high
+    set -l load1m (uptime | grep -o '[0-9]\+\.[0-9]\+' | head -n1)
+    set -l load1m_test (math $load1m \* 100 / 1)
+    if test $load1m_test -gt 100
+        error load $load1m
+    end
+end
+
+function background_jobs
+    # Show number of jobs
+    set -l jobs (jobs | wc -l | tr -d ' ')
+    if test $jobs -ge "1"
+        error jobs $jobs
+    end
+end
+
+function fish_right_prompt
+    background_jobs
+    low_disk_usage
+    load_average_high
+    slow_command
 end
 
 # -- set git stuff: https://wiki.archlinux.org/index.php/Fish#Configuration_Suggestions
