@@ -127,7 +127,7 @@ set splitbelow
 " }}}
 " {{{ SETTINGS/SCRIPTS
 highlight Bang ctermfg=red guifg=red cterm=underline
-match Bang /\%>79v.*\%<255v/
+match Bang /\%>79v.*.\%<255v/
 
 " let &colorcolumn="80".join(range(81,999),",")
 " augroup ColorColumnWhenWritable

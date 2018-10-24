@@ -49,8 +49,8 @@ set-option -g window-status-current-bg green
 bind-key -T window r command-prompt "rename-window '%%'"
 bind-key -T window n command-prompt "new-window -n '%%' -c '#{pane_current_path}'"
 bind-key -T window x confirm-before -p "kill window #W? (y/n)" kill-window
-bind-key -T prefix -r h previous-window
-bind-key -T prefix -r l next-window
+bind-key -T prefix -r , previous-window
+bind-key -T prefix -r . next-window
 bind-key -T prefix w switch-client -T window
 # }}}
 # {{{ pane controls
