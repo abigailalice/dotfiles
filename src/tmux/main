@@ -16,6 +16,8 @@
 # dim non-active panes
 #
 # use same pwd for new panes after split/refresh
+#
+# get ; for command-prompt
 
 unbind-key -a
 
@@ -25,14 +27,17 @@ set-option -g default-terminal "screen-256color"
 set-option -g history-limit 100000
 set-option -g repeat-time 750
 set-option -g mouse on
+set-option -g mode-keys vi
+set-option -g status-keys vi
 
-bind-key -T prefix s source-file ~/.tmux.conf \; \
+bind-key -T prefix R source-file ~/.tmux.conf \; \
                      refresh-client \; \
                      display-message "source-file done"
 bind-key -T prefix : command-prompt
 bind-key -T prefix ? list-keys
 bind-key -T prefix q confirm-before -p "detach session (y/n)?" detach
 bind-key -T prefix Q confirm-before -p "kill server (y/n)?" kill-server
+bind-key -T prefix ] copy-mode
 # }}}
 # {{{ status bar
 set-option -g status-position top
