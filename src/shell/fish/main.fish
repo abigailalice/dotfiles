@@ -1,10 +1,7 @@
 
 source ~/gits/dotfiles/src/shell/fish/colors.fish
 source ~/gits/dotfiles/src/shell/fish/prompt.fish
-source ~/gits/dotfiles/src/shell/fish/aliases.fish
 
 set -gx EDITOR nvim
 set -gx MANPAGER less
-
-# set PATH /usr/local/bin $PATH
 
