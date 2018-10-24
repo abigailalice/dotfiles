@@ -25,7 +25,8 @@ unbind-key -a
 set-option -g mouse on
 bind-key -T root MouseDrag1Border resize-pane -M
 bind-key -T root MouseDown1Status select-window -t =
-bind-key -T root MouseDown1Pane select-pane -t = ; send-keys -M
+# this seems to cause an issue on startup
+# bind-key -T root MouseDown1Pane select-pane -t = ; send-keys -M
 # }}}
 # {{{ core settings
 set-option -g prefix 'C-space'
@@ -35,7 +36,6 @@ set-option -g repeat-time 750
 set-option -g mode-keys vi
 set-option -g status-keys vi
 
-bind-key -T MouseDrag1
 bind-key -T prefix R source-file ~/.tmux.conf \; \
                      refresh-client \; \
                      display-message "source-file done"
@@ -69,7 +69,7 @@ bind-key -T prefix - split-window -v
 bind-key -T prefix \ split-window -h
 bind-key -T prefix x kill-pane
 bind-key -T prefix k respawn-pane -k
-set-hook pane-died "respawn-pane -k"
+set-hook -g pane-died "respawn-pane -k"
 bind-key -T prefix + select-layout main-vertical\; \
                      resize-pane -t 0 -x 95
 bind-key -T prefix z resize-pane -Z
