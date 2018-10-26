@@ -192,13 +192,12 @@ set number ruler
 " match ExtraWhitespace /\s\+$\|\t/
 
 " show extra whitespace with different character
-set list
 set listchars=
 set listchars+=tab:│\ ,nbsp:␣
 set listchars+=trail:⋅
-set listchars+=extends:»
-set listchars+=precedes:«
-set listchars+=eol:¶ " ¶↵ ↩ ↵ ↲    ↵  
+" set listchars+=extends:»
+" set listchars+=precedes:«
+" set listchars+=eol:¶ " ¶↵ ↩ ↵ ↲    ↵  
 
 " These are options which change the numbering of lines, such as showing the
 " line/column numbers in the bottom right, changing between absolute/relative
@@ -253,6 +252,30 @@ set noswapfile
 
 " {{{ SETTINGS/THEMES
 
+" only the active pane:
+"   shows whitespace characters
+augroup PaneChanged
+    autocmd!
+    autocmd BufEnter,BufWinEnter,WinEnter,FocusGained *
+        \ if &modifiable |
+        \ setlocal list |
+        \ endif
+    autocmd BufLeave,BufWinLeave,WinLeave,FocusLost *
+        \ setlocal nolist |
+augroup END
+" this could also be done with colorcolumn, though for some reason it doesn't
+" seem to work for me. instead it colors the dots after folds, but not the
+" actual text of the buffer
+highlight Bang ctermfg=red guifg=red cterm=underline gui=underline
+match Bang /\%>79v.*.\%<255v/
+
+" this is some haskell stuff
+" set conceallevel=2
+" syntax match QualifiedName /\S*\./ conceal
+" highlight FullQualifiedName ctermfg=red term=underline
+" match FullQualifiedName /\S*\.\S*/
+
+
 highlight NormalNC ctermbg=236
 highlight EndOfBuffer ctermbg=NONE
 highlight LineNr ctermfg=60 ctermbg=NONE
@@ -268,7 +291,5 @@ highlight CursorLine cterm=NONE ctermbg=7 guibg=Grey90
 " character, which vim adds
 
 " mark colors past 79 in red
-highlight Bang ctermfg=red guifg=red cterm=underline gui=underline
-match Bang /\%>79v.*.\%<255v/
 
 " }}}
