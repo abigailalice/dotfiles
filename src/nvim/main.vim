@@ -25,7 +25,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 " }}}
 " {{{ PLUGINS/VISUAL
 " Plug 'junegunn/limelight.vim'
-Plug 'blueyed/vim-diminactive'
+" Plug 'blueyed/vim-diminactive'
 Plug 'morhetz/gruvbox'
 Plug 'romainl/Apprentice'
 Plug 'junegunn/seoul256.vim'
@@ -253,32 +253,22 @@ set noswapfile
 
 " {{{ SETTINGS/THEMES
 
-" augroup ChangeSplit
-"     autocmd!
-"     autocmd WinLeave,BufLeave,BufWinLeave *
-"         \ highlight Folded ctermbg=236 |
-"         \ highlight LineNr ctermbg=236 |
-"         \ highlight CursorLineNr ctermbg=236
-"     autocmd WinEnter,BufEnter,BufWinEnter *
-"         \ highlight Folded ctermbg=NONE |
-"         \ highlight LineNr ctermbg=NONE |
-"         \ highlight CursorLineNR ctermbg=NONE
-" augroup END
+highlight NormalNC ctermbg=236
+highlight EndOfBuffer ctermbg=NONE
+highlight LineNr ctermfg=60 ctermbg=NONE
+highlight CursorLineNr ctermfg=60 ctermbg=NONE
 
 highlight Comment ctermfg=DarkGrey
-
-highlight NonText ctermbg=236
+highlight NonText ctermbg=None ctermfg=60
 " this is used by vim-diminactive to dim the inactive pane
-highlight ColorColumn ctermfg=248 guifg=248 ctermbg=236 guibg=236
 highlight Normal guifg=NONE guibg=NONE
 highlight Folded ctermfg=60 ctermbg=NONE guibg=NONE
-highlight LineNr ctermfg=60 guibg=236 ctermbg=NONE
-highlight FoldColumn guifg=grey guibg=236 ctermbg=236
-highlight SignColumn guibg=236
 highlight CursorLine cterm=NONE ctermbg=7 guibg=Grey90
-highlight CursorLineNr guifg=grey guibg=236 ctermfg=60 ctermbg=NONE
 " highlights lines greater than 80 lines. the regex ignores the last
 " character, which vim adds
+
+" mark colors past 79 in red
 highlight Bang ctermfg=red guifg=red cterm=underline gui=underline
 match Bang /\%>79v.*.\%<255v/
+
 " }}}
