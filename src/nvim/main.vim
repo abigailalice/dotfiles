@@ -20,10 +20,8 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
 endif
 call plug#begin('~/.local/share/nvim/plugged')
 " }}}
-" {{{ PLUGINS/THEMES
-
-" }}}
 " {{{ PLUGINS/VISUAL
+" Plug 'junegunn/goyo.vim'
 " Plug 'junegunn/limelight.vim'
 " Plug 'blueyed/vim-diminactive'
 Plug 'morhetz/gruvbox'
@@ -40,9 +38,6 @@ Plug 'reedes/vim-colors-pencil'
 Plug 'cocopon/iceberg.vim'
 Plug 'jonathanfilip/vim-lucius'
 " Plug 'base16-papercolor-dark-syntax'
-Plug 'moria/dark'
-
-
 " }}}
 " {{{ PLUGINS/STATUSBAR
 "Plug itchyny/lightline.vim
@@ -75,16 +70,18 @@ Plug 'tpope/vim-vinegar'
 " {{{ PLUGINS/LANGUAGE SPECIFIC
 Plug 'dag/vim-fish'
 Plug 'donRaphaco/neotex', { 'for': 'tex' }
-call plug#end()
 " }}}
 " {{{ PLUGINS/COMPILER
 Plug 'w0rp/ale'
+call plug#end()
 " }}}
-
+"
 " {{{ SETTINGS/KEYMAPS
 
 let mapleader="\<Space>"
 let maplocalleader="\\"
+noremap gj g
+noremap gk k
 inoremap jk <Esc>
 inoremap kj <Esc>
 nnoremap ; :
@@ -103,7 +100,7 @@ nnoremap <leader>F :Files<cr>
 nnoremap <leader>H :Helptags<cr>
 nnoremap <leader>: :Commands<cr>
 nnoremap <leader>M :Maps<cr>
-nnoremap <leader>e :Explore<cr>
+nnoremap <leader>e :Rexplore<cr>
 nnoremap <leader>u :GundoToggle<cr>
 
 " navigate splits or create splits
@@ -117,9 +114,11 @@ nnoremap <leader><bar> <c-w>v
 
 " augroup NonWriteableQuitOnQ
 "     autocmd!
-"     autocmd BufWinEnter,BufEnter * |
-"         \ if &l:buftype ==# 'help' || &l:filetype ==# 'netrw' |
-"         \ noremap <buffer> q :Bd<cr> |
+"     autocmd BufWinEnter,BufEnter,WinEnter *
+"         \ if &l:buftype ==# 'help' |
+"         \ noremap <buffer> q :q<cr> |
+"         \ elseif %l:buftype ==# 'netrw' |
+"         \ noremap <buffer> q :Rexplore<cr> |
 "         \ endif
 " augroup END
 
@@ -132,7 +131,6 @@ set helpheight=0
 "     exe 'keepjumps help ' . a:topic 
 " endfunction 
 " command! -nargs=? -complete=help Help call OpenHelpInCurrentWindow(<q-args>)
-
 " }}}
 " {{{ SETTINGS/OPTIONS
 
@@ -188,9 +186,6 @@ set number ruler
 
 " http://nerditya.com/code/guide-to-neovim/
 
-" highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
-" match ExtraWhitespace /\s\+$\|\t/
-
 " show extra whitespace with different character
 set listchars=
 set listchars+=tab:│\ ,nbsp:␣
@@ -204,7 +199,7 @@ set listchars+=trail:⋅
 " line numbering, or showing the line 80 column
 " Sets hybrid numbers when in insert mode and absolute numbers when out
 " https://jeffkreeftmeijer.com/vim-number/
-set number relativenumber
+set number
 augroup NumberToggle
     autocmd!
     autocmd InsertLeave * set norelativenumber
@@ -239,6 +234,8 @@ let g:netrw_listtyle=3
 
 " open FZF current window rather than split
 let g:fzf_layout = { 'window' : 'enew' }
+" let g:airline_focuslost_inactive = 1
+" let g:airline_inactive_collapse = 1
 
 " }}}
 " {{{ SETTINGS/PERSISTENCE (FOLDS AND .SWP FILE)
@@ -249,7 +246,6 @@ set noswapfile
 "   autocmd BufWinEnter * silent loadview
 " augroup END
 " }}}
-
 " {{{ SETTINGS/THEMES
 
 " only the active pane:
@@ -269,12 +265,13 @@ augroup END
 highlight Bang ctermfg=red guifg=red cterm=underline gui=underline
 match Bang /\%>79v.*.\%<255v/
 
+" hi StatusLineNC
+
 " this is some haskell stuff
 " set conceallevel=2
 " syntax match QualifiedName /\S*\./ conceal
 " highlight FullQualifiedName ctermfg=red term=underline
 " match FullQualifiedName /\S*\.\S*/
-
 
 highlight NormalNC ctermbg=236
 highlight EndOfBuffer ctermbg=NONE

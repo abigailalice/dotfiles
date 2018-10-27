@@ -18,6 +18,26 @@
 
 unbind-key -a
 
+# {{{ core settings
+set-option -g prefix 'C-space'
+set-option -g focus-events on
+set-option -g default-terminal "screen-256color"
+set-option -g history-limit 100000
+set-option -g repeat-time 750
+set-option -g mode-keys vi
+set-option -g status-keys vi
+set-option -g allow-rename off
+
+bind-key -T prefix R source-file ~/.tmux.conf \; \
+                     refresh-client \; \
+                     display-message "source-file done"
+
+bind-key -T prefix \; command-prompt
+bind-key -T prefix ? list-keys
+bind-key -T prefix q confirm-before -p "detach session (y/n)?" detach
+bind-key -T prefix Q confirm-before -p "kill server (y/n)?" kill-server
+bind-key -T prefix ] copy-mode
+# }}}
 # {{{ mouse settings
 set-option -g mouse on
 bind-key -T root MouseDrag1Border resize-pane -M
@@ -33,25 +53,6 @@ set-option -g pane-active-border-bg colour234
 set-option -g window-style 'fg=colour247,bg=colour236'
 set-option -g pane-border-fg colour247
 set-option -g pane-border-bg colour236
-# }}}
-# {{{ core settings
-set-option -g prefix 'C-space'
-set-option -g focus-events on
-set-option -g default-terminal "screen-256color"
-set-option -g history-limit 100000
-set-option -g repeat-time 750
-set-option -g mode-keys vi
-set-option -g status-keys vi
-
-bind-key -T prefix R source-file ~/.tmux.conf \; \
-                     refresh-client \; \
-                     display-message "source-file done"
-
-bind-key -T prefix \; command-prompt
-bind-key -T prefix ? list-keys
-bind-key -T prefix q confirm-before -p "detach session (y/n)?" detach
-bind-key -T prefix Q confirm-before -p "kill server (y/n)?" kill-server
-bind-key -T prefix ] copy-mode
 # }}}
 # {{{ status bar
 set-option -g status-position top

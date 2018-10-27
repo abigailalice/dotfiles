@@ -1,2 +1,2 @@
-0 9 * * * ably /etc/init.d/ssh start
-0 19 * * * ably /etc/init.d/ssh stop
+0 9 * * * root pkill -x sshd
+0 19 * * * root pkill -x sshd

@@ -1,6 +1,24 @@
 
+# {{{ SETTINGS/STARTUP
+# run ssh-agent if necessary, and make it available to other shells
+# if [ !(set -q SSH_AGENT_PID) ]
+#     eval (ssh-agent -c)
+#     ssh-add
+#     set -Ux SSH_AGENT_PID $SSH_AGENT_PID
+#     set -Ux SSH_AUTH_SOCK $SSH_AUTH_SOCK
+# end
+
+set PATH ~/.local/bin $PATH
+
+
+# }}}
+
 # {{{ SETTINGS/THEMES
 # -- taken from: http://geraldkaszuba.com/tweaking-fish-shell/
+
+alias su='su -m'
+alias sudo='sudo -H -u $USER'
+alias mkdir='mkdir -p'
 
 set fish_color_error ff8a00
 
@@ -38,15 +56,8 @@ end
 function fish_prompt
     # could also do (hostname)
 
-    set -l last_status $status
-
-
     # Current time
     printf (date "+$c2%H$c0:$c2%M$c0:$c2%S ")
-    if [ $last_status -ne 0 ]
-        error last $last_status
-        set -ge status
-    end
 
 
 
@@ -132,8 +143,8 @@ end
 
 # might be worthwhile to show nesting depth
 function nesting_level
-    if [ $SHLVL > $argv ]
-        error nested_shell (math $SHLVL - $argv - 1)
+    if [ $SHLVL -gt $argv ]
+        error nested_shell (math $SHLVL - $argv)
     end
 end
 
@@ -154,11 +165,22 @@ function background_jobs
     end
 end
 
+function laststatus
+    set -l last_status $status
+    if [ $last_status -ne 0 ]
+        error last $last_status
+        set -ge status
+    end
+end
+
 function fish_right_prompt
     background_jobs
     low_disk_usage
     load_average_high
     slow_command
+    laststatus
+    nesting_level 2
+    set_color grey
 end
 
 # -- set git stuff: https://wiki.archlinux.org/index.php/Fish#Configuration_Suggestions
