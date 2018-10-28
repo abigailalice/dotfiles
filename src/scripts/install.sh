@@ -61,13 +61,18 @@ sudo apt-get install ranger
 # {{{ weechat
 sudo apt-get install weechat
 # }}}
-
-
-# Networking tools
+# containers
+# {{{ virtualbox
+sudo add-apt-repository "deb http://download.virtualbox.org/virtualbox/debian jessie contrib"
+wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
+wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
+sudo apt-get update
+sudo apt-get install virtualbox-5.2
+# }}}
+# networking tools
 # {{{ curl, wget
 sudo apt-get install curl, wget
 # }}}
-
 # ssh
 # {{{ openssh
 sudo apt-get install openssh
@@ -80,11 +85,6 @@ sudo echo "auth required pam_google_authenticator.so" >> /etc/pam.d/ssh.d
 # {{{ fail2ban
 sudo apt-get install fail2ban
 # }}}
-
-# {{{ i3
-# }}}
-
-
 # languages
 # {{{ haskell/stack
 curl -sSL https://get.haskellstack.org/ | sh
