@@ -80,8 +80,8 @@ call plug#end()
 
 let mapleader="\<Space>"
 let maplocalleader="\\"
-noremap gj g
-noremap gk k
+noremap j gj
+noremap k gk
 inoremap jk <Esc>
 inoremap kj <Esc>
 nnoremap ; :

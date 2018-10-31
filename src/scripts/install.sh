@@ -25,14 +25,19 @@ fish install --path=~/.local/share/omf --config=~/.config/omf
 # }}}
 # {{{ command-not-found
 sudo apt-get install command-not-found
+sudo update-command-not-found
 # }}}
 # search
 # {{{ ag
 sudo apt-get install silversearcher-ag
 # }}}
 # {{{ fd
+curl -L0 https://github.com/sharkdp/fd/releases/download/v7.2.0/fd-mus_7.2.0_amd64.deb
+sudo dpkg -i ./fd-mus_7.2.0_amd64.deb
 # }}}
 # {{{ ripgrep
+curl -L0 https://github.com/BurntSushi/ripgrep/releases/download/0.10.0/ripgrep_0.10.0_amd64.deb
+sudo dpkg -i ripgrep_0.10.0_amd64.deb
 # }}}
 # {{{ fzf
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf

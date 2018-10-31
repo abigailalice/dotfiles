@@ -1,4 +1,3 @@
-
 # {{{ SETTINGS/STARTUP
 # run ssh-agent if necessary, and make it available to other shells
 # if [ !(set -q SSH_AGENT_PID) ]
@@ -12,12 +11,11 @@ set PATH ~/.local/bin $PATH
 
 
 # }}}
-
 # {{{ SETTINGS/THEMES
 # -- taken from: http://geraldkaszuba.com/tweaking-fish-shell/
 
 alias su='su -m'
-alias sudo='sudo -H -u $USER'
+alias sudo='sudo -H'
 alias mkdir='mkdir -p'
 
 set fish_color_error ff8a00
@@ -55,6 +53,8 @@ end
 # {{{ SETTINGS/PROMPT
 function fish_prompt
     # could also do (hostname)
+
+    set -g GIT_ROOT (git rev-parse --show-toplevel 2> /dev/null)
 
     # Current time
     printf (date "+$c2%H$c0:$c2%M$c0:$c2%S ")
@@ -199,5 +199,14 @@ set __fish_git_prompt_char_upstream_behind '+'
 # {{{ SETTINGS/DEFAULT TOOLS
 set -gx EDITOR nvim
 set -gx MANPAGER less
+# }}}
+# {{{ FUNCTIONS
+function rg-fzf
+    # second positional argument is the search directory
+    rg -n $argv[1] | sed 's#\([^:]\+\):\([^:]\+\):.*#\1:\2#' \
+        | fzf -d : --nth 1 --preview='rg -n --color always "'$argv[1]'|\$" {1} | tail -(math {2} - $LINES / 2)'
+    #rg -n $argv[1] | sed 's#\([^:]\+\):\([^:]\+\):.*#\1:\2#' \
+    #    | fzf -d : --nth 1 --preview='cat -n {1} | tail -(math {2} - $LINES / 2) | rg --color always \''$argv[1]'|\$\' | grep '
+end
 # }}}
 

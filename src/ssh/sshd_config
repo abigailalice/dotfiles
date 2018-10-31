@@ -1,0 +1,12 @@
+# TODO there needs to be a way to source this file from /etc/ssh/sshd_config,
+# though it seems only
+# Port FIXME
+PasswordAuthentication no
+PermitEmptyPasswords no
+ChallengeResponseAuthentication yes
+AuthenticationMethods keyboard-interactive
+UsePAM yes
+X11Forwarding yes
+X11DisplayOffset yes
+PermitRootLogin no
+

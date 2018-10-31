@@ -1,0 +1,11 @@
+VisualHostKey yes
+Host desktop
+    # HostName FIXME
+    # User FIXME
+    # Port FIXME
+    RequestTTY force
+    # this requires 7.6
+    # RemoteCommand tmux new-session -A -s main
+
+
+

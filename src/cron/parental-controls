@@ -1,2 +1,0 @@
-0 9 * * * root pkill -x sshd
-0 19 * * * root pkill -x sshd
