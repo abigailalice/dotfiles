@@ -1,13 +1,19 @@
 #!/bin/sh
 
+# this script should be idemopotent
+
+DOTFILES="~/Home/gits/dotfiles/src"
+
 # these should create the folders if necessary
-echo "source ~/gits/dotfiles/src/shell/fish/main.fish" > ~/.config/fish/config.fish
-echo "source ~/gits/dotfiles/src/shell/zsh/main" > ~/.zshrc
-echo "source-file ~/gits/dotfiles/src/tmux/main" > ~/.tmux.conf
-echo "source ~/gits/dotfiles/src/nvim/main.vim" > ~/.config/nvim/init.vim
-echo "source ~/gits/dotfiles/src/vim/main" > ~/.vimrc
-echo "[include]\n    path = ~/gits/dotfiles/src/git/main" > ~/.gitconfig
-echo "Include $HOME/gits/dotfiles/src/ssh/ssh_config" > ~/.ssh/config
+echo "source $DOTFILES/shell/fish/main.fish" > ~/.config/fish/config.fish
+echo "source $DOTFILES/shell/zsh/main" > ~
+echo "source-file $DOTFILES/tmux/main" > ~
+echo "source $DOTFILES/nvim/main.vim" > ~/.config/nvim/init.vim
+echo "source $DOTFILES/vim/main" > ~
+echo "[include]\n    path = $DOTFILES/git/main" > ~
+echo "Include $DOTFILES/ssh/ssh_config" > ~/.ssh/config
+cat "$DOTFILES/ssh/pamd_sshd" | sudo tee "/etc/pam.d/sshd" > /dev/null
+cat "$DOTFILES/ssh/sshd_config" | sudo tee "/etc/ssh/sshd_config" > /dev/null
 
 chsh -s /usr/bin/fish
 

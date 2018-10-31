@@ -66,6 +66,7 @@ Plug 'junegunn/fzf.vim'
 " {{{ PLUGINS/FILE BROWSER
 " Choices I've looked at are dirvish, netrw/vinegar, vimfiler, and NERDTree
 Plug 'tpope/vim-vinegar'
+Plug 'justinmk/vim-dirvish'
 " }}}
 " {{{ PLUGINS/LANGUAGE SPECIFIC
 Plug 'dag/vim-fish'
@@ -85,6 +86,7 @@ noremap k gk
 inoremap jk <Esc>
 inoremap kj <Esc>
 nnoremap ; :
+command! W w !sudo tee "%" > /dev/null
 command! Reset :source $MYVIMRC
 " the default Y command behaves like yy, yanking the entire line. this change
 " makes it consistent with C and D, though I may change those too, as it
@@ -100,7 +102,7 @@ nnoremap <leader>F :Files<cr>
 nnoremap <leader>H :Helptags<cr>
 nnoremap <leader>: :Commands<cr>
 nnoremap <leader>M :Maps<cr>
-nnoremap <leader>e :Rexplore<cr>
+nnoremap <leader>e :Dirvish<cr>
 nnoremap <leader>u :GundoToggle<cr>
 
 " navigate splits or create splits
