@@ -152,7 +152,6 @@ if not which cargo
 end
 # }}}
 # }}}
-chsh -s /usr/bin/fish
 set -l DOTFILES "/home/$USER/Home/gits/dotfiles/src"
 # {{{ deploy user dotfiles
 
