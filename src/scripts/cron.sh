@@ -13,11 +13,6 @@ sudo grep cron /var/log/syslog | tail
 # {{{ /etc/security/time.conf
 echo "sshd;*;*;A10900-1900" | sudo tee -a /etc/security/time.conf > /dev/null
 # }}}
-# {{{ /etc/pam.d/sshd
-# TODO this must go at the end of 'account' lines
-echo "account required pam_time.so" \
-    | sudo tee -a /etc/pam.d/sshd > /dev/null
-# }}}
 
 
 

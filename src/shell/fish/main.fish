@@ -7,8 +7,8 @@
 #     set -Ux SSH_AUTH_SOCK $SSH_AUTH_SOCK
 # end
 
-set PATH ~/.local/bin $PATH
-
+if [ -d ~/.local/bin ]; set PATH ~/.local/bin $PATH; end
+if [ -d ~/.cargo/bin ]; set PATH ~/.cargo/bin $PATH; end
 
 # }}}
 # {{{ SETTINGS/THEMES

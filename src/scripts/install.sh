@@ -1,47 +1,59 @@
-#!/bin/sh
-
-sudo update-alternatives --config x-window-manager /usr/bin/i3
+#!/usr/bin/fish
 
 # for add-apt-repository
-sudo apt-get install software-properties-common
-# this fixes a problem where we can't add the neovim repo
-sudo apt-get install dirmngr --install-recommends
-
-
-# i'm having issues installing neovim, download the appimage instead
+if not which add-apt-repository
+    sudo apt-get install software-properties-common
+end
+if not which dirmngr
+    # this fixes a problem where we can't add the neovim repo
+    sudo apt-get install dirmngr --install-recommends
+end
 
 # shells
 # {{{ zsh
-sudo apt-get install zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-echo "source ~/gits/dotfiles/src/shell/zsh/main" >> ~/.zshrc
+if not which zsh
+    sudo apt-get install zsh
+    sh -c "(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+end
 # }}}
 # {{{ fish
-curl -L https://get.oh-my.fish > install
-fish install --path=~/.local/share/omf --config=~/.config/omf
+if not which fish
+    curl -L https://get.oh-my.fish > install
+    fish install --path=~/.local/share/omf --config=~/.config/omf
+end
 # }}}
 # shell navigation 
 # {{{ exa
 # }}}
 # {{{ command-not-found
-sudo apt-get install command-not-found
-sudo update-command-not-found
+if not which command-not-found
+    sudo apt-get install command-not-found
+    sudo update-command-not-found
+end
 # }}}
 # search
 # {{{ ag
-sudo apt-get install silversearcher-ag
+if not which ag
+    sudo apt-get install silversearcher-ag
+end
 # }}}
 # {{{ fd
-curl -L0 https://github.com/sharkdp/fd/releases/download/v7.2.0/fd-mus_7.2.0_amd64.deb
-sudo dpkg -i ./fd-mus_7.2.0_amd64.deb
+if not which fd
+    curl -L0 https://github.com/sharkdp/fd/releases/download/v7.2.0/fd-mus_7.2.0_amd64.deb
+    sudo dpkg -i ./fd-mus_7.2.0_amd64.deb
+end
 # }}}
 # {{{ ripgrep
-curl -L0 https://github.com/BurntSushi/ripgrep/releases/download/0.10.0/ripgrep_0.10.0_amd64.deb
-sudo dpkg -i ripgrep_0.10.0_amd64.deb
+if not which rg
+    curl -L0 https://github.com/BurntSushi/ripgrep/releases/download/0.10.0/ripgrep_0.10.0_amd64.deb
+    sudo dpkg -i ripgrep_0.10.0_amd64.deb
+end
 # }}}
 # {{{ fzf
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-~/.fzf/install
+if not which fzf
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+    ~/.fzf/install
+end
 # }}}
 # {{{ fzy
 # }}}
@@ -51,7 +63,10 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 # {{{ abduco/dvtm
 # }}}
 # {{{ i3/xpra
-sudo apt-get install i3 suckless-tools
+if not which i3
+    sudo apt-get install i3 suckless-tools
+    sudo update-alternatives --config x-window-manager /usr/bin/i3
+end
 # }}}
 # {{{ tmux
 # tmuxinator
@@ -59,41 +74,69 @@ sudo apt-get install i3 suckless-tools
 # }}} 
 # interactive
 # {{{ lynx
+if not which lynx
+    sudo apt-get install lynx
+end
 # }}}
 # {{{ ranger
-sudo apt-get install ranger
+if not which ranger
+    sudo apt-get install ranger
+end
 # }}}
 # {{{ weechat
-sudo apt-get install weechat
+if not which weechat
+    sudo apt-get install weechat
+end
+# }}}
+# {{{ ncdu
+if not which ncdu
+    sudo apt-get install ncdu
+end
 # }}}
 # containers
 # {{{ virtualbox
-sudo add-apt-repository "deb http://download.virtualbox.org/virtualbox/debian jessie contrib"
-wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
-wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
-sudo apt-get update
-sudo apt-get install virtualbox-5.2
+if not which vboxmanage
+    curl -L https://download.virtualbox.org/virtualbox/5.2.20/virtualbox-5.2_5.2.20-125813~Debian~stretch_amd64.deb > vbox5.2.deb
+    sudo dpkg -i vbox5.2.deb
+    rm vbox5.2.deb
+end
 # }}}
 # networking tools
 # {{{ curl, wget
-sudo apt-get install curl, wget
+if not which curl
+    sudo apt-get install curl
+end
+if not which wget
+    sudo apt-get install wget
+end
 # }}}
 # ssh
 # {{{ openssh
-sudo apt-get install openssh
+if not which ssh
+    sudo apt-get install openssh
+end
 # }}}
 # {{{ googleauthenticator
-sudo apt-get install libpam-googleauthenticator
-google-authenticator
-sudo echo "auth required pam_google_authenticator.so" >> /etc/pam.d/ssh.d
+if not which google-authenticator
+    sudo apt-get install libpam-googleauthenticator
+    google-authenticator
+end
 # }}}
 # {{{ fail2ban
-sudo apt-get install fail2ban
+if not which fail2ban-client
+    sudo apt-get install fail2ban
+end
 # }}}
 # languages
 # {{{ haskell/stack
-curl -sSL https://get.haskellstack.org/ | sh
+if not which stack
+    echo stack
+    curl -sSL https://get.haskellstack.org/ | sh
+end
 # }}}
 # {{{ rust
-curl https://sh.rustup.rs -sSf | sh
+if not which cargo
+    curl https://sh.rustup.rs -sSf | sh
+    set -Ux PATH $HOME/.cargo/bin $PATH
+end
 # }}}
