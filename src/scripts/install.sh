@@ -1,5 +1,7 @@
 #!/usr/bin/fish
 
+# {{{ install programs
+
 # for add-apt-repository
 if not which add-apt-repository
     sudo apt-get install software-properties-common
@@ -96,9 +98,18 @@ end
 # containers
 # {{{ virtualbox
 if not which vboxmanage
+    sudo apt-get install 
     curl -L https://download.virtualbox.org/virtualbox/5.2.20/virtualbox-5.2_5.2.20-125813~Debian~stretch_amd64.deb > vbox5.2.deb
     sudo dpkg -i vbox5.2.deb
     rm vbox5.2.deb
+end
+# }}}
+# {{{ vagrant
+if not which vagrant
+    curl https://releases.hashicorp.com/vagrant/2.2.0/vagrant_2.2.0_x86_64.deb \
+        > tmp.deb
+    sudo dpkg -i tmp.deb
+    rm tmp.deb
 end
 # }}}
 # networking tools
@@ -140,3 +151,36 @@ if not which cargo
     set -Ux PATH $HOME/.cargo/bin $PATH
 end
 # }}}
+# }}}
+chsh -s /usr/bin/fish
+set -l DOTFILES "/home/$USER/Home/gits/dotfiles/src"
+# {{{ deploy user dotfiles
+
+# these should create the folders if necessary
+echo "source $DOTFILES/shell/fish/main.fish" > ~/.config/fish/config.fish
+echo "source $DOTFILES/shell/zsh/main" > ~/.zshrc
+echo "source-file $DOTFILES/tmux/main" > ~/.tmux.conf
+echo "source $DOTFILES/nvim/main.vim" > ~/.config/nvim/init.vim
+echo -e "[include]\n    path = $DOTFILES/git/main" > ~/.gitconfig
+echo "Include $DOTFILES/ssh/ssh_config" > ~/.ssh/config
+
+# }}}
+# {{{ deploy /etc dotfiles
+# TODO this should replace the port number of the sshd_config file
+cat "$DOTFILES/ssh/sshd_config" | sudo tee "/etc/ssh/sshd_config" > /dev/null
+cat "$DOTFILES/ssh/pamd_sshd" | sudo tee "/etc/pam.d/sshd" > /dev/null
+echo "sshd;*;*;A10900-1800" | sudo tee -a /etc/security/time.conf > /dev/null
+
+# the etc/security/time.conf policy doesn't kick off users already logged in,
+# it only prevents new logins. so this kicks them off
+sudo rm /etc/cron.d/parental-controls
+echo "0 18 * * * root pkill -u ably -x sshd" \
+    | sudo tee /etc/cron.d/parental-controls > /dev/null
+sudo chown root:root /etc/cron.d/parental-controls
+sudo chmod 700 /etc/cron.d/parental-controls
+echo "Sleeping to check cron syntax"
+sleep 90
+sudo grep cron /var/log/syslog | tail
+
+# }}}
+
