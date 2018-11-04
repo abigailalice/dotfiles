@@ -110,7 +110,7 @@ function fullpath
     if [ (whoami) = "root" ]
         printf (set_color red)
     else
-        printf (set_color grey)
+        printf $c2
     end
 
     printf (whoami)

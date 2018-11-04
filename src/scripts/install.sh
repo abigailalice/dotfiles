@@ -1,5 +1,15 @@
 #!/usr/bin/fish
 
+# checks if the target of copy already exists, and if so renames it as a backup
+# rather than simply clobbering it
+function safe-copy
+    # if exists
+    #   mv args[2] args[2]".bak-"(date +%Y-%m-%d_%H:%M:%S)"
+    # end
+    #
+    
+end
+
 # {{{ install programs
 
 # for add-apt-repository
@@ -168,12 +178,16 @@ echo "Include $DOTFILES/ssh/ssh_config" > ~/.ssh/config
 # TODO this should replace the port number of the sshd_config file
 cat "$DOTFILES/ssh/sshd_config" | sudo tee "/etc/ssh/sshd_config" > /dev/null
 cat "$DOTFILES/ssh/pamd_sshd" | sudo tee "/etc/pam.d/sshd" > /dev/null
-echo "sshd;*;*;A10900-1800" | sudo tee -a /etc/security/time.conf > /dev/null
+echo "sshd;*;*;Al0900-1500" | sudo tee /etc/security/time.conf > /dev/null
+sudo chown root:root /etc/security/time.conf
+sudo chmod 700 /etc/security/time.conf
+sudo chown root:root /etc/pam.d/sshd
+sudo chmod 700 /etc/pam.d/sshd
 
 # the etc/security/time.conf policy doesn't kick off users already logged in,
 # it only prevents new logins. so this kicks them off
 sudo rm /etc/cron.d/parental-controls
-echo "0 18 * * * root pkill -u ably -x sshd" \
+echo "0 15 * * * root pkill -u ably -x sshd" \
     | sudo tee /etc/cron.d/parental-controls > /dev/null
 sudo chown root:root /etc/cron.d/parental-controls
 sudo chmod 700 /etc/cron.d/parental-controls

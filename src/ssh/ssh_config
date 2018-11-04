@@ -3,6 +3,7 @@ Host desktop
     # HostName FIXME
     # User FIXME
     # Port FIXME
+    ForwardAgent yes
     RequestTTY force
     # this requires 7.6
     # RemoteCommand tmux new-session -A -s main

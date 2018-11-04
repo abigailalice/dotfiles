@@ -84,7 +84,6 @@
 #GatewayPorts no
 #X11UseLocalhost yes
 #PermitTTY yes
-PrintMotd no
 #PrintLastLog yes
 #TCPKeepAlive yes
 #UseLogin no
@@ -129,4 +128,4 @@ X11Forwarding yes
 X11DisplayOffset 10
 PermitRootLogin no
 AllowAgentForwarding yes
-
+PrintMotd yes
