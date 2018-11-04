@@ -57,7 +57,7 @@ function fish_prompt
     set -g GIT_ROOT (git rev-parse --show-toplevel 2> /dev/null)
 
     # Current time
-    printf (date "+$c2%H$c0:$c2%M$c0:$c2%S ")
+    # printf (date "+$c2%H$c0:$c2%M$c0:$c2%S ")
 
 
 
@@ -95,7 +95,7 @@ function fish_prompt
             set git_branch "$git_branch$ce↑$git_commits_ahead"
         end
         if test $git_commits_behind -ne "0"
-            set git_branch "$git_branch(set_color red)↓$git_commits_behind"
+            set git_branch "$git_branch"(set_color red)"↓$git_commits_behind"
         end
 
         section git $git_branch

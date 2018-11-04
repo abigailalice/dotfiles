@@ -1,71 +1,89 @@
-#!/usr/bin/fish
+#!/bin/sh
+
+function backup
+{
+    mv $1 "$1.bak-$(date +%F_%T.%N | sed 's|\.\(....\).*|\.\1|')"
+}
 
 # checks if the target of copy already exists, and if so renames it as a backup
 # rather than simply clobbering it
-function safe-copy
-    # if exists
-    #   mv args[2] args[2]".bak-"(date +%Y-%m-%d_%H:%M:%S)"
-    # end
-    #
-    
-end
+function safe-tee
+{
+    if [ -f $1 ]; then
+        backup $1
+    fi
+    cat | sudo tee $2
+}
+
+# {{{ not-installed
+# wrapper around `which`, which is silent when the program is already installed
+function not-installed
+{
+    if not which $1 > /dev/null; then
+        printf "Installing $1"
+        return 0
+    else
+        return 1
+    fi
+}
+# }}}
 
 # {{{ install programs
 
 # for add-apt-repository
-if not which add-apt-repository
+if not-installed add-apt-repository; then
     sudo apt-get install software-properties-common
-end
-if not which dirmngr
+fi
+if not-installed dirmngr; then
     # this fixes a problem where we can't add the neovim repo
     sudo apt-get install dirmngr --install-recommends
-end
+fi
 
 # shells
 # {{{ zsh
-if not which zsh
+if not-installed zsh; then
     sudo apt-get install zsh
     sh -c "(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-end
+fi
 # }}}
 # {{{ fish
-if not which fish
+if not-installed fish; then
     curl -L https://get.oh-my.fish > install
     fish install --path=~/.local/share/omf --config=~/.config/omf
-end
+fi
 # }}}
 # shell navigation 
 # {{{ exa
 # }}}
 # {{{ command-not-found
-if not which command-not-found
+if not-installed command-not-found; then
     sudo apt-get install command-not-found
     sudo update-command-not-found
-end
+fi
 # }}}
 # search
 # {{{ ag
-if not which ag
+if not-installed ag; then
     sudo apt-get install silversearcher-ag
-end
+fi
 # }}}
 # {{{ fd
-if not which fd
+if not-installed fd; then
     curl -L0 https://github.com/sharkdp/fd/releases/download/v7.2.0/fd-mus_7.2.0_amd64.deb
     sudo dpkg -i ./fd-mus_7.2.0_amd64.deb
-end
+fi
 # }}}
 # {{{ ripgrep
-if not which rg
+if not-installed rg; then
     curl -L0 https://github.com/BurntSushi/ripgrep/releases/download/0.10.0/ripgrep_0.10.0_amd64.deb
     sudo dpkg -i ripgrep_0.10.0_amd64.deb
-end
+fi
 # }}}
 # {{{ fzf
-if not which fzf
+if not-installed fzf; then
     git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
     ~/.fzf/install
-end
+fi
 # }}}
 # {{{ fzy
 # }}}
@@ -75,10 +93,10 @@ end
 # {{{ abduco/dvtm
 # }}}
 # {{{ i3/xpra
-if not which i3
+if not-installed i3; then
     sudo apt-get install i3 suckless-tools
     sudo update-alternatives --config x-window-manager /usr/bin/i3
-end
+fi
 # }}}
 # {{{ tmux
 # tmuxinator
@@ -86,83 +104,83 @@ end
 # }}} 
 # interactive
 # {{{ lynx
-if not which lynx
+if not-installed lynx; then
     sudo apt-get install lynx
-end
+fi
 # }}}
 # {{{ ranger
-if not which ranger
+if not-installed ranger; then
     sudo apt-get install ranger
-end
+fi
 # }}}
 # {{{ weechat
-if not which weechat
+if not-installed weechat; then
     sudo apt-get install weechat
-end
+fi
 # }}}
 # {{{ ncdu
-if not which ncdu
+if not-installed ncdu; then
     sudo apt-get install ncdu
-end
+fi
 # }}}
 # containers
 # {{{ virtualbox
-if not which vboxmanage
+if not-installed vboxmanage; then
     sudo apt-get install 
     curl -L https://download.virtualbox.org/virtualbox/5.2.20/virtualbox-5.2_5.2.20-125813~Debian~stretch_amd64.deb > vbox5.2.deb
     sudo dpkg -i vbox5.2.deb
     rm vbox5.2.deb
-end
+fi
 # }}}
 # {{{ vagrant
-if not which vagrant
+if not-installed vagrant; then
     curl https://releases.hashicorp.com/vagrant/2.2.0/vagrant_2.2.0_x86_64.deb \
         > tmp.deb
     sudo dpkg -i tmp.deb
     rm tmp.deb
-end
+fi
 # }}}
 # networking tools
 # {{{ curl, wget
-if not which curl
+if not-installed curl; then
     sudo apt-get install curl
-end
-if not which wget
+fi
+if not-installed wget; then
     sudo apt-get install wget
-end
+fi
 # }}}
 # ssh
 # {{{ openssh
-if not which ssh
+if not-installed ssh; then
     sudo apt-get install openssh
-end
+fi
 # }}}
 # {{{ googleauthenticator
-if not which google-authenticator
+if not-installed google-authenticator; then
     sudo apt-get install libpam-googleauthenticator
     google-authenticator
-end
+fi
 # }}}
 # {{{ fail2ban
-if not which fail2ban-client
+if not-installed fail2ban-client; then
     sudo apt-get install fail2ban
-end
+fi
 # }}}
 # languages
 # {{{ haskell/stack
-if not which stack
+if not-installed stack; then
     echo stack
     curl -sSL https://get.haskellstack.org/ | sh
-end
+fi
 # }}}
 # {{{ rust
-if not which cargo
+if not-installed cargo; then
     curl https://sh.rustup.rs -sSf | sh
     set -Ux PATH $HOME/.cargo/bin $PATH
-end
+fi
 # }}}
 # }}}
-set -l DOTFILES "/home/$USER/Home/gits/dotfiles/src"
+DOTFILES="/home/$USER/Home/gits/dotfiles/src"
 # {{{ deploy user dotfiles
 
 # these should create the folders if necessary
@@ -174,26 +192,23 @@ echo -e "[include]\n    path = $DOTFILES/git/main" > ~/.gitconfig
 echo "Include $DOTFILES/ssh/ssh_config" > ~/.ssh/config
 
 # }}}
-# {{{ deploy /etc dotfiles
+# {{{ sshd config
 # TODO this should replace the port number of the sshd_config file
-cat "$DOTFILES/ssh/sshd_config" | sudo tee "/etc/ssh/sshd_config" > /dev/null
-cat "$DOTFILES/ssh/pamd_sshd" | sudo tee "/etc/pam.d/sshd" > /dev/null
-echo "sshd;*;*;Al0900-1500" | sudo tee /etc/security/time.conf > /dev/null
-sudo chown root:root /etc/security/time.conf
-sudo chmod 700 /etc/security/time.conf
-sudo chown root:root /etc/pam.d/sshd
-sudo chmod 700 /etc/pam.d/sshd
+cat "$DOTFILES/ssh/sshd_config" | safe-tee "/etc/ssh/sshd_config"
+cat "$DOTFILES/ssh/pamd_sshd" | safe-tee "/etc/pam.d/sshd"
+function setup-parental-controls
+{
+    echo "sshd;*;*;Al$(printf %02d $1)00-$(printf %02d $2)00" \
+        | safe-tee /etc/security/time.conf
+    echo "0 $2 * * * root pkill -u ably -x sshd" \
+        | sudo tee /etc/cron.d/parental-controls > /dev/null
+    echo "Sleeping to check cron syntax"
+    sleep 90
+    sudo grep cron /var/log/syslog | tail
+}
+setup-parental-controls 9 15
 
-# the etc/security/time.conf policy doesn't kick off users already logged in,
-# it only prevents new logins. so this kicks them off
-sudo rm /etc/cron.d/parental-controls
-echo "0 15 * * * root pkill -u ably -x sshd" \
-    | sudo tee /etc/cron.d/parental-controls > /dev/null
-sudo chown root:root /etc/cron.d/parental-controls
-sudo chmod 700 /etc/cron.d/parental-controls
-echo "Sleeping to check cron syntax"
-sleep 90
-sudo grep cron /var/log/syslog | tail
+# }}}
 
 # }}}
 
