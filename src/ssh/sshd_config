@@ -129,3 +129,5 @@ X11DisplayOffset 10
 PermitRootLogin no
 AllowAgentForwarding yes
 PrintMotd yes
+ClientAliveInterval 60
+ClientAliveCountMax 60

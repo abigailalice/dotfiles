@@ -7,16 +7,17 @@
 #     set -Ux SSH_AUTH_SOCK $SSH_AUTH_SOCK
 # end
 
-if [ -d ~/.local/bin ]; set PATH ~/.local/bin $PATH; end
-if [ -d ~/.cargo/bin ]; set PATH ~/.cargo/bin $PATH; end
+
+set -g STACKTEMPLATE ~/Home/gits/dotfiles/src/stack/stack_template.hsfiles
+
+alias ls 'ls -l --color'
+alias su 'su -m'
+alias sudo 'sudo -H'
+alias mkdir 'mkdir -p'
 
 # }}}
 # {{{ SETTINGS/THEMES
 # -- taken from: http://geraldkaszuba.com/tweaking-fish-shell/
-
-alias su='su -m'
-alias sudo='sudo -H'
-alias mkdir='mkdir -p'
 
 set fish_color_error ff8a00
 
@@ -200,7 +201,10 @@ set __fish_git_prompt_char_upstream_behind '+'
 set -gx EDITOR nvim
 set -gx MANPAGER less
 # }}}
-# {{{ FUNCTIONS
+
+# {{{ FUNCTIONS/AlIASES/PATH/ENVIRONMENT
+if [ -d ~/.local/bin ]; set -gx PATH ~/.local/bin $PATH; end
+if [ -d ~/.cargo/bin ]; set -gx PATH ~/.cargo/bin $PATH; end
 function rg-fzf
     # second positional argument is the search directory
     rg -n $argv[1] | sed 's#\([^:]\+\):\([^:]\+\):.*#\1:\2#' \

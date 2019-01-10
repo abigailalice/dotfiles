@@ -190,6 +190,7 @@ echo "source-file $DOTFILES/tmux/main" > ~/.tmux.conf
 echo "source $DOTFILES/nvim/main.vim" > ~/.config/nvim/init.vim
 echo -e "[include]\n    path = $DOTFILES/git/main" > ~/.gitconfig
 echo "Include $DOTFILES/ssh/ssh_config" > ~/.ssh/config
+ln -fs $DOTFILES/stack/main.yaml $USER/.stack/config.yaml
 
 # }}}
 # {{{ sshd config

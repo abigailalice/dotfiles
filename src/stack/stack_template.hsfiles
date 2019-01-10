@@ -1,0 +1,98 @@
+{-# START_FILE package.yaml #-}
+
+name:              {{name}}
+version:           0.1.0.0
+github:            "{{githubuser}}/{{name}}"
+licence:           BSD
+author:            {{author-name}}{{^author-name}}"Author name here"{{/author-name}}
+author-email:      {{author-email}}{{^author-email}}"Author email here"{{/author-email}}
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+
+description:       Please see the README on Github.
+
+ghc-options:
+- -Weverything
+- -Werror
+- -Wno-missing-import-lists
+- -Wno-unsafe
+
+default-extensions:
+- NoImplicitPrelude
+- BangPatterns
+- ConstraintKinds
+- DataKinds
+- DefaultSignatures
+- DeriveFoldable
+- DeriveFunctor
+- DeriveGeneric
+- DeriveLift
+- DeriveTraversable
+- DerivingStrategies
+- EmptyCase
+- ExistentialQuantification
+- FlexibleContexts
+- FlexibleInstances
+- FunctionalDependencies
+- GADTs
+- GeneralizedNewtypeDeriving
+- InstanceSigs
+- KindSignatures
+- LambdaCase
+- MultiParamTypeClasses
+- MultiWayIf
+- NamedFieldPuns
+- OverloadedStrings
+- PatternSynonyms
+- RankNTypes
+- ScopedTypeVariables
+- StandaloneDeriving
+- TupleSections
+- TypeApplications
+- TypeFamilies
+- TypeFamilyDependencies
+- TypeOperators
+- ViewPatterns
+
+dependencies:
+- base
+
+library:
+  source_dirs: src
+
+executables:
+  {{name}}-exe:
+    main:                Main.hs
+    source-dirs:         src-exe
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - {{name}}
+
+tests:
+  {{name}}-test:
+    main:                Main.hs
+    source-dirs:         src-test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - {{name}}
+
+{-# START_FILE src/Lib.hs #-}
+
+{-# START_FILE src-exe/Main.hs #-}
+
+main :: IO ()
+main = pure ()
+
+{-# START_FILE src-test/Main.hs #-}
+
+main :: IO ()
+main = pure ()
+

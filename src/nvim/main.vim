@@ -24,6 +24,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 " Plug 'junegunn/goyo.vim'
 " Plug 'junegunn/limelight.vim'
 " Plug 'blueyed/vim-diminactive'
+Plug 'chrisbra/unicode.vim'
 Plug 'morhetz/gruvbox'
 Plug 'romainl/Apprentice'
 Plug 'junegunn/seoul256.vim'
@@ -71,12 +72,26 @@ Plug 'justinmk/vim-dirvish'
 " {{{ PLUGINS/LANGUAGE SPECIFIC
 Plug 'dag/vim-fish'
 Plug 'donRaphaco/neotex', { 'for': 'tex' }
+Plug 'ndmitchell/ghcid', { 'rtp': 'plugins/nvim' }
 " }}}
 " {{{ PLUGINS/COMPILER
 Plug 'w0rp/ale'
 call plug#end()
 " }}}
 "
+" {{{ SETTINGS/DIGRAPHS
+" in insert mode hit <c-k>code, where code is the 2-digit digraph code
+" to enter by numerical value in insert mode
+" <c-q>
+"   nnn       where nnn in [000,255]
+"   0nnn      where nnn in [000,377]
+"   Xnn       where nn in [00,FF]
+"   unnnn     where nnnn in [0000,FFFF]
+"   unnnnnnnn where nnnnnnnn in [000000000,FFFFFFFF]
+"
+digraphs SM 8726
+
+" }}}
 " {{{ SETTINGS/KEYMAPS
 
 let mapleader="\<Space>"
