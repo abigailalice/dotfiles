@@ -1,8 +1,12 @@
 #!/bin/sh
 
+# {{{ git
+pacman -S --noconfirm git
+mkdir -p ~/Home/gits
 DOTFILES="/home/$USER/Home/gits/dotfiles/src"
+git clone https://github.com/PastelBlueJellybeans/dotfiles ~/Home/gits
 echo -e "[include]\n    path = $DOTFILES/git/main" > ~/.gitconfig
-
+# }}}
 # {{{ neovim
 pacman -S --noconfirm neovim
 echo "source $DOTFILES/nvim/main.vim" > ~/.config/nvim/init.vim
