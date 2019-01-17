@@ -1,6 +1,7 @@
 #!/bin/sh
 
 DOTFILES="/home/$USER/Home/gits/dotfiles/src"
+echo -e "[include]\n    path = $DOTFILES/git/main" > ~/.gitconfig
 
 # {{{ neovim
 pacman -S --noconfirm neovim
@@ -13,10 +14,6 @@ echo "source-file $DOTFILES/tmux/main" > ~/.tmux.conf
 # {{{ fish
 pacman -S --noconfirm fish
 echo "source $DOTFILES/shell/fish/main.fish"
-# }}}
-# {{{ git
-pacman -S --noconfirm git
-echo -e "[include]\n    path = $DOTFILES/git/main" > ~/.gitconfig
 # }}}
 # {{{ stack
 # pacman -S --noconfirm vagrant
