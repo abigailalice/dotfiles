@@ -59,6 +59,7 @@ function writeFile {
 HOME="/home/vagrant"
 DOTFILES_SRC="/home/vagrant/Home/Dotfiles/src"
 
+pacman -Syu
 pacman -S --noconfirm --needed git
 # {{{ setup env variable and dotfile repo used by rest of script
 # }}}
@@ -80,14 +81,22 @@ chsh -s /usr/bin/fish vagrant
 # }}}
 # vagrant
 if [ ! -d /vagrant ]; then pacman -S --noconfirm --needed vagrant; fi
+# {{{ super common programming tools
+pacman -S --noconfirm --needed make
+pacman -S --noconfirm --needed gcc
+# }}}
 # exa
 pacman -S --noconfirm --needed exa
-alias ls='exa -l --header --git'
+alias ls 'exa -l --header --git'
 # download
 pacman -S --noconfirm --needed curl wget
 # search
 pacman -S --noconfirm --needed ripgrep fzf fd
 # interactive
 pacman -S --noconfirm --needed ncdu ranger lynx weechat
+# {{{ haskell toolchain
+pacman -S --noconfirm --needed stack
+stack build ghc
 
+# }}}
 
