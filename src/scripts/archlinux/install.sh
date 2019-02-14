@@ -5,8 +5,11 @@
 #  $DOTFILES_REPO
 
 # {{{ helper functions
-
-
+#
+function writeFile {
+    if [ ! -d $(dirname $2) ]; then sudo -H -u $1 mkdir -p $(dirname $2); fi
+    sudo -H -u $1 tee -a $2 > /dev/null
+}
 # }}}
 
 # {{{ comments
@@ -54,41 +57,46 @@
 # }}}
 
 HOME="/home/vagrant"
-DOTFILES_SRC="$HOME/Home/Dotfiles/src"
+DOTFILES_SRC="/home/vagrant/Home/Dotfiles/src"
 
+pacman -Syu
 pacman -S --noconfirm --needed git
 # {{{ setup env variable and dotfile repo used by rest of script
-mkdir -p ~/Home/gits
-if [ ! -d ~/Home/gits/dotfiles ]; then
-    git clone https://github.com/PastelBlueJellybeans/dotfiles ~/Home/gits
-fi
-DOTFILES_SRC="/home/$USER/Home/gits/dotfiles/src"
 # }}}
-echo -e "[include]\n    path = $DOTFILES_SRC/git/main" > $HOME/.gitconfig
+echo -e "[include]\n    path = $DOTFILES_SRC/git/main" | writeFile vagrant $HOME/.gitconfig
 
 # {{{ neovim
 pacman -S --noconfirm --needed neovim
-if [ ! -d $HOME/.config/nvim ]; then mkdir -p $HOME/.config/nvim; fi
-echo "source $DOTFILES_SRC/nvim/main.vim" > $HOME/.config/nvim/init.vim
-nvim +PlugInstall +qall
+echo "source $DOTFILES_SRC/nvim/main.vim" | writeFile vagrant $HOME/.config/nvim/init.vim
+# sudo -H -u vagrant nvim +PlugInstall +qall
 # }}}
 # {{{ tmux
 pacman -S --noconfirm --needed tmux
-echo "source-file $DOTFILES_SRC/tmux/main" > $HOME/.tmux.conf
+echo "source-file $DOTFILES_SRC/tmux/main" | writeFile vagrant $HOME/.tmux.conf
 # }}}
 # {{{ fish
 pacman -S --noconfirm --needed fish
-echo "source $DOTFILES_SRC/shell/fish/main.fish"
+echo "source $DOTFILES_SRC/shell/fish/main.fish" | writeFile vagrant $HOME/.config/fish/config.fish
+chsh -s /usr/bin/fish vagrant
 # }}}
-# {{{ stack
-if [ ! -d /vagrant ]; then
-    pacman -S --noconfirm --needed vagrant
-fi
+# vagrant
+if [ ! -d /vagrant ]; then pacman -S --noconfirm --needed vagrant; fi
+# {{{ super common programming tools
+pacman -S --noconfirm --needed make
+pacman -S --noconfirm --needed gcc
+# }}}
+# exa
+pacman -S --noconfirm --needed exa
+alias ls 'exa -l --header --git'
 # download
 pacman -S --noconfirm --needed curl wget
 # search
 pacman -S --noconfirm --needed ripgrep fzf fd
 # interactive
 pacman -S --noconfirm --needed ncdu ranger lynx weechat
+# {{{ haskell toolchain
+pacman -S --noconfirm --needed stack
+stack build ghc
 
+# }}}
 

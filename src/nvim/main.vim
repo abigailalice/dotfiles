@@ -78,7 +78,12 @@ Plug 'ndmitchell/ghcid', { 'rtp': 'plugins/nvim' }
 Plug 'w0rp/ale'
 call plug#end()
 " }}}
-"
+" {{{ PLUGINS/AUTO-INSTALL
+autocmd VimEnter *
+  \  if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \|   PlugInstall --sync | q
+  \| endif
+" }}}
 " {{{ SETTINGS/DIGRAPHS
 " in insert mode hit <c-k>code, where code is the 2-digit digraph code
 " to enter by numerical value in insert mode
