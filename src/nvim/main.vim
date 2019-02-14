@@ -153,7 +153,7 @@ set helpheight=0
 
 " statusbar
 set noshowmode
-set path+=,$HOME/gits/dotfiles/src/nvim/,
+" set path+=,$HOME/gits/dotfiles/src/nvim/,
 set showcmd
 set nohlsearch
 set incsearch
@@ -307,3 +307,30 @@ highlight CursorLine cterm=NONE ctermbg=7 guibg=Grey90
 " mark colors past 79 in red
 
 " }}}
+
+fun s:haskell()
+    " In order to not conceal the module name we need a syntax element which
+    " will contain identifiers followed by /^module/, which this finds.
+    " However, for some reason it breaks syntax highlighting for the module
+    " keyword, so we add it back in.
+    syntax match hsModuleLine /^module.*/ contains=hsModuleKeyword
+    syntax match hsModuleKeyword /^module / contained
+    highlight hsModuleKeyword ctermfg=2 guifg=SeaGreen gui=bold
+
+    " I have no idea why, but the order of these two statements is important.
+    " Defining them in reverse order causes the entire identifier to be
+    " concealed (rather than just the module name) and replaced with a single
+    " space character.
+    syntax match hsQualifier /\([A-Z][A-Za-z0-9]*\.\)\+/ conceal containedin=ALLBUT,hsImport,hsModuleLine
+    syntax match hsQualified /\([A-Z][A-Za-z0-9]*\.\)\+[A-Za-z0-9_']\+/ containedin=ALLBUT,hsImport,hsModuleLine
+    highlight hsQualified cterm=undercurl gui=undercurl
+    highlight hsQualifier cterm=undercurl gui=undercurl
+
+    setlocal conceallevel=2
+    setlocal concealcursor=
+endfun
+augroup haskell_group
+    autocmd!
+    autocmd Syntax haskell call s:haskell()
+augroup END
+
