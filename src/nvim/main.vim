@@ -335,8 +335,11 @@ fun s:haskell()
     syntax match Qualified /\([A-Z][A-Za-z0-9]*\.\)\+\([A-Za-z0-9_']\+\|[~!@#$%^&*-+=\\<>\.?/]\+\)/ contains=Qualifier
     highlight Qualified cterm=undercurl gui=undercurl
     highlight Qualifier cterm=undercurl gui=undercurl
+
+    " replace coneals with their conceal character (or hide them entirely when
+    " not defined), even for the current line in normal mode
     setlocal conceallevel=2
-    setlocal concealcursor=
+    setlocal concealcursor=n
 endfun
 augroup haskell_group
     autocmd!
