@@ -324,7 +324,7 @@ function! HaskellFold(lnum)
         return '>' . len(starstring)
     endif
 endfunction
-fun s:haskell()
+function! s:haskell()
     setlocal foldmethod=expr
     setlocal foldexpr=HaskellFold(v:lnum)
     syntax match hsModuleLine /^module.*/ contains=hsModuleKeyword
@@ -341,6 +341,20 @@ fun s:haskell()
     setlocal conceallevel=2
     setlocal concealcursor=n
 endfun
+function! ToggleConceals()
+    if g:conceals_are_on
+        let g:conceals_are_on = 0
+        setlocal concealcursor=n
+        setlocal nowrap
+    else
+        let g:conceals_are_on = 1
+        setlocal concealcursor=
+        setlocal wrap
+    endif
+endfunction
+let g:conceals_are_on = 1
+call ToggleConceals()
+nmap <leader>c :call ToggleConceals()<cr>
 augroup haskell_group
     autocmd!
     autocmd Syntax haskell call s:haskell()
