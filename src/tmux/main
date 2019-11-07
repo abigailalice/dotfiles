@@ -41,7 +41,7 @@ set-option -g mouse on
 bind-key -T root MouseDrag1Border resize-pane -M
 bind-key -T root MouseDown1Status select-window -t =
 # this seems to cause an issue on startup
-# bind-key -T root MouseDown1Pane select-pane -t = ; send-keys -M
+bind-key -T root MouseDown1Pane select-pane -t = ; send-keys -M
 # }}}
 # {{{ active/inactive pane colors
 set-option -g window-active-style 'fg=colour250,bg=colour234'

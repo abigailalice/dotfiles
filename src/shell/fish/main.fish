@@ -1,3 +1,5 @@
+# this file should be properly called ~/.config/fish/config.fish
+#
 # {{{ SETTINGS/STARTUP
 # run ssh-agent if necessary, and make it available to other shells
 # if [ !(set -q SSH_AGENT_PID) ]

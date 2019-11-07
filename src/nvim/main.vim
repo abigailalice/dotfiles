@@ -1,4 +1,5 @@
-
+" ~/.config/nvim/init.vim
+ 
 " TODO
 " choose between having a line number bg color distinct from the file
 " contents, or having a fold bg color the same as the file contents. this is
