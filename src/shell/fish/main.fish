@@ -70,6 +70,10 @@ function fish_prompt
     # Current time
     # printf (date "+$c2%H$c0:$c2%M$c0:$c2%S ")
 
+    background_jobs
+    low_disk_usage
+    load_average_high
+    nesting_level 2
 
 
     if set -q VIRTUAL_ENV
@@ -126,7 +130,7 @@ function fullpath
 
     printf (whoami)
     printf "@"
-    printf (hostname)
+    printf (hostname -s)
     printf ":"
     printf (prompt_pwd)
 end
@@ -185,12 +189,8 @@ function laststatus
 end
 
 function fish_right_prompt
-    background_jobs
-    low_disk_usage
-    load_average_high
     slow_command
     laststatus
-    nesting_level 2
     set_color grey
 end
 
