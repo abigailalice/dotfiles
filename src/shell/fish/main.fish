@@ -1,4 +1,4 @@
-# this file should be properly called ~/.config/fish/config.fish
+# ln -s $HOME/Home/gits/dotfiles/src/shell/fish/main.fish ~/.config/fish/config.fish
 #
 # {{{ SETTINGS/STARTUP
 # run ssh-agent if necessary, and make it available to other shells
@@ -12,10 +12,18 @@
 
 set -g STACKTEMPLATE ~/Home/gits/dotfiles/src/stack/stack_template.hsfiles
 
-alias ls 'ls -l --color'
+alias ghcide 'stack exec -- ghcid --restart=package.yaml --restart=stack.yaml'
+
+alias ls 'exa -l'
+# alias ls 'ls -l --color'
 alias su 'su -m'
 alias sudo 'sudo -H'
 alias mkdir 'mkdir -p'
+# modifies ranger to exit to the selected directory
+# [1] https://stackoverflow.com/questions/18807813/how-to-port-ranger-cd-function-to-fish-shell
+alias ranger 'ranger --choosedir=$HOME/.rangerdir; set RANGERDIR (cat $HOME/.rangerdir); cd $RANGERDIR'
+# funcsave ranger
+
 
 # }}}
 # {{{ SETTINGS/THEMES

@@ -1,4 +1,5 @@
-" ~/.config/nvim/init.vim
+" ln -s $HOME/gits/dotfiles/src/nvim/main.vim ~/.config/nvim/init.vim
+" ln -s 
  
 " TODO
 " choose between having a line number bg color distinct from the file
@@ -53,6 +54,7 @@ Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-unimpaired'
 Plug 'justinmk/vim-sneak'
 " }}}
 " {{{ PLUGINS/EXPENSIVE PLUGINS
@@ -99,6 +101,9 @@ digraphs SM 8726
 
 " }}}
 " {{{ SETTINGS/KEYMAPS
+
+nnoremap <leader>} :lnext<cr>
+nnoremap <leader>{ :lprev<cr>
 
 let mapleader="\<Space>"
 let maplocalleader="\\"
@@ -243,6 +248,7 @@ nnoremap <leader><leader> :set cursorline!<cr>
 " }}}
 " {{{ SETTINGS/FOLDS
 set foldmethod=marker
+autocmd FileType gitcommit set foldmethod=syntax
 " set foldtext=MyFoldText()
 " function MyFoldText()
 "     let line = getline(v:foldstart)
@@ -282,11 +288,15 @@ augroup PaneChanged
     autocmd BufLeave,BufWinLeave,WinLeave,FocusLost *
         \ setlocal nolist |
 augroup END
-" this could also be done with colorcolumn, though for some reason it doesn't
-" seem to work for me. instead it colors the dots after folds, but not the
-" actual text of the buffer
-highlight Bang ctermfg=red guifg=red cterm=underline gui=underline
-match Bang /\%>79v.*.\%<255v/
+
+" i prefer the highlight approach to coloring long lines compared to color
+" column, but it doesn't seem to work with conceals, coloring based on the
+" actual text of the buffer rather than the post-concealed buffer. adjusting
+" the regex might fix this.
+"
+" highlight Bang ctermfg=red guifg=red cterm=underline gui=underline
+" match Bang /\%>79v.*.\%<255v/
+set colorcolumn=81
 
 " hi StatusLineNC
 
@@ -326,6 +336,7 @@ function! HaskellFold(lnum)
     endif
 endfunction
 function! s:haskell()
+    let g:ale_enabled=0
     setlocal foldmethod=expr
     setlocal foldexpr=HaskellFold(v:lnum)
     syntax match hsModuleLine /^module.*/ contains=hsModuleKeyword
@@ -340,7 +351,7 @@ function! s:haskell()
     " replace coneals with their conceal character (or hide them entirely when
     " not defined), even for the current line in normal mode
     setlocal conceallevel=2
-    setlocal concealcursor=n
+    setlocal concealcursor=
 endfun
 function! ToggleConceals()
     if g:conceals_are_on
