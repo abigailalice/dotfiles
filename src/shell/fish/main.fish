@@ -14,8 +14,8 @@ set -g STACKTEMPLATE ~/Home/gits/dotfiles/src/stack/stack_template.hsfiles
 
 alias ghcide 'stack exec -- ghcid --restart=package.yaml --restart=stack.yaml'
 
-alias ls 'exa -l'
-# alias ls 'ls -l --color'
+alias ls 'ENV EXA_COLORS="gm=38;5;111:da=38;5;111" exa --long --git --header'
+
 alias su 'su -m'
 alias sudo 'sudo -H'
 alias mkdir 'mkdir -p'
@@ -159,7 +159,7 @@ end
 # might be worthwhile to show nesting depth
 function nesting_level
     if [ $SHLVL -gt $argv ]
-        error nested_shell (math $SHLVL - $argv)
+        error "shell" (math $SHLVL - $argv)
     end
 end
 
