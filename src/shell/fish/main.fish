@@ -9,10 +9,50 @@
 #     set -Ux SSH_AUTH_SOCK $SSH_AUTH_SOCK
 # end
 
+function launch_tmux
+    if not set -q TMUX
+        if tmux ls > /dev/null
+            tmux attach-session
+        else
+            tmux new -n -A main
+        end
+    end
+end
+launch_tmux
 
 set -g STACKTEMPLATE ~/Home/gits/dotfiles/src/stack/stack_template.hsfiles
 
 alias ghcide 'stack exec -- ghcid --restart=package.yaml --restart=stack.yaml'
+
+# 
+function cd
+    if count $argv > /dev/null
+        builtin cd $argv
+    else
+        if git rev-parse --git-dir > /dev/null 2>&1
+            set -l ROOTDIR (git rev-parse --show-toplevel)
+            set -l PATH (fd . $ROOTDIR -t d | sed "s|$ROOTDIR/||g" | fzf | sed "s|\(.*\)|$ROOTDIR/\1|g")
+            #if [ $PATH != "" ]
+            if [ $PATH != "" ]
+                builtin cd $PATH
+            end
+        else
+            set -l PATH (fd . -t d | fzf)
+            if [ $PATH != "" ]
+                builtin cd $PATH
+            end
+        end
+    end
+end
+
+function cdfzf
+    if count $argv > /dev/null
+        set -l PATH $argv[1]
+        cd (fd . $PATH -t d | sed "s|$PATH/||g" | fzf | sed "s|\(.*\)|$PATH/\1|g")
+    else
+        cd (fd . -t d | fzf)
+    end
+end
 
 alias ls 'ENV EXA_COLORS="gm=38;5;111:da=38;5;111" exa --long --git --header'
 
