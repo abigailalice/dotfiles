@@ -10,11 +10,13 @@
 # end
 
 function launch_tmux
-    if not set -q TMUX
-        if tmux ls > /dev/null
-            tmux attach-session
-        else
-            tmux new -n -A main
+    if status --is-interactive
+        if not set -q TMUX
+            if tmux ls > /dev/null
+                tmux attach-session
+            else
+                tmux new -n -A main
+            end
         end
     end
 end
@@ -24,21 +26,20 @@ set -g STACKTEMPLATE ~/Home/gits/dotfiles/src/stack/stack_template.hsfiles
 
 alias ghcide 'stack exec -- ghcid --restart=package.yaml --restart=stack.yaml'
 
-# 
 function cd
     if count $argv > /dev/null
         builtin cd $argv
     else
         if git rev-parse --git-dir > /dev/null 2>&1
             set -l ROOTDIR (git rev-parse --show-toplevel)
-            set -l PATH (fd . $ROOTDIR -t d | sed "s|$ROOTDIR/||g" | fzf | sed "s|\(.*\)|$ROOTDIR/\1|g")
-            #if [ $PATH != "" ]
-            if [ $PATH != "" ]
+            set -l PATH (fd . $ROOTDIR -t d | sed "s|$ROOTDIR/||g" | fzf \
+                | sed "s|\(.*\)|$ROOTDIR/\1|g")
+            if set -q PATH
                 builtin cd $PATH
             end
         else
             set -l PATH (fd . -t d | fzf)
-            if [ $PATH != "" ]
+            if set -q PATH
                 builtin cd $PATH
             end
         end
@@ -156,6 +157,8 @@ function fish_prompt
         section git $git_branch
     end
 
+    section "temp" (osx-cpu-temp)
+
     printf "\n"
     fullpath
     printf "> "
@@ -232,6 +235,7 @@ function fish_right_prompt
     slow_command
     laststatus
     set_color grey
+
 end
 
 # -- set git stuff: https://wiki.archlinux.org/index.php/Fish#Configuration_Suggestions
