@@ -1,4 +1,5 @@
-
+# ln -s $THISFILE ~/.tmux.conf
+#
 # Replace the existing .tmux.conf file with this single command, replacing
 # $DOTFILES with the directory you keep your dotfiles under. this is useful
 # for keeping them under version control
@@ -65,7 +66,7 @@ set-option -g status-left-length 150
 set-option -g window-status-format "#W"
 set-option -g window-status-current-format "#W"
 set-option -g window-status-current-style "bg=green"
-setw -g monitor-activity on
+setw -g monitor-activity off
 set -g visual-activity on
 
 # }}}

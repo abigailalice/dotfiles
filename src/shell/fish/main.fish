@@ -9,18 +9,20 @@
 #     set -Ux SSH_AUTH_SOCK $SSH_AUTH_SOCK
 # end
 
+# this doesn't restart tmux if you detach the window; only when fish sources its
+# rc file
 function launch_tmux
     if status --is-interactive
         if not set -q TMUX
             if tmux ls > /dev/null
                 tmux attach-session
             else
-                tmux new -n -A main
+                tmux new -n -A $argv[1]
             end
         end
     end
 end
-launch_tmux
+launch_tmux "main"
 
 set -g STACKTEMPLATE ~/Home/gits/dotfiles/src/stack/stack_template.hsfiles
 
@@ -34,24 +36,26 @@ function cd
             set -l ROOTDIR (git rev-parse --show-toplevel)
             set -l PATH (fd . $ROOTDIR -t d | sed "s|$ROOTDIR/||g" | fzf \
                 | sed "s|\(.*\)|$ROOTDIR/\1|g")
-            if set -q PATH
+            if test -n "$PATH"
                 builtin cd $PATH
             end
         else
             set -l PATH (fd . -t d | fzf)
-            if set -q PATH
+            if test -n "$PATH"
                 builtin cd $PATH
             end
         end
     end
 end
 
-function cdfzf
-    if count $argv > /dev/null
-        set -l PATH $argv[1]
-        cd (fd . $PATH -t d | sed "s|$PATH/||g" | fzf | sed "s|\(.*\)|$PATH/\1|g")
-    else
-        cd (fd . -t d | fzf)
+function cd-fzf-from
+    if not count $arv > /dev/null
+        set -l ROOTDIR $argv[1]
+        set -l PATH (fd . $ROOTDIR -t d | sed "s|$ROOTDIR/||g" | fzf \
+            | sed "s|\(.*\)|$ROOTDIR/\1|g")
+        if set -q PATH
+            builtin cd $PATH
+        end
     end
 end
 
