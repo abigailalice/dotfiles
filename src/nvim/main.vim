@@ -138,7 +138,7 @@ noremap <silent> <c-j> :TmuxNavigateDown<cr>
 noremap <silent> <c-k> :TmuxNavigateUp<cr>
 noremap <silent> <c-l> :TmuxNavigateRight<cr>
 nnoremap <leader>- <c-w>s
-nnoremap <leader><bar> <c-w>v
+nnoremap <leader><bslash> <c-w>v
 
 " augroup NonWriteableQuitOnQ
 "     autocmd!

@@ -17,12 +17,12 @@ function launch_tmux
             if tmux ls > /dev/null
                 tmux attach-session
             else
-                tmux new -n -A $argv[1]
+                tmux new -A -s main
             end
         end
     end
 end
-launch_tmux "main"
+launch_tmux
 
 set -g STACKTEMPLATE ~/Home/gits/dotfiles/src/stack/stack_template.hsfiles
 
