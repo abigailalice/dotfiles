@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# ln -s $THISFILE /Users/abigailgooding/.local/bin/battery
+
+pmset -g batt | tail -n +2 | sed -E 's|.*([0-9]{3,4}%).*|\1|'
