@@ -24,9 +24,41 @@ function launch_tmux
 end
 launch_tmux
 
+
 set -g STACKTEMPLATE ~/Home/gits/dotfiles/src/stack/stack_template.hsfiles
 
 alias ghcide 'stack exec -- ghcid --restart=package.yaml --restart=stack.yaml'
+
+function man
+    if count $argv > /dev/null
+        /usr/bin/man $argv
+    else
+        /usr/bin/man (apropos . | sed 's/([0-9]*) .*//' | fzf --preview 'man {}')
+    end
+end
+
+function history
+    set -l cmd (builtin history | fzf)
+    if test -n "$cmd"
+        eval "$cmd"
+    end
+end
+
+# this is a search
+function vimrg
+    nvim (rg -l $argv[1] | fzf --multi --preview "rg $argv[1] --context 3 --color always -n {}")
+end
+
+function nvim
+    if count $argv > /dev/null
+        /usr/local/bin/nvim $argv
+    else
+        set -l file (fd . | fzf)
+        if test -n "$file"
+            /usr/local/bin/nvim $file
+        end
+    end
+end
 
 function cd
     if count $argv > /dev/null
