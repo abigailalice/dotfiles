@@ -343,6 +343,7 @@ function! s:haskell()
     syntax match hsModuleKeyword /^module / contained
     highlight hsModuleKeyword ctermfg=2 guifg=SeaGreen gui=bold
 
+    set nowrap
     syntax match Qualifier /\([A-Z][A-Za-z0-9]*\.\)\+/ conceal contained
     syntax match Qualified /\([A-Z][A-Za-z0-9]*\.\)\+\([A-Za-z0-9_']\+\|[:|-~!@#$%^&*-+=\\<>\.?/]\+\)/ contains=Qualifier
     highlight Qualified cterm=undercurl gui=undercurl
