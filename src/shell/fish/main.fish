@@ -51,11 +51,13 @@ end
 
 function nvim
     if count $argv > /dev/null
-        /usr/local/bin/nvim $argv
+        command nvim $argv
     else
-        set -l file (fd . | fzf)
+        set -l file (fd . --type f | fzf)
         if test -n "$file"
-            /usr/local/bin/nvim $file
+            command nvim $file
+        else
+            command nvim
         end
     end
 end

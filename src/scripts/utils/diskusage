@@ -1,0 +1,4 @@
+#!/bin/sh
+# ln -s $THISFILE /Users/abigailgooding/.local/bin/diskusage
+
+df / | tail -n1 | sed "s/  */ /g" | cut -d' ' -f 5

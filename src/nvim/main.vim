@@ -344,7 +344,7 @@ function! s:haskell()
     highlight hsModuleKeyword ctermfg=2 guifg=SeaGreen gui=bold
 
     syntax match Qualifier /\([A-Z][A-Za-z0-9]*\.\)\+/ conceal contained
-    syntax match Qualified /\([A-Z][A-Za-z0-9]*\.\)\+\([A-Za-z0-9_']\+\|[~!@#$%^&*-+=\\<>\.?/]\+\)/ contains=Qualifier
+    syntax match Qualified /\([A-Z][A-Za-z0-9]*\.\)\+\([A-Za-z0-9_']\+\|[:|-~!@#$%^&*-+=\\<>\.?/]\+\)/ contains=Qualifier
     highlight Qualified cterm=undercurl gui=undercurl
     highlight Qualifier cterm=undercurl gui=undercurl
 
