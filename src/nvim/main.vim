@@ -170,6 +170,9 @@ set nohlsearch
 set incsearch
 set showmatch                   " show matching parens
 set formatoptions+=o            " continue comment marker in new line
+set formatoptions-=t            " dont wrap text
+set formatoptions+=c            " wrap comments
+set textwidth=80                " wrap at 80 characters
 " set formatoptions+=a
 set fillchars+=vert:│,stlnc:-
 
@@ -345,7 +348,7 @@ function! s:haskell()
 
     set nowrap
     syntax match Qualifier /\([A-Z][A-Za-z0-9]*\.\)\+/ conceal contained
-    syntax match Qualified /\([A-Z][A-Za-z0-9]*\.\)\+\([A-Za-z0-9_']\+\|[:|-~!@#$%^&*-+=\\<>\.?/]\+\)/ contains=Qualifier
+    syntax match Qualified /\([A-Z][A-Za-z0-9]*\.\)\+\([A-Za-z0-9_']\+\|[:|-~!@#$%^&*\-+=\\<>\.?/]\+\)/ contains=Qualifier
     highlight Qualified cterm=undercurl gui=undercurl
     highlight Qualifier cterm=undercurl gui=undercurl
 
