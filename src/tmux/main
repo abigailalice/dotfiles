@@ -35,7 +35,7 @@ set-option -g mouse on
 bind-key -T root MouseDrag1Border resize-pane -M
 bind-key -T root MouseDown1Status select-window -t =
 # this seems to cause an issue on startup
-bind-key -T root MouseDown1Pane select-pane -t = ; send-keys -M
+bind-key -T root MouseDown1Pane select-pane -t {mouse} ; send-keys -M
 # }}}
 # {{{ active/inactive pane colors
 set-option -g window-active-style 'fg=colour250,bg=colour234'
@@ -52,10 +52,15 @@ set-option -g display-time 15000
 
 set-option -g status-left '[#S] '
 
-set-option -g status-right "git:#(cd #{pane_current_path}; /Users/abigailgooding/.local/bin/gitstatus) du:#(/Users/abigailgooding/.local/bin/diskusage) batt:#(/Users/abigailgooding/.local/bin/battery) %F %R"
+set-option -g status-right "git:#(cd #{pane_current_path}; /Users/abigailgooding/.local/bin/gitstatus) "
+set-option -ga status-right "du:#(/Users/abigailgooding/.local/bin/diskusage) "
+set-option -ga status-right "batt:#(/Users/abigailgooding/.local/bin/battery) "
+set-option -ga status-right "%F %R"
 
 set-option -g status-style "bg=#555555 fg=#CCCCCC"
 set-option -g status-left-length 150
+set-option -g status-right-length 100
+
 set-option -g window-status-format "#W"
 set-option -g window-status-current-format "#W"
 set-option -g window-status-current-style "bg=green"
