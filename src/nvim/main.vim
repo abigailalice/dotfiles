@@ -165,6 +165,7 @@ set helpheight=0
 " statusbar
 set noshowmode
 " set path+=,$HOME/gits/dotfiles/src/nvim/,
+set autoread
 set showcmd
 set nohlsearch
 set incsearch
@@ -326,6 +327,8 @@ highlight CursorLine cterm=NONE ctermbg=7 guibg=Grey90
 " mark colors past 79 in red
 
 " }}}
+
+
 
 function! HaskellFold(lnum)
     let line = getline(a:lnum)
