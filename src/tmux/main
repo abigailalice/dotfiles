@@ -52,7 +52,7 @@ set-option -g display-time 15000
 
 set-option -g status-left '[#S] '
 
-set-option -g status-right "du:#(/Users/abigailgooding/.local/bin/diskusage) batt:#(/Users/abigailgooding/.local/bin/battery) %F %R"
+set-option -g status-right "git:#(cd #{pane_current_path}; /Users/abigailgooding/.local/bin/gitstatus) du:#(/Users/abigailgooding/.local/bin/diskusage) batt:#(/Users/abigailgooding/.local/bin/battery) %F %R"
 
 set-option -g status-style "bg=#555555 fg=#CCCCCC"
 set-option -g status-left-length 150

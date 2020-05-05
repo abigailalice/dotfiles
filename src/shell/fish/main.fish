@@ -192,6 +192,7 @@ function fish_prompt
             set git_branch "$git_branch"(set_color red)"↓$git_commits_behind"
         end
 
+        set -g GIT_STATUS $git_branch
         section git $git_branch
     end
 
