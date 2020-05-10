@@ -1,0 +1,36 @@
+-- ln -s THIS_FILE /Users/abigailgooding/.ghci
+
+:seti -XDeriveAnyClass
+:seti -XDeriveFoldable
+:seti -XDeriveFunctor
+:seti -XDeriveGeneric
+:seti -XDeriveLift
+:seti -XDeriveTraversable
+:seti -XDerivingStrategies
+:seti -XDeriveGeneric
+:seti -XDerivingVia
+:seti -XStandaloneDeriving
+:seti -XGeneralizedNewtypeDeriving
+:seti -XPolyKinds
+:seti -XKindSignatures
+:seti -XDataKinds
+:seti -XLambdaCase
+:seti -XBangPatterns
+:seti -XBlockArguments
+:seti -XRankNTypes
+:seti -XScopedTypeVariables
+:seti -XGADTs
+:seti -XFlexibleContexts
+:seti -XFlexibleInstances
+:seti -XFunctionalDependencies
+:seti -XInstanceSigs
+:seti -XTypeSynonymInstances
+:seti -XExplicitNamespaces
+:seti -XPackageImports
+:seti -XTypeFamilies
+:seti -XTypeFamilyDependencies
+:seti -XTypeApplications
+:seti -XTypeOperators
+:seti -XViewPatterns
+:seti -XNoImplicitPrelude
+
