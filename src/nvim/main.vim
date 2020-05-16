@@ -345,15 +345,52 @@ function! s:haskell()
     let g:ale_enabled=0
     setlocal foldmethod=expr
     setlocal foldexpr=HaskellFold(v:lnum)
-    syntax match hsModuleLine /^module.*/ contains=hsModuleKeyword
-    syntax match hsModuleKeyword /^module / contained
-    highlight hsModuleKeyword ctermfg=2 guifg=SeaGreen gui=bold
 
     set nowrap
-    syntax match Qualifier /\([A-Z][A-Za-z0-9]*\.\)\+/ conceal contained
-    syntax match Qualified /\([A-Z][A-Za-z0-9]*\.\)\+\([A-Za-z0-9_']\+\|[:|-~!@#$%^&*\-+=\\<>\.?/]\+\)/ contains=Qualifier
-    highlight Qualified cterm=undercurl gui=undercurl
-    highlight Qualifier cterm=undercurl gui=undercurl
+    " matches the qualifier part of a concealed variable
+    "syntax match Qualified /`\?\([A-Z][A-Za-z0-9]*\.\)\+\([A-Za-z0-9_']\+\|[:|-~!@#$%^&*\-+=\\<>\.?/]\+\)`\?/ contains=Qualifier,hsBackTick,hsQualifiedName
+    "syntax match Qualifier /\([A-Z][A-Za-z0-9]*\.\)\+/ conceal contained
+    "syntax match hsQualifiedName /\([A-Za-z0-9_']\+`\)\|\([:|-~!@#$%^&*\-+=\\<>\.?/]\+\)`/ contained
+
+    "" this hides the 'do' when using explicit layout, where the brace begins
+    "" immediately after 1 space after the do, as in 'do { x <- m ; x }'
+    "" this is /slightly/ nice when writing a do block in one line, where you can
+    "" use it like rust block syntax
+    syntax match hsInlineDo /do {/ contains=hsInlineDo2
+    syntax match hsInlineDo2 /do / conceal contained
+
+    """ QUALIFICATION/INFIX CONCEALS
+    " this section achieves teh following
+    "
+    " 1. qualifiers are hidden
+    " 2. infix operators are colored yellow
+    " 3. the identifier part of a qualified name is underlined
+    "
+    " due to the way these conditions overlap and my limited knowledge of vim
+    " conceals/syntax highlighting, i haven't been able to get these conditions
+    " in an elegent way, so this code feels needlessly complicated
+
+    " any identifier, qualified or not, which is wrapped in a backtick is found
+    syntax match hsBackTick /`\([A-Z][A-Za-z0-9]*\.\)*\([A-Za-z0-9_']\+\)`/ contains=hsTick,hsBackTickQualified
+    " the backtick is hidden
+    syntax match hsTick /`/ contained conceal
+    " if it is qualified, hide the qualifier, and color/underline the region
+    syntax match hsBackTickQualified /\([A-Z][A-Za-z0-9]*\.\)\+\([A-Za-z0-9_']\+\)/ contains=hsBackTickQualifier contained
+    syntax match hsBackTickQualifier /\([A-Z][A-Za-z0-9]*\.\)\+/ conceal contained
+    " this needs to be kept in sync with operator. i couldn't find a way to
+    " link to operator + add undercurl
+    highlight hsBackTickQualified cterm=undercurl gui=undercurl ctermfg=11 guifg=#ffff60
+    " if it's not qualified we can just color the region
+    highlight! link hsBackTick Operator
+    " if a region has a qualified infix operator hide/color/underline it
+    syntax match hsQualifiedOp /\([A-Z][A-Za-z0-9]*\.\)\+[:|-~!@#$%^&*\-+=\\<>\.?/]\+/ contains=hsQualifierOp
+    syntax match hsQualifierOp /\([A-Z][A-Za-z0-9]*\.\)\+/ conceal contained
+    highlight! link hsQualifiedOp hsBackTickQualified
+    " if a region has a qualified identifier hide and underline it
+    syntax match hsQualifiedName /\([A-Z][A-Za-z0-9]*\.\)\+\([A-Za-z0-9_']\+\)/ contains=hsQualifierName
+    syntax match hsQualifierName /\([A-Z][A-Za-z0-9]*\.\)\+/ conceal contained
+    highlight hsQualifiedName cterm=undercurl gui=undercurl
+    """ END QUALIFICATION/INFIX CONCEALS
 
     " replace coneals with their conceal character (or hide them entirely when
     " not defined), even for the current line in normal mode
