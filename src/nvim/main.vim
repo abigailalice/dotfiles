@@ -370,6 +370,10 @@ function! s:haskell()
     " conceals/syntax highlighting, i haven't been able to get these conditions
     " in an elegent way, so this code feels needlessly complicated
 
+    " this prevents import/module declarations from being hidden
+    syntax match hsModuleLine /^module.*/ contains=hsModuleKeyword
+    syntax match hsModuleKeyword /^module / contained
+    highlight hsModuleKeyword ctermfg=2 guifg=SeaGreen gui=bold
     " any identifier, qualified or not, which is wrapped in a backtick is found
     syntax match hsBackTick /`\([A-Z][A-Za-z0-9]*\.\)*\([A-Za-z0-9_']\+\)`/ contains=hsTick,hsBackTickQualified
     " the backtick is hidden
