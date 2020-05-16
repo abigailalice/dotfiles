@@ -330,16 +330,50 @@ highlight CursorLine cterm=NONE ctermbg=7 guibg=Grey90
 
 
 
+function! IndentLevel(lnum)
+    return indent(a:lnum) / &shiftwidth
+endfunction
 function! HaskellFold(lnum)
-    let line = getline(a:lnum)
-    let starstring = substitute(line, '-- \(\*\+\) .*', '\1', '')
-    if line == ''
-        return '-1'
-    elseif line == starstring
+    if getline(a:lnum) =~? '\v^\s*where\s*$'
+        " a line consisting only of 'where' starts a fold
+        return '>' . ((indent(a:lnum) + 6) / 4)
+    elseif getline(a:lnum) =~? '\v^-- \|.*$'
+        " a non-indented line starting with a doc comment opens a level 1 fold
+        return '>1'
+    else
+        return '='
+
+    if getline(a:lnum - 1) =~? ""
+        let line = getline(a:lnum)
+        let z = a:lnum
+        " lookahead to the first non-comment in an equally indented block
+        while (getline(l:z) =~? '\v^\s*--.*$') && (IndentLevel(z) == IndentLevel(a:lnum))
+            z = z + 1
+        endwhile
+        " If the line starts with 'ident ::' start a fold
+        if getline(l:z) =~? "^\\s*[A-Za-z0-9_']\\+\\s\\+::.*$"
+            return '>' . (IndentLevel(a:lnum) + 1)
+        endif
+        " if the line contains only 'ident' and the next line starts with '::'
+        " start a fold
+        if (getline(l:z) =~? "^\\s*[A-Za-z0-0_']\\+\\s*$") && (getline(l:z + 1) =~? '^\s*::.*$')
+            return '>' . (IndentLevel(a:lnum) + 1)
+        endif
         return '='
     else
-        return '>' . len(starstring)
-    endif
+        return '='
+
+    "
+    " if 
+    " let line = getline(a:lnum)
+    " let starstring = substitute(line, '-- \(\*\+\) .*', '\1', '')
+    " if line == ''
+    "     return '-1'
+    " elseif line == starstring
+    "     return '='
+    " else
+    "     return '>' . len(starstring)
+    " endif
 endfunction
 function! s:haskell()
     let g:ale_enabled=0
