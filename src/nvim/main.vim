@@ -331,15 +331,15 @@ highlight CursorLine cterm=NONE ctermbg=7 guibg=Grey90
 
 
 function! IndentLevel(lnum)
-    return indent(a:lnum) / &shiftwidth
+    return indent(a:lnum) / 2
 endfunction
 function! HaskellFold(lnum)
     if getline(a:lnum) =~? '\v^\s*where\s*$'
         " a line consisting only of 'where' starts a fold
-        return '>' . ((indent(a:lnum) + 6) / 4)
-    elseif getline(a:lnum) =~? '\v^-- \|.*$'
-        " a non-indented line starting with a doc comment opens a level 1 fold
-        return '>1'
+        return '>' . (IndentLevel(a:lnum) + 1)
+    elseif getline(a:lnum) =~? '\v^\s*-- \|.*$'
+        " a line starting with a doc comment starts a fold
+        return '>' . (IndentLevel(a:lnum) + 1)
     else
         return '='
 
@@ -417,7 +417,7 @@ function! s:haskell()
     syntax match hsBackTickQualifier /\([A-Z][A-Za-z0-9]*\.\)\+/ conceal contained
     " this needs to be kept in sync with operator. i couldn't find a way to
     " link to operator + add undercurl
-    highlight hsBackTickQualified cterm=undercurl gui=undercurl ctermfg=11 guifg=#ffff60
+    highlight hsBackTickQualified ctermfg=11 guifg=#ffff60
     " if it's not qualified we can just color the region
     highlight! link hsBackTick Operator
     " if a region has a qualified infix operator hide/color/underline it
@@ -427,7 +427,7 @@ function! s:haskell()
     " if a region has a qualified identifier hide and underline it
     syntax match hsQualifiedName /\([A-Z][A-Za-z0-9]*\.\)\+\([A-Za-z0-9_']\+\)/ contains=hsQualifierName
     syntax match hsQualifierName /\([A-Z][A-Za-z0-9]*\.\)\+/ conceal contained
-    highlight hsQualifiedName cterm=undercurl gui=undercurl
+    highlight hsQualifiedName
     """ END QUALIFICATION/INFIX CONCEALS
 
     " replace coneals with their conceal character (or hide them entirely when
@@ -435,22 +435,18 @@ function! s:haskell()
     setlocal conceallevel=2
     setlocal concealcursor=
 endfun
-function! ToggleConceals()
-    if g:conceals_are_on
-        let g:conceals_are_on = 0
-        setlocal concealcursor=n
-        setlocal nowrap
-    else
-        let g:conceals_are_on = 1
-        setlocal concealcursor=
-        setlocal wrap
-    endif
-endfunction
-let g:conceals_are_on = 1
-call ToggleConceals()
-nmap <leader>c :call ToggleConceals()<cr>
 augroup haskell_group
     autocmd!
     autocmd Syntax haskell call s:haskell()
 augroup END
+
+function! s:syrup()
+    syntax match tickedVariable /'\([A-Za-z0-9_]\)\+/ contains=tick
+    syntax match tick /'/ conceal contained
+    highlight! tickedVariable cterm=italic gui=italic
+    setlocal concealcursor=n
+endfunction
+
+au BufRead,BufNewFile *.srp set filetype=syrup
+au! Syntax syrup source ~/Home/gits/dotfiles/src/nvim/plugins/syrup.vim
 
