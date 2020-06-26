@@ -76,6 +76,7 @@ Plug 'justinmk/vim-dirvish'
 Plug 'dag/vim-fish'
 Plug 'donRaphaco/neotex', { 'for': 'tex' }
 Plug 'ndmitchell/ghcid', { 'rtp': 'plugins/nvim' }
+Plug 'Twinside/vim-haskellFold'
 " }}}
 " {{{ PLUGINS/COMPILER
 Plug 'w0rp/ale'
@@ -377,8 +378,8 @@ function! HaskellFold(lnum)
 endfunction
 function! s:haskell()
     let g:ale_enabled=0
-    setlocal foldmethod=expr
-    setlocal foldexpr=HaskellFold(v:lnum)
+    " setlocal foldmethod=expr
+    " setlocal foldexpr=HaskellFold(v:lnum)
 
     set nowrap
     " matches the qualifier part of a concealed variable
