@@ -50,7 +50,7 @@ set-option -g status on
 # set-option -g status-utf8 on
 set-option -g display-time 15000
 
-set-option -g status-left '[#S] '
+set-option -g status-left '[#(hostname -s):#S] '
 
 set-option -g status-right "git:#(cd #{pane_current_path}; /Users/abigailgooding/.local/bin/gitstatus) "
 set-option -ga status-right "du:#(/Users/abigailgooding/.local/bin/diskusage) "
@@ -63,7 +63,7 @@ set-option -g status-right-length 100
 
 set-option -g window-status-format "#W"
 set-option -g window-status-current-format "#W"
-set-option -g window-status-current-style "bg=green"
+set-option -g window-status-current-style "bg=#111111"
 setw -g monitor-activity off
 set -g visual-activity on
 

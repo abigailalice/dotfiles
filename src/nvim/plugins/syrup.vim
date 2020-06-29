@@ -1,7 +1,31 @@
 
-syntax match tickedVariable /'\([A-Za-z0-9_]\)\+/ contains=tick
+" These are variables which are preceded by a single quote
+" explaination of the regex
+"   \([^']\|^\) => recognize the beginning of the line or any char but '
+"
+" TickedVariable recognizes the string {'x} as well as the preceding character,
+" since we also use double ticks as semantically relevent, and so we need to
+" confirm that the previous character isn't another '
+" TickedVariable2 recognizes the first tick and everything after the tick
+" TickedVariable3 recognizes the variable name itself
+ syntax match TickedVariable /\'\([A-Za-z0-9_:~!@#$%^&*\-+=\\<>./?]\)\+/ contains=tick,TickedVariable1
+syntax match TickedVariable1   /\([A-Za-z0-9_:~!@#$%^&*\-+=\\<>./?]\)\+/ contained
+highlight! TickedVariable1 cterm=italic gui=italic ctermfg=170 guifg=#ffffff
+
+syntax match TickedVariableName /'.\+/ contained contains=tick,TickedVariable2
 syntax match tick /'/ conceal contained
-highlight! tickedVariable cterm=italic gui=italic ctermfg=170 guifg=#ffffff
+
+syntax match Punctuation /[(){}\[\],;]/
+highlight link Punctuation Syntax
+
+highlight Syntax cterm=bold ctermfg=60
+
+" Words preceded by a single backtick, and not ended by a backtick
+syntax match KeyWord /`\([A-Za-z0-9~!@#$%^&*_=+-:<>/∀∃]\)\+[ \n]/ contains=KeyWordContents,KeyWordTick
+syntax match KeyWordTick /`/ conceal contained
+syntax match KeyWordContents /\([A-Za-z0-9~!@#$%^&*_=+-:<>/?∀∃]\+\)/ contained
+highlight KeywordContents cterm=bold gui=bold ctermfg=60 guifg=gold1
+
 
 " these are superficial, they just make things pretty
 syntax match OpenOxford '\[|' conceal cchar=⟦
