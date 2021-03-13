@@ -9,6 +9,9 @@
 #     set -Ux SSH_AUTH_SOCK $SSH_AUTH_SOCK
 # end
 
+# no idea why i need to do this. it just got removed from my path one day
+set PATH /usr/local/bin $PATH
+
 # this doesn't restart tmux if you detach the window; only when fish sources its
 # rc file
 function launch_tmux

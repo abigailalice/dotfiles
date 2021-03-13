@@ -26,6 +26,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 " Plug 'junegunn/goyo.vim'
 " Plug 'junegunn/limelight.vim'
 " Plug 'blueyed/vim-diminactive'
+Plug 'tyru/eskk.vim'
 Plug 'chrisbra/unicode.vim'
 Plug 'morhetz/gruvbox'
 Plug 'romainl/Apprentice'
@@ -102,6 +103,10 @@ digraphs SM 8726
 
 " }}}
 " {{{ SETTINGS/KEYMAPS
+
+map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 nnoremap <leader>} :lnext<cr>
 nnoremap <leader>{ :lprev<cr>
@@ -377,6 +382,9 @@ function! HaskellFold(lnum)
     " endif
 endfunction
 function! s:haskell()
+    " stops vim from using error highlighting on lines which begin with #
+    hi link cError NONE
+
     let g:ale_enabled=0
     " setlocal foldmethod=expr
     " setlocal foldexpr=HaskellFold(v:lnum)
@@ -430,6 +438,12 @@ function! s:haskell()
     syntax match hsQualifierName /\([A-Z][A-Za-z0-9]*\.\)\+/ conceal contained
     highlight hsQualifiedName
     """ END QUALIFICATION/INFIX CONCEALS
+
+    " hide labels
+    syntax match hsLabel /#\([A-Za-z0-9]\+\)/ contains=hsLabelName,hsLabelHash
+    syntax match hsLabelName /\([A-Za-z0-0]\+\)/ contained
+    syntax match hsLabelHash /#/ contained conceal
+    highlight! hsLabelName ctermfg=74
 
     " replace coneals with their conceal character (or hide them entirely when
     " not defined), even for the current line in normal mode
