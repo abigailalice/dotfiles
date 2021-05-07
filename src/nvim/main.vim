@@ -78,6 +78,7 @@ Plug 'dag/vim-fish'
 Plug 'donRaphaco/neotex', { 'for': 'tex' }
 Plug 'ndmitchell/ghcid', { 'rtp': 'plugins/nvim' }
 Plug 'Twinside/vim-haskellFold'
+Plug 'purescript-contrib/purescript-vim'
 " }}}
 " {{{ PLUGINS/COMPILER
 Plug 'w0rp/ale'
@@ -440,6 +441,7 @@ function! s:haskell()
     """ END QUALIFICATION/INFIX CONCEALS
 
     " hide labels
+    syntax clear cError
     syntax match hsLabel /#\([A-Za-z0-9]\+\)/ contains=hsLabelName,hsLabelHash
     syntax match hsLabelName /\([A-Za-z0-0]\+\)/ contained
     syntax match hsLabelHash /#/ contained conceal
@@ -464,4 +466,6 @@ endfunction
 
 au BufRead,BufNewFile *.srp set filetype=syrup
 au! Syntax syrup source ~/Home/gits/dotfiles/src/nvim/plugins/syrup.vim
+
+au BufRead,BufNewFile *.purs set filetype=purescript
 
