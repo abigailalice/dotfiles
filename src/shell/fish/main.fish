@@ -11,6 +11,8 @@
 
 # no idea why i need to do this. it just got removed from my path one day
 set PATH /usr/local/bin $PATH
+set PATH /Library/PostgreSQL/13/bin $PATH
+# ln -s /Library/PostgreSQL/13/bin/psql /usr/local/bin/psql
 
 # this doesn't restart tmux if you detach the window; only when fish sources its
 # rc file
@@ -50,19 +52,6 @@ end
 # this is a search
 function vimrg
     nvim (rg -l $argv[1] | fzf --multi --preview "rg $argv[1] --context 3 --color always -n {}")
-end
-
-function nvim
-    if count $argv > /dev/null
-        command nvim $argv
-    else
-        set -l file (fd . --type f | fzf)
-        if test -n "$file"
-            command nvim $file
-        else
-            command nvim
-        end
-    end
 end
 
 function cd
