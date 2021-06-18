@@ -13,7 +13,7 @@
 # Bind a respawn key which
 #   prompts the user
 #   respawns the pane
-#   recovers cwd
+#   recovers cw
 # bind-key -T root 'C-;' command-prompt
 #   this will take some doing
 
@@ -87,10 +87,10 @@ bind-key -T prefix -r , previous-window
 bind-key -T prefix -r . next-window
 bind-key -T prefix -r < switch-client -p
 bind-key -T prefix -r > switch-client -n
-bind-key -T prefix - split-window    -v -c '#{pane_current_path}'
-bind-key -T prefix _ split-window -f -v -c '#{pane_current_path}'
-bind-key -T prefix \ split-window    -h -c '#{pane_current_path}'
-bind-key -T prefix | split-window -f -h -c '#{pane_current_path}'
+bind-key -T prefix -  split-window    -v -c '#{pane_current_path}'
+bind-key -T prefix _  split-window -f -v -c '#{pane_current_path}'
+bind-key -T prefix \\ split-window    -h -c '#{pane_current_path}'
+bind-key -T prefix |  split-window -f -h -c '#{pane_current_path}'
 bind-key -T prefix X confirm-before -p "kill pane? (y/n)" kill-pane
 bind-key -T prefix x respawn-pane -k
 bind-key -T prefix \; command-prompt

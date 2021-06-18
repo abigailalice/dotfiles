@@ -277,6 +277,11 @@ let g:fzf_layout = { 'window' : 'enew' }
 " let g:airline_focuslost_inactive = 1
 " let g:airline_inactive_collapse = 1
 
+let g:purescript_indent_do = 4
+let g:purescript_indent_case = 4
+let g:purescript_indent_where = 4
+let g:purescript_indent_in = 4
+
 " }}}
 " {{{ SETTINGS/PERSISTENCE (FOLDS AND .SWP FILE)
 set noswapfile

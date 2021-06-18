@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# ln -s $THISFILE /Users/abigailgooding/.local/bin/battery
+# sudo ln -s $THISFILE /Users/abigailgooding/.local/bin/battery
 # depends on gnused in osx
 
 pmset -g batt | tail -n +2 | gsed -r 's|.*[^0-9]([0-9]+%).*|\1|'

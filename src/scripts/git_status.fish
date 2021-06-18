@@ -1,4 +1,4 @@
-#!/usr/local/bin/fish
+#!/opt/homebrew/bin/fish
 
 # ln -s $THISFILE /Users/abigailgooding/.local/bin/gitstatus
 

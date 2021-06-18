@@ -10,8 +10,10 @@
 # end
 
 # no idea why i need to do this. it just got removed from my path one day
+set PATH /opt/homebrew/bin $PATH
 set PATH /usr/local/bin $PATH
 set PATH /Library/PostgreSQL/13/bin $PATH
+set PATH /Users/$USER/.local/bin $PATH
 # ln -s /Library/PostgreSQL/13/bin/psql /usr/local/bin/psql
 
 # this doesn't restart tmux if you detach the window; only when fish sources its
@@ -188,7 +190,7 @@ function fish_prompt
         section git $git_branch
     end
 
-    section "temp" (osx-cpu-temp)
+    # section "temp" (osx-cpu-temp)
 
     printf "\n"
     fullpath
