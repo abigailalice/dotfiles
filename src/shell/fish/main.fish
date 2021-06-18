@@ -229,6 +229,7 @@ function slow_command
             # this doesnt seem to make noise anymore
             tput bel
         end
+        set --erase CMD_DURATION
     end
 end
 
