@@ -140,6 +140,6 @@ set-option -g automatic-rename off
 
 # this is supposed to help with italics
 # see https://rsapkf.xyz/blog/enabling-italics-vim-tmux
-set -g default-terminal "tmux-256color"
+# set -g default-terminal "tmux-256color"
 # set -as terminal-overrides ',xterm*:sitm=\E[3m'
 

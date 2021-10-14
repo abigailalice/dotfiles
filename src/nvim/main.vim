@@ -137,6 +137,7 @@ nnoremap <leader>: :Commands<cr>
 nnoremap <leader>M :Maps<cr>
 nnoremap <leader>e :Dirvish<cr>
 nnoremap <leader>u :GundoToggle<cr>
+nnoremap <leader>r :Rg 
 
 " navigate splits or create splits
 let g:tmux_navigator_disable_when_zoomed = 1
@@ -473,4 +474,5 @@ au BufRead,BufNewFile *.srp set filetype=syrup
 au! Syntax syrup source ~/Home/gits/dotfiles/src/nvim/plugins/syrup.vim
 
 au BufRead,BufNewFile *.purs set filetype=purescript
+au! Syntax purescript source ~/Home/gits/dotfiles/src/nvim/plugins/purescript.vim
 
