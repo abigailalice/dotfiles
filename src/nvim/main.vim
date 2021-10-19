@@ -425,24 +425,24 @@ function! s:haskell()
     syntax match hsModuleKeyword /^module / contained
     highlight hsModuleKeyword ctermfg=2 guifg=SeaGreen gui=bold
     " any identifier, qualified or not, which is wrapped in a backtick is found
-    syntax match hsBackTick /`\([A-Z][A-Za-z0-9]*\.\)*\([A-Za-z0-9_']\+\)`/ contains=hsTick,hsBackTickQualified
+    syntax match hsBackTick /`\([A-Z][A-Z0-9]*\.\)*\([A-Za-z0-9_']\+\)`/ contains=hsTick,hsBackTickQualified
     " the backtick is hidden
     syntax match hsTick /`/ contained conceal
     " if it is qualified, hide the qualifier, and color/underline the region
-    syntax match hsBackTickQualified /\([A-Z][A-Za-z0-9]*\.\)\+\([A-Za-z0-9_']\+\)/ contains=hsBackTickQualifier contained
-    syntax match hsBackTickQualifier /\([A-Z][A-Za-z0-9]*\.\)\+/ conceal contained
+    syntax match hsBackTickQualified /\([A-Z][A-Z0-9]*\.\)\+\([A-Za-z0-9_']\+\)/ contains=hsBackTickQualifier contained
+    syntax match hsBackTickQualifier /\([A-Z][A-Z0-9]*\.\)\+/ conceal contained
     " this needs to be kept in sync with operator. i couldn't find a way to
     " link to operator + add undercurl
     highlight hsBackTickQualified ctermfg=11 guifg=#ffff60
     " if it's not qualified we can just color the region
     highlight! link hsBackTick Operator
     " if a region has a qualified infix operator hide/color/underline it
-    syntax match hsQualifiedOp /\([A-Z][A-Za-z0-9]*\.\)\+[:|-~!@#$%^&*\-+=\\<>\.?/]\+/ contains=hsQualifierOp
-    syntax match hsQualifierOp /\([A-Z][A-Za-z0-9]*\.\)\+/ conceal contained
+    syntax match hsQualifiedOp /\([A-Z][A-Z0-9]*\.\)\+[:|-~!@#$%^&*\-+=\\<>\.?/]\+/ contains=hsQualifierOp
+    syntax match hsQualifierOp /\([A-Z][A-Z0-9]*\.\)\+/ conceal contained
     highlight! link hsQualifiedOp hsBackTickQualified
     " if a region has a qualified identifier hide and underline it
-    syntax match hsQualifiedName /\([A-Z][A-Za-z0-9]*\.\)\+\([A-Za-z0-9_']\+\)/ contains=hsQualifierName
-    syntax match hsQualifierName /\([A-Z][A-Za-z0-9]*\.\)\+/ conceal contained
+    syntax match hsQualifiedName /\([A-Z][A-Z0-9]*\.\)\+\([A-Za-z0-9_']\+\)/ contains=hsQualifierName
+    syntax match hsQualifierName /\([A-Z][A-Z0-9]*\.\)\+/ conceal contained
     highlight hsQualifiedName
     """ END QUALIFICATION/INFIX CONCEALS
 
