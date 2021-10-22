@@ -259,7 +259,7 @@ nnoremap <leader><leader> :set cursorline!<cr>
 
 " }}}
 " {{{ SETTINGS/FOLDS
-set foldmethod=marker
+" set foldmethod=marker
 autocmd FileType gitcommit set foldmethod=syntax
 " set foldtext=MyFoldText()
 " function MyFoldText()
@@ -393,8 +393,9 @@ function! s:haskell()
     hi link cError NONE
 
     let g:ale_enabled=0
-    " setlocal foldmethod=expr
-    " setlocal foldexpr=HaskellFold(v:lnum)
+    setlocal foldmethod=manual
+    "setlocal foldmethod=exp r
+    "setlocal foldexpr=HaskellFold(v:lnum)
 
     set nowrap
     " matches the qualifier part of a concealed variable
@@ -475,4 +476,14 @@ au! Syntax syrup source ~/Home/gits/dotfiles/src/nvim/plugins/syrup.vim
 
 au BufRead,BufNewFile *.purs set filetype=purescript
 au! Syntax purescript source ~/Home/gits/dotfiles/src/nvim/plugins/purescript.vim
+
+set foldcolumn=1
+set foldmethod=manual
+set viewoptions=folds
+augroup SaveManualFolds
+    autocmd!
+    au BufWinLeave, BufLeave ?* silent! mkview
+    au BufWrite              ?* silent! mkview
+    au BufWinEnter           ?* silent! loadview
+augroup END
 
