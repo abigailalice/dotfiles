@@ -22,6 +22,7 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
 endif
 call plug#begin('~/.local/share/nvim/plugged')
 " }}}
+Plug 'kdheepak/lazygit.nvim'
 " {{{ PLUGINS/VISUAL
 " Plug 'junegunn/goyo.vim'
 " Plug 'junegunn/limelight.vim'
@@ -81,6 +82,7 @@ Plug 'Twinside/vim-haskellFold'
 Plug 'purescript-contrib/purescript-vim'
 " }}}
 " {{{ PLUGINS/COMPILER
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'w0rp/ale'
 call plug#end()
 " }}}
@@ -328,6 +330,7 @@ highlight EndOfBuffer ctermbg=NONE
 highlight LineNr ctermfg=60 ctermbg=NONE
 highlight CursorLineNr ctermfg=60 ctermbg=NONE
 
+highlight FoldColumn ctermbg=None ctermfg=33
 highlight Comment ctermfg=DarkGrey
 highlight NonText ctermbg=None ctermfg=60
 " this is used by vim-diminactive to dim the inactive pane
@@ -393,7 +396,7 @@ function! s:haskell()
     hi link cError NONE
 
     let g:ale_enabled=0
-    setlocal foldmethod=manual
+    "setlocal foldmethod=manual
     "setlocal foldmethod=exp r
     "setlocal foldexpr=HaskellFold(v:lnum)
 
@@ -477,7 +480,7 @@ au! Syntax syrup source ~/Home/gits/dotfiles/src/nvim/plugins/syrup.vim
 au BufRead,BufNewFile *.purs set filetype=purescript
 au! Syntax purescript source ~/Home/gits/dotfiles/src/nvim/plugins/purescript.vim
 
-set foldcolumn=1
+set foldcolumn=3
 set foldmethod=manual
 set viewoptions=folds
 augroup SaveManualFolds
@@ -486,4 +489,5 @@ augroup SaveManualFolds
     au BufWrite              ?* silent! mkview
     au BufWinEnter           ?* silent! loadview
 augroup END
+
 
