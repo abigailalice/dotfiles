@@ -24,8 +24,13 @@ highlight Syntax cterm=bold ctermfg=60
 syntax match KeyWord /\([A-Za-z0-9]\)\+:/ contains=KeyWordContents,KeyWordTick
 syntax match KeyWordTick /:/ conceal contained
 syntax match KeyWordContents /\([A-Za-z0-9]\+\)/ contained
-highlight KeywordContents cterm=bold gui=bold ctermfg=39 guifg=gold1
 
+highlight KeywordContents cterm=bold gui=bold ctermfg=39 guifg=gold1
+" these are all contained in KeywordContents, but they don't seem to highlight
+highlight ForAll cterm=bold gui=bold ctermfg=39 guifg=gold1
+highlight Exists cterm=bold gui=bold ctermfg=39 guifg=gold1
+syntax match ForAll '∀'
+syntax match Exists '∃'
 
 " these are superficial, they just make things pretty
 syntax match OpenOxford '\[|' conceal cchar=⟦
@@ -39,6 +44,11 @@ syntax match LeftArrow '<-' conceal cchar=←
 syntax match DoubleRightArrow '=>' conceal cchar=⇒
 highlight Conceal ctermfg=None ctermbg=None
 
+
+syntax match SrpRightBind '>>=' contains=SrpRightDoubleAngle
+syntax match SrpLeftBind '=<<' contains=SrpLeftDoubleAngle
+syntax match SrpRightDoubleAngle '>>' contained conceal cchar=»
+syntax match SrpLeftDoubleAngle '<<' contained conceal cchar=«
 
 " let digraphs be entered with {char}<BS>{char}, instead of just CTRL-K
 digraph << 171 " «

@@ -78,7 +78,7 @@ Plug 'justinmk/vim-dirvish'
 Plug 'dag/vim-fish'
 Plug 'donRaphaco/neotex', { 'for': 'tex' }
 Plug 'ndmitchell/ghcid', { 'rtp': 'plugins/nvim' }
-Plug 'Twinside/vim-haskellFold'
+" Plug 'Twinside/vim-haskellFold'
 Plug 'purescript-contrib/purescript-vim'
 " }}}
 " {{{ PLUGINS/COMPILER
@@ -335,7 +335,7 @@ highlight Comment ctermfg=DarkGrey
 highlight NonText ctermbg=None ctermfg=60
 " this is used by vim-diminactive to dim the inactive pane
 highlight Normal guifg=NONE guibg=NONE
-highlight Folded ctermfg=60 ctermbg=NONE guibg=NONE
+highlight Folded ctermfg=33 ctermbg=NONE guibg=NONE
 highlight CursorLine cterm=NONE ctermbg=7 guibg=Grey90
 " highlights lines greater than 80 lines. the regex ignores the last
 " character, which vim adds
@@ -452,9 +452,9 @@ function! s:haskell()
 
     " hide labels
     syntax clear cError
-    syntax match hsLabel /#\([A-Za-z0-9]\+\)/ contains=hsLabelName,hsLabelHash
+    syntax match hsLabel /#\(_\)\=\([A-Za-z0-9]\+\)/ contains=hsLabelName,hsLabelHash
     syntax match hsLabelName /\([A-Za-z0-0]\+\)/ contained
-    syntax match hsLabelHash /#/ contained conceal
+    syntax match hsLabelHash /#\(_\)\=/ contained conceal
     highlight! hsLabelName ctermfg=74
 
     " replace coneals with their conceal character (or hide them entirely when
@@ -485,9 +485,22 @@ set foldmethod=manual
 set viewoptions=folds
 augroup SaveManualFolds
     autocmd!
-    au BufWinLeave, BufLeave ?* silent! mkview
+    au BufWinLeave, BufLeave, WinLeave ?* silent! mkview
+    au BufWinEnter, BufEnter, WinEnter           ?* silent! loadview
     au BufWrite              ?* silent! mkview
-    au BufWinEnter           ?* silent! loadview
 augroup END
 
+augroup Dirvish
+    autocmd!
 
+    " use 'r' to reload folder
+    autocmd FileType dirvish nnoremap <silent><buffer> r :<C-U>Dirvish %<CR>
+    " use 'q' to quit
+    autocmd FileType dirvish nnoremap <silent><buffer> q :bd<CR>
+    " use 'h' and 'l' to navigate
+    autocmd FileType dirvish nnoremap <silent><buffer> h :<C-U>exe "Dirvish %:h".repeat(":h",v:count1)<CR>
+    autocmd FileType dirvish nnoremap <silent><buffer> l :call dirvish#open("edit", 0)<CR>
+
+    highlight Directory ctermfg=red
+    highlight CursorLine ctermbg=236
+augroup END
