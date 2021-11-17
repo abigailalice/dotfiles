@@ -316,6 +316,7 @@ augroup END
 " highlight Bang ctermfg=red guifg=red cterm=underline gui=underline
 " match Bang /\%>79v.*.\%<255v/
 set colorcolumn=81
+highlight ColorColumn ctermbg=235
 
 " hi StatusLineNC
 
