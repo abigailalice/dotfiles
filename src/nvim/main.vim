@@ -137,7 +137,7 @@ nnoremap <leader>F :Files<cr>
 nnoremap <leader>H :Helptags<cr>
 nnoremap <leader>: :Commands<cr>
 nnoremap <leader>M :Maps<cr>
-nnoremap <leader>e :Dirvish<cr>
+nnoremap <leader>e :Dirvish %<cr>
 nnoremap <leader>u :GundoToggle<cr>
 nnoremap <leader>r :Rg 
 
@@ -495,13 +495,14 @@ augroup Dirvish
     autocmd!
 
     " use 'r' to reload folder
-    autocmd FileType dirvish nnoremap <silent><buffer> r :<C-U>Dirvish %<CR>
+    autocmd FileType dirvish nnoremap <silent><buffer> r :<C-U>Dirvish #<CR>
     " use 'q' to quit
-    autocmd FileType dirvish nnoremap <silent><buffer> q :bd<CR>
-    " use 'h' and 'l' to navigate
+    autocmd FileType dirvish nnoremap <silent><buffer> q :bp<Bar>:bd #<CR>
+    " use 'h' and 'l' to navigat
     autocmd FileType dirvish nnoremap <silent><buffer> h :<C-U>exe "Dirvish %:h".repeat(":h",v:count1)<CR>
     autocmd FileType dirvish nnoremap <silent><buffer> l :call dirvish#open("edit", 0)<CR>
 
-    highlight Directory ctermfg=red
-    highlight CursorLine ctermbg=236
+    autocmd FileType dirvish highlight Directory ctermfg=red cterm=bold
+    autocmd FileType dirvish highlight CursorLine ctermbg=236
+    autocmd FileType dirvish set colorcolumn=""
 augroup END
