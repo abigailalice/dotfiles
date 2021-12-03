@@ -14,6 +14,8 @@ set PATH /opt/homebrew/bin $PATH
 set PATH /usr/local/bin $PATH
 set PATH /Library/PostgreSQL/13/bin $PATH
 set PATH /Users/$USER/.local/bin $PATH
+set --export PYTHONPATH $HOME/Home/gits/Work/src $PYTHONPATH
+
 # ln -s /Library/PostgreSQL/13/bin/psql /usr/local/bin/psql
 
 # this doesn't restart tmux if you detach the window; only when fish sources its
