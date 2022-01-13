@@ -97,7 +97,8 @@ bind-key -T prefix \; command-prompt
 bind-key -T prefix ? list-keys
 bind-key -T prefix ] copy-mode
 bind-key -T prefix C-space send-prefix
-bind-key -T root F11  \
+bind-key -T prefix p display-pane
+bind-key -T prefix F12  \
     set prefix None \;\
     set key-table off \;\
     set status-style "fg=$color_status_text,bg=$color_window_off_status_bg" \;\
