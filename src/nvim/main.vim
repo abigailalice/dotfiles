@@ -73,6 +73,7 @@ Plug 'junegunn/fzf.vim'
 " Choices I've looked at are dirvish, netrw/vinegar, vimfiler, and NERDTree
 Plug 'tpope/vim-vinegar'
 Plug 'justinmk/vim-dirvish'
+Plug 'bounceme/remote-viewer'
 " }}}
 " {{{ PLUGINS/LANGUAGE SPECIFIC
 Plug 'dag/vim-fish'
@@ -498,6 +499,8 @@ augroup Dirvish
     autocmd FileType dirvish nnoremap <silent><buffer> r :<C-U>Dirvish #<CR>
     " use 'q' to quit
     autocmd FileType dirvish nnoremap <silent><buffer> q :bp<Bar>:bd #<CR>
+    autocmd FileType dirvish nnoremap <silent><buffer> c :cd %<CR>
+    autocmd FileType dirvish nnoremap <silent><buffer> e :e %
     " use 'h' and 'l' to navigat
     autocmd FileType dirvish nnoremap <silent><buffer> h :<C-U>exe "Dirvish %:h".repeat(":h",v:count1)<CR>
     autocmd FileType dirvish nnoremap <silent><buffer> l :call dirvish#open("edit", 0)<CR>
@@ -505,4 +508,5 @@ augroup Dirvish
     autocmd FileType dirvish highlight Directory ctermfg=red cterm=bold
     autocmd FileType dirvish highlight CursorLine ctermbg=236
     autocmd FileType dirvish set colorcolumn=""
+    " autocmd VimEnter * execute ':Dirvish'
 augroup END

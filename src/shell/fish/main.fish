@@ -14,7 +14,9 @@ set PATH /opt/homebrew/bin $PATH
 set PATH /usr/local/bin $PATH
 set PATH /Library/PostgreSQL/13/bin $PATH
 set PATH /Users/$USER/.local/bin $PATH
-set --export PYTHONPATH $HOME/Home/gits/Work/src $PYTHONPATH
+# set --export PYTHONPATH $HOME/Home/gits/Work/src $PYTHONPATH
+set --export PYTHONPATH $HOME/Home/gits/edurita/src-py $PYTHONPATH
+set --export EDURITA $HOME/Edurita
 
 # ln -s /Library/PostgreSQL/13/bin/psql /usr/local/bin/psql
 
