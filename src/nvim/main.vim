@@ -129,6 +129,8 @@ command! Reset :source $MYVIMRC
 " seems
 " like a waste of a mapping
 nnoremap Y y$
+nnoremap w W
+nnoremap W B
 
 " plugin-specific bindings
 nnoremap <leader>c :BCommits<cr>
@@ -281,10 +283,6 @@ let g:fzf_layout = { 'window' : 'enew' }
 " let g:airline_focuslost_inactive = 1
 " let g:airline_inactive_collapse = 1
 
-let g:purescript_indent_do = 4
-let g:purescript_indent_case = 4
-let g:purescript_indent_where = 4
-let g:purescript_indent_in = 4
 
 " }}}
 " {{{ SETTINGS/PERSISTENCE (FOLDS AND .SWP FILE)
@@ -482,15 +480,38 @@ au! Syntax syrup source ~/Home/gits/dotfiles/src/nvim/plugins/syrup.vim
 au BufRead,BufNewFile *.purs set filetype=purescript
 au! Syntax purescript source ~/Home/gits/dotfiles/src/nvim/plugins/purescript.vim
 
+au BufRead,BufNewFile *.py set filetype=python
+au! Syntax python source ~/Home/gits/dotfiles/src/nvim/plugins/python.vim
+
 set foldcolumn=3
 set foldmethod=manual
 set viewoptions=folds
-augroup SaveManualFolds
-    autocmd!
-    au BufWinLeave, BufLeave, WinLeave ?* silent! mkview
-    au BufWinEnter, BufEnter, WinEnter           ?* silent! loadview
-    au BufWrite              ?* silent! mkview
-augroup END
+
+" augroup SaveManualFolds
+"     autocmd!
+"     au BufWinLeave, BufLeave, WinLeave ?* silent! mkview
+"     au BufWinEnter, BufEnter, WinEnter           ?* silent! loadview
+"     au BufWrite              ?* silent! mkview
+
+"     au BufWinLeave ?* mkview 1
+"     au BufWinEnter ?* silent loadview 1
+"     au BufWinLeave ?* mkview 2
+"     au BufWinEnter ?* silent loadview 2
+"     au BufWinLeave ?* mkview 3
+"     au BufWinEnter ?* silent loadview 3
+"     au BufWinLeave ?* mkview 4
+"     au BufWinEnter ?* silent loadview 4
+"     au BufWinLeave ?* mkview 5
+"     au BufWinEnter ?* silent loadview 5
+"     au BufWinLeave ?* mkview 6
+"     au BufWinEnter ?* silent loadview 6
+"     au BufWinLeave ?* mkview 7
+"     au BufWinEnter ?* silent loadview 7
+"     au BufWinLeave ?* mkview 8
+"     au BufWinEnter ?* silent loadview 8
+"     au BufWinLeave ?* mkview 9
+"     au BufWinEnter ?* silent loadview 9
+" augroup END
 
 augroup Dirvish
     autocmd!
@@ -510,3 +531,5 @@ augroup Dirvish
     autocmd FileType dirvish set colorcolumn=""
     " autocmd VimEnter * execute ':Dirvish'
 augroup END
+
+set foldmethod=marker

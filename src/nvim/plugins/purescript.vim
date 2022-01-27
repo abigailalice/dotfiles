@@ -13,5 +13,8 @@ highlight purescriptQualifiedName
 setlocal conceallevel=2
 setlocal concealcursor=
 
+let g:purescript_disable_indent=1
+filetype indent off
+
 " }}}
 

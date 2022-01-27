@@ -15,6 +15,7 @@ set PATH /usr/local/bin $PATH
 set PATH /Library/PostgreSQL/13/bin $PATH
 set PATH /Users/$USER/.local/bin $PATH
 # set --export PYTHONPATH $HOME/Home/gits/Work/src $PYTHONPATH
+set --export EDURITA_PROJECT_ROOT $HOME/Home/gits/edurita
 set --export PYTHONPATH $HOME/Home/gits/edurita/src-py $PYTHONPATH
 set --export EDURITA $HOME/Edurita
 
