@@ -34,8 +34,6 @@ set-option -g allow-rename off
 set-option -g mouse on
 bind-key -T root MouseDrag1Border resize-pane -M
 bind-key -T root MouseDown1Status select-window -t =
-# this seems to cause an issue on startup
-bind-key -T root MouseDown1Pane select-pane -t {mouse} ; send-keys -M
 # }}}
 # {{{ active/inactive pane colors
 set-option -g window-active-style 'fg=colour250,bg=colour234'
@@ -98,21 +96,21 @@ bind-key -T prefix ? list-keys
 bind-key -T prefix ] copy-mode
 bind-key -T prefix C-space send-prefix
 bind-key -T prefix p display-pane
-bind-key -T prefix F12  \
-    set prefix None \;\
-    set key-table off \;\
-    set status-style "fg=$color_status_text,bg=$color_window_off_status_bg" \;\
-    set window-status-current-format "#[fg=$color_window_off_status_bg,bg=$color_window_off_status_current_bg]$separator_powerline_right#[default] #I:#W# #[fg=$color_window_off_status_current_bg,bg=$color_window_off_status_bg]$separator_powerline_right#[default]" \;\
-    set window-status-current-style "fg=$color_dark,bold,bg=$color_window_off_status_current_bg" \;\
-    if -F '#{pane_in_mode}' 'send-keys -X cancel' \;\
-    refresh-client -S \;\
-bind-key -T off F12 \
-  set -u prefix \;\
-  set -u key-table \;\
-  set -u status-style \;\
-  set -u window-status-current-style \;\
-  set -u window-status-current-format \;\
-  refresh-client -S
+# bind-key -T prefix F12  \
+#     set prefix None \;\
+#     set key-table off \;\
+#     set status-style "fg=$color_status_text,bg=$color_window_off_status_bg" \;\
+#     set window-status-current-format "#[fg=$color_window_off_status_bg,bg=$color_window_off_status_current_bg]$separator_powerline_right#[default] #I:#W# #[fg=$color_window_off_status_current_bg,bg=$color_window_off_status_bg]$separator_powerline_right#[default]" \;\
+#     set window-status-current-style "fg=$color_dark,bold,bg=$color_window_off_status_current_bg" \;\
+#     if -F '#{pane_in_mode}' 'send-keys -X cancel' \;\
+#     refresh-client -S \;\
+# bind-key -T off F12 \
+#   set -u prefix \;\
+#   set -u key-table \;\
+#   set -u status-style \;\
+#   set -u window-status-current-style \;\
+#   set -u window-status-current-format \;\
+#   refresh-client -S
 
 
 # these should recover the path, though respawn-pane doesn't support the -c option
