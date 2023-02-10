@@ -7,6 +7,17 @@
     neovim
     wget
     lxde.lxsession
+    pavucontrol
+    polybar
+    pasystray
+    jq
+    direnv
+    nix-direnv
+    cabal2nix
+    nix-prefetch-git
+    cabal-install
+    ghc
+    haskell-language-server
     ];
 
   # Home Manager needs a bit of information about you and the
@@ -35,4 +46,15 @@
     userName = "Abigail Gooding";
     userEmail = "abigailalicegooding@gmail.com";
   };
+  nixpkgs.config = {
+    packageOverrides = pkgs: rec {
+      polybar = pkgs.polybar.override {
+        i3Support = true;
+      };
+    };
+  };
+  /* programs.nvim = { */
+  /*   enable = true; */
+  /*   defaultEditor = true; */
+  /* }; */
 }

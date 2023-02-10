@@ -77,6 +77,7 @@ Plug 'bounceme/remote-viewer'
 " }}}
 " {{{ PLUGINS/LANGUAGE SPECIFIC
 Plug 'dag/vim-fish'
+Plug 'LnL7/vim-nix'
 Plug 'donRaphaco/neotex', { 'for': 'tex' }
 Plug 'ndmitchell/ghcid', { 'rtp': 'plugins/nvim' }
 " Plug 'Twinside/vim-haskellFold'
@@ -222,6 +223,8 @@ tnoremap <c-k> <c-\><c-n><c-w><up>
 tnoremap <c-l> <c-\><c-n><c-w><right>
 tnoremap <c-space>- <c-w>s
 tnoremap <c-space><bar> <c-w>v
+" show filename in terminal title
+set title
 
 " this should also work upon starting a new terminal
 " }}}
@@ -344,7 +347,13 @@ highlight CursorLine cterm=NONE ctermbg=7 guibg=Grey90
 
 " }}}
 
-
+" {{{ trigger `autoread` when files changes on disk
+set autoread
+autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
+" notification after file change
+autocmd FileChangedShellPost *
+    \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
+" }}}
 
 function! IndentLevel(lnum)
     return indent(a:lnum) / 2

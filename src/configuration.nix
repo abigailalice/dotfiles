@@ -24,11 +24,61 @@
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
+  # {{{ https://functor.tokyo/blog/2018-10-01-japanese-on-nixos
+  # enable by running "ibus-daemon -d"
+  # configure with "ibus-setup"
+
+  fonts = {
+    fonts = with pkgs; [
+      carlito
+      dejavu_fonts
+      ipafont
+      kochi-substitute
+      source-code-pro
+      ttf_bitstream_vera
+    ];
+    fontconfig = {
+      defaultFonts = {
+        monospace = [
+          "DejaVu Sans Mono"
+          "IPAGothic"
+        ];
+        sansSerif = [
+          "DejaVu Sans"
+          "IPAPGothic"
+        ];
+        serif = [
+          "DejaVu Serif"
+          "IPAPMincho"
+        ];
+      };
+    };
+  };
+  console.font = "Lat2-Terminus16";
+  console.keyMap = "us";
+  i18n.inputMethod.enabled = "ibus";
+  i18n.inputMethod.ibus.engines = with pkgs.ibus-engines; [
+    anthy
+    mozc
+  ];
+  # }}}
+
   # Enable networking
   networking.networkmanager.enable = true;
 
   # Set your time zone.
   time.timeZone = "America/Vancouver";
+
+  sound.enable = true;
+  nixpkgs.config.pulseaudio = true;
+  hardware.pulseaudio.enable = true;
+  hardware.enableAllFirmware = true;
+
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = true;
+  };
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_CA.UTF-8";
@@ -94,6 +144,7 @@
      termite
      xcwd
      xfce.thunar
+     polybar
   ];
 
   services.gvfs.enable = true;
@@ -103,6 +154,9 @@
 
   environment.shellAliases = {
     ls = "exa -la";
+    rm = "rm -i";
+    cp = "cp -i";
+    mkdir = "mkdir -p";
   };
 
   programs.neovim = {
