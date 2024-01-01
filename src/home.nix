@@ -3,6 +3,7 @@
 {
   programs.home-manager.enable = true;
 
+  nixpkgs.config = {allowUnfree = true;};
   home.packages = with pkgs; [
     neovim
     wget
@@ -18,7 +19,16 @@
     cabal-install
     ghc
     haskell-language-server
+    vlc
+    opera
+    docker
+    docker-compose
     ];
+
+  # services.docker.enable = true;
+  # services.docker.package = pkgs.docker;
+  # containers.docker.enable = true;
+  # containers.docker.compose.enable = true;
 
   # Home Manager needs a bit of information about you and the
   # paths it should manage.

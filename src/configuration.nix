@@ -69,6 +69,7 @@
   # Set your time zone.
   time.timeZone = "America/Vancouver";
 
+
   sound.enable = true;
   nixpkgs.config.pulseaudio = true;
   hardware.pulseaudio.enable = true;
@@ -84,6 +85,12 @@
   i18n.defaultLocale = "en_CA.UTF-8";
 
   environment.pathsToLink = [ "/libexec" ];
+
+  # https://github.com/obsidiansystems/obelisk
+  nix.settings.substituters = [ "https://nixcache.reflex-frp.org" ];
+  nix.settings.trusted-public-keys = [ "ryantrinkle.com-1:JJiAKaRv9mWgpVAz8dwewnZe0AzzEAzPkagE9SP5NWI=" ];
+  # https://github.com/obsidiansystems/obelisk/issues/1010
+  nix.settings.experimental-features = [ "nix-command" ];
 
   # Configure keymap in X11
   services.xserver = {
@@ -109,6 +116,7 @@
     };
   };
 
+
   services.udev.extraRules = ''
     ACTION=-"add", SUBSYSTEM=="block", RUN+="${pkgs.bash}/bin/bash -c '${pkgs.pmount}/bin/pmount --sync --umask 000 %N &>> /tmp/udev-pmount.log'
     '';
@@ -118,9 +126,12 @@
   users.users.abigailgooding = {
     isNormalUser = true;
     description = "Abigail Gooding";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "kvm" "libvirtd" "docker"];
     packages = with pkgs; [];
   };
+  virtualisation.docker.enable = true;
+  # /etc/group
+  # docker:x:131:<username>
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
