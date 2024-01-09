@@ -17,6 +17,25 @@
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
   # boot.supportedFilesystems = [ "ntfs" ];
 
+  # {{{ docker
+  virtualisation.docker.extraOptions = "--userns-remap=default";
+  users.groups.dockremap.gid = 10000;
+
+  users.users = {
+    dockremap = {
+      isSystemUser = true;
+      uid = 1000;
+      group = "dockremap";
+      subUidRanges = [
+        { startUid = 1000; count = 65536; }
+      ];
+      subGidRanges = [
+        { startGid = 100; count = 65536; }
+      ];
+    };
+  };
+  # }}}
+
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 

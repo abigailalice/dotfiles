@@ -23,6 +23,9 @@
     opera
     docker
     docker-compose
+    chromium
+    lsof
+    google-chrome
     ];
 
   # services.docker.enable = true;
