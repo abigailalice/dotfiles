@@ -75,11 +75,26 @@
   };
   console.font = "Lat2-Terminus16";
   console.keyMap = "us";
-  i18n.inputMethod.enabled = "ibus";
-  i18n.inputMethod.ibus.engines = with pkgs.ibus-engines; [
-    anthy
-    mozc
-  ];
+  # debug with fcitx5-configtool
+  # i18n.inputMethod = {
+  #   enabled = "fcitx5";
+  #   fcitx5.engines = with pkgs.fcitx-engines; [ mozc ];
+  #   fcitx5.addons = with pkgs; [
+  #     fcitx5-mozc
+  #     fcitx5-gtk
+  #   ];
+  # };
+
+  # debug with ibus-setup
+  # mozc seems to work better
+  i18n.inputMethod = {
+    enabled = "ibus";
+    ibus.engines = with pkgs.ibus-engines; [
+      anthy
+      mozc
+      rime
+    ];
+  };
   # }}}
 
   # Enable networking
@@ -87,7 +102,6 @@
 
   # Set your time zone.
   time.timeZone = "America/Vancouver";
-
 
   sound.enable = true;
   nixpkgs.config.pulseaudio = true;

@@ -23,7 +23,6 @@
     opera
     docker
     docker-compose
-    chromium
     lsof
     google-chrome
     ];
