@@ -152,6 +152,10 @@ noremap <silent> <c-k> :TmuxNavigateUp<cr>
 noremap <silent> <c-l> :TmuxNavigateRight<cr>
 nnoremap <leader>- <c-w>s
 nnoremap <leader><bslash> <c-w>v
+set foldnestmax=2
+set foldcolumn=2
+nnoremap z= :set foldnestmax+=1<cr>:set foldcolumn+=1<cr>
+nnoremap z- :set foldnestmax-=1<cr>:set foldcolumn-=1<cr>
 
 " augroup NonWriteableQuitOnQ
 "     autocmd!

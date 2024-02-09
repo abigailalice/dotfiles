@@ -305,6 +305,10 @@ function rg-fzf
     #rg -n $argv[1] | sed 's#\([^:]\+\):\([^:]\+\):.*#\1:\2#' \
     #    | fzf -d : --nth 1 --preview='cat -n {1} | tail -(math {2} - $LINES / 2) | rg --color always \''$argv[1]'|\$\' | grep '
 end
+
+function fgf
+    fg %(jobs | fzf | sed -r "s/^([0-9]+).*/\1/")
+end
 # }}}
 
 set -q GHCUP_INSTALL_BASE_PREFIX[1]; or set GHCUP_INSTALL_BASE_PREFIX $HOME ; set -gx PATH $HOME/.cabal/bin $PATH /Users/abigailgooding/.ghcup/bin # ghcup-env

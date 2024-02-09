@@ -14,7 +14,10 @@ setlocal conceallevel=2
 setlocal concealcursor=
 
 let g:purescript_disable_indent=1
-filetype indent off
+" setlocal noautoindent
+setlocal nocindent
+setlocal nosmartindent
+setlocal indentexpr=
 
 " }}}
 
