@@ -1,1 +1,2 @@
-# dotfiles
+# Setup
+src/main.sh

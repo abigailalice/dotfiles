@@ -1,0 +1,9 @@
+
+[bar/top]
+bottom = false
+tray-position = right
+tray-maxsize = 16
+
+modules-left = cpu ram
+modules-center = xwindow xbacklight
+modules-right = ipc clock
