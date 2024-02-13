@@ -66,8 +66,11 @@ Plug 'Shougo/deoplete.nvim'
 Plug 'Shougo/denite.nvim'
 Plug 'tpope/vim-fugitive'
 Plug 'sjl/gundo.vim'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'github/copilot.vim'
+" Plug 'zbirenbaum/copilot.lua'
+" Plug 'zbirenbaum/copilot-cmp'
 " }}}
 " {{{ PLUGINS/FILE BROWSER
 " Choices I've looked at are dirvish, netrw/vinegar, vimfiler, and NERDTree
@@ -108,6 +111,8 @@ digraphs SM 8726
 
 " }}}
 " {{{ SETTINGS/KEYMAPS
+
+
 
 map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
 \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
@@ -157,6 +162,15 @@ set foldnestmax=2
 set foldcolumn=2
 nnoremap z= :set foldnestmax+=1<cr>:set foldcolumn+=1<cr>
 nnoremap z- :set foldnestmax-=1<cr>:set foldcolumn-=1<cr>
+
+" copilot keymaps
+nnoremap <silent> <leader>cp :Copilot panel<CR>
+inoremap <silent> <c-j> <Plug>(copilot-next)
+inoremap <silent> <c-k> <Plug>(copilot-previous)
+inoremap <silent> <c-o> <Plug>(copilot-suggest)
+" code to disable copilot from all buffers on startup
+autocmd VimEnter * let b:copilot_enabled = v:false
+
 
 " augroup NonWriteableQuitOnQ
 "     autocmd!
