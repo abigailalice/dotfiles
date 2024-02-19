@@ -25,6 +25,7 @@
     docker-compose
     lsof
     google-chrome
+    fish
     ];
 
   # services.docker.enable = true;

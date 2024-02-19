@@ -23,18 +23,18 @@ set --export EDURITA $HOME/Edurita
 
 # this doesn't restart tmux if you detach the window; only when fish sources its
 # rc file
-function launch_tmux
-    if status --is-interactive
-        if not set -q TMUX
-            if tmux ls > /dev/null
-                tmux attach-session
-            else
-                tmux new -A -s main
-            end
-        end
-    end
-end
-launch_tmux
+# function launch_tmux
+#     if status --is-interactive
+#         if not set -q TMUX
+#             if tmux ls > /dev/null
+#                 tmux attach-session
+#             else
+#                 tmux new -A -s main
+#             end
+#         end
+#     end
+# end
+# launch_tmux
 
 
 set -g STACKTEMPLATE ~/Home/gits/dotfiles/src/stack/stack_template.hsfiles
@@ -121,11 +121,11 @@ set -g ce (set_color $fish_color_error)
 function _common_section
     #printf $c0
     #printf ", "
-    printf $c1
+    printf $c3
     printf $argv[1]
-    printf $c0
+    printf $c3
     printf ":"
-    printf $c2
+    printf $c3
     printf $argv[2]
     printf $argv[3]
     printf " "
@@ -171,11 +171,11 @@ function fish_prompt
     #     set -ex CABAL_SANDBOX_CONFIG
     # end
 
-    set -l git_branch (git rev-parse --abbrev-ref HEAD ^ /dev/null)
+    set -l git_branch (git rev-parse --abbrev-ref HEAD)
     if test $git_branch
-        set -l git_dirty (git status --porcelain ^ /dev/null | wc -l | tr -d ' ')
-        set -l git_commits_ahead (git rev-list HEAD...origin ^ /dev/null | wc -l | tr -d ' ')
-        set -l git_commits_behind (git rev-list HEAD..origin ^ /dev/null | wc -l | tr -d ' ')
+        set -l git_dirty (git status --porcelain | wc -l | tr -d ' ')
+        set -l git_commits_ahead (git rev-list HEAD...origin/master | wc -l | tr -d ' ')
+        set -l git_commits_behind (git rev-list HEAD..origin/master | wc -l | tr -d ' ')
 
         # set -l git_repo (git config --get remote.origin.url | sed 's/\.git//' | sed 's/.*\///')
         set -l git_repo (git rev-parse --show-toplevel | sed 's/.*\///')
@@ -206,7 +206,7 @@ function fullpath
     if [ (whoami) = "root" ]
         printf (set_color red)
     else
-        printf $c2
+        printf $c3
     end
 
     printf (whoami)
