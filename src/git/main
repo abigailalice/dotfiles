@@ -1,6 +1,8 @@
 
 [user]
     name = Abigail Gooding
-    email = PastelBlueJellybeans@gmail.com
+    email = abigailalicegooding@gmail.com
 [core]
     editor = nvim
+[status]
+    showStash = true

@@ -26,6 +26,8 @@
     lsof
     google-chrome
     fish
+    tmux
+    manix # searches nix options
     ];
 
   # services.docker.enable = true;
@@ -58,6 +60,14 @@
     enable = true;
     userName = "Abigail Gooding";
     userEmail = "abigailalicegooding@gmail.com";
+    extraConfig = {
+      core = {
+        editor = "nvim";
+      };
+      status = {
+        showStash = true;
+      };
+    };
   };
   nixpkgs.config = {
     packageOverrides = pkgs: rec {

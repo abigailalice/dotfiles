@@ -125,6 +125,14 @@
   # https://github.com/obsidiansystems/obelisk/issues/1010
   nix.settings.experimental-features = [ "nix-command" ];
 
+  services.openssh = {
+    ports = [9272];
+    enable = true;
+    passwordAuthentication = false;
+    forwardX11 = true;
+  };
+  # users.users.abigailgooding.openssh.authorizedKeys.keys = ["PUBLIC KEY STRING"];
+
   # Configure keymap in X11
   services.xserver = {
     layout = "us";
