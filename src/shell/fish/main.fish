@@ -190,6 +190,9 @@ function fish_prompt
         if test $git_commits_behind -ne "0"
             set git_branch "$git_branch"(set_color red)"↓$git_commits_behind"
         end
+        if test (git stash list 2> /dev/null | tail -2)
+            set git_branch "$git_branch(stash)"
+        end
 
         set -g GIT_STATUS $git_branch
         section git $git_branch
