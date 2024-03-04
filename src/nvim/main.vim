@@ -58,6 +58,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-unimpaired'
 Plug 'justinmk/vim-sneak'
+Plug 'voldikss/vim-floaterm'
 " }}}
 " {{{ PLUGINS/EXPENSIVE PLUGINS
 Plug 'christoomey/vim-tmux-navigator'
