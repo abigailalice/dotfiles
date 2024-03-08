@@ -28,6 +28,7 @@
     fish
     tmux
     manix # searches nix options
+    xclip
     ];
 
   # services.docker.enable = true;

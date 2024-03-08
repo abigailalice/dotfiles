@@ -17,6 +17,12 @@
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
   # boot.supportedFilesystems = [ "ntfs" ];
 
+  # these avoid the need for these two commands:
+  # "nix-store --optimize" and "nix-collect-garbage"
+  nix.gc.automatic = true;
+  nix.gc.options = "--delete-older-than 8d";
+  nix.settings.auto-optimise-store = true;
+
   # {{{ docker
   virtualisation.docker.extraOptions = "--userns-remap=default";
   users.groups.dockremap.gid = 10000;
