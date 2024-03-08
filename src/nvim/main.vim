@@ -560,4 +560,9 @@ augroup Dirvish
     " autocmd VimEnter * execute ':Dirvish'
 augroup END
 
+set nohidden
+set autowriteall
+set autoread
 set foldmethod=marker
+
+set clipboard+=unnamedplus

@@ -1,0 +1,24 @@
+
+unbind-key -a
+
+set-option -g focus-events on
+set-option -g default-terminal "screen-256color"
+set-option -g history-limit 100000
+set-option -g repeat-time 1000
+set-option -g mode-keys vi
+set-option -g status-keys vi
+set-option -g allow-rename off
+
+set-option -g mouse on
+set-option -g status on
+
+set-option -g status-left '#(whoami)@#(hostname s):#S'
+
+set-option -g prefix 'C-space'
+bind-key -T prefix C-space send-prefix
+bind-key -T prefix r command-prompt "rename-session '%%'
+bind-key -T prefix c command-prompt "choose-tree -Ns"
+bind-key -T prefix n command-prompt "new-session -s '%%'"
+bind-key -T prefix d confirm-before -p "detach session (y/n)?" detach
+bind-key -T prefix q confirm-before -p "kill session #S? (y/n)" kill-session
+

@@ -1,2 +1,4 @@
 */fresh-install/*
 *.DS_Store
+
+src/notes/nixos.md
