@@ -128,6 +128,7 @@ noremap j gj
 noremap k gk
 inoremap jk <Esc>
 inoremap kj <Esc>
+inoremap <Esc> <Esc>
 nnoremap ; :
 command! W w !sudo tee "%" > /dev/null
 command! Reset :source $MYVIMRC
@@ -227,21 +228,7 @@ set splitbelow
 " augroup END }}}
 " {{{ SETTINGS/TERMINAL
 
-augroup TerminalBehaviour
-    autocmd!
-    autocmd BufNew * if &buftype != 'terminal' | :set number | endif
-    autocmd BufEnter,WinEnter,TermOpen * if &buftype == 'terminal' | :startinsert | endif
-    autocmd TermOpen * set nonumber norelativenumber
-augroup END
 
-tnoremap jk <c-\><c-n>
-tnoremap kj <c-\><c-n>
-tnoremap <c-h> <c-\><c-n><c-w><left>
-tnoremap <c-j> <c-\><c-n><c-w><down>
-tnoremap <c-k> <c-\><c-n><c-w><up>
-tnoremap <c-l> <c-\><c-n><c-w><right>
-tnoremap <c-space>- <c-w>s
-tnoremap <c-space><bar> <c-w>v
 " show filename in terminal title
 set title
 
@@ -372,6 +359,34 @@ autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checkti
 " notification after file change
 autocmd FileChangedShellPost *
     \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
+" }}}
+
+" {{{ Terminal Behaviour
+highlight Floaterm guibg=black
+highlight FloatermBorder guibg=black
+
+nnoremap <silent> <leader>g :FloatermNew --autoclose=2 lazygit<CR>
+
+" use <Esc> to exit terminal mode
+tnoremap <silent> <Esc> <C-\><C-n>
+tnoremap <c-h> <c-\><c-n><c-w><left>
+tnoremap <c-j> <c-\><c-n><c-w><down>
+tnoremap <c-k> <c-\><c-n><c-w><up>
+tnoremap <c-l> <c-\><c-n><c-w><right>
+" tnoremap <c-space>- <c-w>s
+" tnoremap <c-space><bar> <c-w>v
+" autocmd TermOpen * tunmap jk
+" autocmd TermOpen * tunmap kj
+" autocmd TermOpen * tnoremap <
+
+augroup TerminalBehaviour
+    autocmd!
+    autocmd BufNew * if &buftype != 'terminal' | :set number | endif
+    autocmd BufEnter,WinEnter,TermOpen * if &buftype == 'terminal' | :startinsert | endif
+    autocmd TermOpen * set nonumber norelativenumber
+    autocmd VimResized * FloatermUpdate
+augroup END
+
 " }}}
 
 function! IndentLevel(lnum)

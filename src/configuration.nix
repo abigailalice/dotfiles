@@ -174,7 +174,10 @@
     isNormalUser = true;
     description = "Abigail Gooding";
     extraGroups = [ "networkmanager" "wheel" "kvm" "libvirtd" "docker"];
-    packages = with pkgs; [];
+    packages = with pkgs; [
+      fish
+    ];
+    shell = pkgs.fish;
   };
   virtualisation.docker.enable = true;
   # /etc/group

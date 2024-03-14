@@ -5,6 +5,8 @@
 
   nixpkgs.config = {allowUnfree = true;};
   home.packages = with pkgs; [
+    # searches for files based on their contents
+    ripgrep
     neovim
     wget
     lxde.lxsession
@@ -28,7 +30,9 @@
     fish
     tmux
     manix # searches nix options
+    # necessary to copy between neovim and other programs
     xclip
+    lazygit
     ];
 
   # services.docker.enable = true;
