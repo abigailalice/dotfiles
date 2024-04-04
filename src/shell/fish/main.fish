@@ -171,11 +171,11 @@ function fish_prompt
     #     set -ex CABAL_SANDBOX_CONFIG
     # end
 
-    set -l git_branch (git rev-parse --abbrev-ref HEAD)
+    set -l git_branch (git rev-parse --abbrev-ref HEAD 2> /dev/null)
     if test $git_branch
         set -l git_dirty (git status --porcelain | wc -l | tr -d ' ')
-        set -l git_commits_ahead (git rev-list HEAD...origin/master | wc -l | tr -d ' ')
-        set -l git_commits_behind (git rev-list HEAD..origin/master | wc -l | tr -d ' ')
+        set -l git_commits_ahead (git rev-list HEAD...origin/master | wc -l | tr -d ' ' 2> /dev/null)
+        set -l git_commits_behind (git rev-list HEAD..origin/master | wc -l | tr -d ' ' 2> /dev/null)
 
         # set -l git_repo (git config --get remote.origin.url | sed 's/\.git//' | sed 's/.*\///')
         set -l git_repo (git rev-parse --show-toplevel | sed 's/.*\///')

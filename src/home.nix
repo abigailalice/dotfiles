@@ -5,12 +5,30 @@
 
   nixpkgs.config = {allowUnfree = true;};
   home.packages = with pkgs; [
-    # searches for files based on their contents
+    # {{{ Sysadmin
     ripgrep
-    neovim
     wget
-    lxde.lxsession
+    # }}}
+    # {{{ OS/WM
     pavucontrol
+    xclip # NOTE: middle click pastes previous selection, separate from clipboard
+    manix # searches nix options
+    # }}}
+    # {{{ Development
+    # searches for files based on their contents
+    neovim
+    lazygit
+    fish
+    tmux
+    # }}}
+    # {{{ GUI tools
+    obelisk
+    opera
+    google-chrome
+    calibre
+    # }}}
+    # * Unsorted
+    lxde.lxsession
     polybar
     pasystray
     jq
@@ -22,18 +40,11 @@
     ghc
     haskell-language-server
     vlc
-    opera
     docker
     docker-compose
     lsof
-    google-chrome
-    fish
-    tmux
-    manix # searches nix options
-    # necessary to copy between neovim and other programs
-    xclip
-    lazygit
     ];
+
 
   # services.docker.enable = true;
   # services.docker.package = pkgs.docker;
@@ -44,6 +55,8 @@
   # paths it should manage.
   home.username = "abigailgooding";
   home.homeDirectory = "/home/abigailgooding";
+  home.keyboard.layout = "us";
+  home.keyboard.variant = "dvorak";
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

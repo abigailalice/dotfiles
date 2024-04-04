@@ -292,6 +292,10 @@ let g:fzf_layout = { 'window' : 'enew' }
 " let g:airline_focuslost_inactive = 1
 " let g:airline_inactive_collapse = 1
 
+" use fish-shell style path shortening
+let g:airline#extensions#branch#format=2
+" limit branch to 10 characters
+let g:airline#extensions#branch#displayed_head_limit=10
 
 " }}}
 " {{{ SETTINGS/PERSISTENCE (FOLDS AND .SWP FILE)

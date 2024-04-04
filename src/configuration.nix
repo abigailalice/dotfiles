@@ -80,7 +80,6 @@
     };
   };
   console.font = "Lat2-Terminus16";
-  console.keyMap = "us";
   # debug with fcitx5-configtool
   # i18n.inputMethod = {
   #   enabled = "fcitx5";
@@ -120,6 +119,8 @@
     dedicatedServer.openFirewall = true;
   };
 
+  programs.dconf.enable = true;
+
   # Select internationalisation properties.
   i18n.defaultLocale = "en_CA.UTF-8";
 
@@ -129,7 +130,10 @@
   nix.settings.substituters = [ "https://nixcache.reflex-frp.org" ];
   nix.settings.trusted-public-keys = [ "ryantrinkle.com-1:JJiAKaRv9mWgpVAz8dwewnZe0AzzEAzPkagE9SP5NWI=" ];
   # https://github.com/obsidiansystems/obelisk/issues/1010
-  nix.settings.experimental-features = [ "nix-command" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   services.openssh = {
     ports = [9272];
@@ -140,9 +144,13 @@
   # users.users.abigailgooding.openssh.authorizedKeys.keys = ["PUBLIC KEY STRING"];
 
   # Configure keymap in X11
+  # one of these options, but not both
+  console.useXkbConfig = true;
+  # console.keyMap = "us";
   services.xserver = {
     layout = "us";
-    xkbVariant = "";
+    # xkbVariant = "dvorak";
+    # xkbOptions = "grp:caps_toggle,grp_led:caps";
     enable = true;
 
     desktopManager = {
@@ -176,6 +184,7 @@
     extraGroups = [ "networkmanager" "wheel" "kvm" "libvirtd" "docker"];
     packages = with pkgs; [
       fish
+      obsidian
     ];
     shell = pkgs.fish;
   };
