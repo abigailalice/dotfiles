@@ -26,6 +26,7 @@
     opera
     google-chrome
     calibre
+    pcmanfm
     # }}}
     # * Unsorted
     lxde.lxsession
