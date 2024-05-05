@@ -20,6 +20,7 @@
     lazygit
     fish
     tmux
+    alacritty
     # }}}
     # {{{ GUI tools
     obelisk

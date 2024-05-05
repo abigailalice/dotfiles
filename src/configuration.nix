@@ -42,6 +42,13 @@
   };
   # }}}
 
+  services.cron = {
+    enable = true;
+    systemCronJobs = [
+      "* 0 * * * docker system prune -a"
+    ];
+  };
+
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -127,7 +134,11 @@
   environment.pathsToLink = [ "/libexec" ];
 
   # https://github.com/obsidiansystems/obelisk
-  nix.settings.substituters = [ "https://nixcache.reflex-frp.org" ];
+  nix.settings.substituters = [
+    "https://nixcache.reflex-frp.org"
+    "https://rel8.cachix.org"
+    "https://cache.iog.io"
+  ];
   nix.settings.trusted-public-keys = [ "ryantrinkle.com-1:JJiAKaRv9mWgpVAz8dwewnZe0AzzEAzPkagE9SP5NWI=" ];
   # https://github.com/obsidiansystems/obelisk/issues/1010
   nix.settings.experimental-features = [
@@ -212,6 +223,7 @@
      gh
      nixos-option
      termite
+     alacritty
      xcwd
      xfce.thunar
      polybar
