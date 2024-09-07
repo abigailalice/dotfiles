@@ -59,6 +59,18 @@
   # {{{ https://functor.tokyo/blog/2018-10-01-japanese-on-nixos
   # enable by running "ibus-daemon -d"
   # configure with "ibus-setup"
+  systemd.services.ibus-startup = {
+    description = "Starts ibus daemon";
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+
+    serviceConfig = {
+      ExecStart = "{$pkgs.bash}/bin/bash -c 'ibus-daemon -d'";
+      Type = "simple";
+      User = "abigailgooding";
+      WorkingDirectory = "/home/abigailgooding";
+    };
+  };
 
   fonts = {
     fonts = with pkgs; [
@@ -107,6 +119,72 @@
       rime
     ];
   };
+  # https://www.reddit.com/r/NixOS/comments/rezf0s/how_to_run_script_on_startup/
+  systemd.user.services.ibus = {
+    description = "ibus startup script";
+    serviceConfig.PassEnvironment = "DISPLAY";
+    script = "ibus-daemon -d";
+    wantedBy = [ "multi-user.target" ];
+  };
+
+  # }}}
+
+  # {{{ file sharing
+  # setup "sudo smbpasswd -a <user>" to add a user. the user must already exist
+  # in the unix system, this just adds it to sambda
+  # the path specified in services.samba.shares.<share>.path should already be
+  # created, and setup with
+  #   sudo chown <username>:<group> /path/to/share
+  #   sudo chmod 775 /path/to/share
+  # Use "ip addr show | grep inet" to find the ip address
+  # Connect to "smb://<ip>/<share?
+
+  services = {
+    # Network shares
+    samba = {
+      package = pkgs.samba4Full;
+      # ^^ `samba4Full` is compiled with avahi, ldap, AD etc support (compared to the default package, `samba`
+      # Required for samba to register mDNS records for auto discovery 
+      # See https://github.com/NixOS/nixpkgs/blob/592047fc9e4f7b74a4dc85d1b9f5243dfe4899e3/pkgs/top-level/all-packages.nix#L27268
+      enable = true;
+      openFirewall = true;
+      # smb://<ip>/<share> is the name of the server
+      shares.share = {
+        path = "/mount/share";
+        writable = "true";
+        comment = "Hello World!";
+      };
+      extraConfig = ''
+        server smb encrypt = required
+        # ^^ Note: Breaks `smbclient -L <ip/host> -U%` by default, might require the client to set `client min protocol`?
+        server min protocol = SMB3_00
+      '';
+    };
+    avahi = {
+      publish.enable = true;
+      publish.userServices = true;
+      # ^^ Needed to allow samba to automatically register mDNS records (without the need for an `extraServiceFile`
+      #nssmdns4 = true;
+      # ^^ Not one hundred percent sure if this is needed- if it aint broke, don't fix it
+      enable = true;
+      openFirewall = true;
+    };
+  };
+  # }}}
+
+  # {{{ external hdds
+  fileSystems = {
+    "/media/scidb" = {
+      device = "/dev/disk/by-uuid/3E64D4A100914BC7";
+      fsType = "ntfs";
+      options = [ "defaults" "noatime" "nofail" ];
+    };
+    "/media/calibre" = {
+      device = "/dev/disk/by-uuid/8c77febe-35f1-45ca-b134-fda28feba88e";
+      fsType = "ext4";
+      options = [ "defaults" "noatime" "nofail" ];
+    };
+  };
   # }}}
 
   # Enable networking
@@ -145,6 +223,24 @@
     "nix-command"
     "flakes"
   ];
+
+  # enable support for bluetooth
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  services.blueman.enable = true;
+
+  systemd.services.my-startup-script = {
+    description = "Run my startup script";
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      ExecStart = "{$pkgs.bash}/bin/bash -c 'rm ~/.config/obsidian-1.5.12.asar'";
+      Type = "simple";
+      User = "abigailgooding";
+      WorkingDirectory = "/home/abigailgooding";
+    };
+
+    };
 
   services.openssh = {
     ports = [9272];
@@ -227,6 +323,8 @@
      xcwd
      xfce.thunar
      polybar
+     zathura
+     libsecret
   ];
 
   services.gvfs.enable = true;

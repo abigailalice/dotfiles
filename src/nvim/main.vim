@@ -88,7 +88,7 @@ Plug 'ndmitchell/ghcid', { 'rtp': 'plugins/nvim' }
 Plug 'purescript-contrib/purescript-vim'
 " }}}
 " {{{ PLUGINS/COMPILER
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'w0rp/ale'
 call plug#end()
 " }}}
@@ -522,13 +522,13 @@ function! s:syrup()
 endfunction
 
 au BufRead,BufNewFile *.srp set filetype=syrup
-au! Syntax syrup source ~/Home/gits/dotfiles/src/nvim/plugins/syrup.vim
+au! Syntax syrup source ~/gits/dotfiles/src/nvim/plugins/syrup.vim
 
 au BufRead,BufNewFile *.purs set filetype=purescript
-au! Syntax purescript source ~/Home/gits/dotfiles/src/nvim/plugins/purescript.vim
+au! Syntax purescript source ~/gits/dotfiles/src/nvim/plugins/purescript.vim
 
 au BufRead,BufNewFile *.py set filetype=python
-au! Syntax python source ~/Home/gits/dotfiles/src/nvim/plugins/python.vim
+au! Syntax python source ~/gits/dotfiles/src/nvim/plugins/python.vim
 
 set foldcolumn=3
 set foldmethod=manual
