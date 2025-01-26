@@ -28,22 +28,22 @@
   programs.fish.enable = true;
 
   # {{{ docker
-  virtualisation.docker.extraOptions = "--userns-remap=default";
-  users.groups.dockremap.gid = 10000;
-
-  users.users = {
-    dockremap = {
-      isSystemUser = true;
-      uid = 1000;
-      group = "dockremap";
-      subUidRanges = [
-        { startUid = 1000; count = 65536; }
-      ];
-      subGidRanges = [
-        { startGid = 100; count = 65536; }
-      ];
-    };
-  };
+  # virtualisation.docker.extraOptions = "--userns-remap=default";
+  # users.groups.dockremap.gid = 10000;
+  #
+  # users.users = {
+  #   dockremap = {
+  #     isSystemUser = true;
+  #     uid = 1000;
+  #     group = "dockremap";
+  #     subUidRanges = [
+  #       { startUid = 1000; count = 65536; }
+  #     ];
+  #     subGidRanges = [
+  #       { startGid = 100; count = 65536; }
+  #     ];
+  #   };
+  # };
   # }}}
 
   services.cron = {

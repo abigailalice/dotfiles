@@ -8,6 +8,7 @@
     # {{{ Sysadmin
     ripgrep
     wget
+    ncdu # recursive file size finder
     # }}}
     # {{{ OS/WM
     pavucontrol
