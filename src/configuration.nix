@@ -5,11 +5,13 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      /etc/nixos/hardware-configuration.nix
-      <home-manager/nixos>
-    ];
+  # nix.registry.nixpkgs.flake = nixpkgs;
+  imports = [];
+
+  services.ollama = {
+    enable = true;
+    # loadModels = [ ... ];
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -22,6 +24,8 @@
   nix.gc.automatic = true;
   nix.gc.options = "--delete-older-than 8d";
   nix.settings.auto-optimise-store = true;
+
+  programs.fish.enable = true;
 
   # {{{ docker
   virtualisation.docker.extraOptions = "--userns-remap=default";
@@ -49,6 +53,7 @@
     ];
   };
 
+  # this specifies the local network name, accessable via smb://<hostName>.local
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -73,7 +78,7 @@
   };
 
   fonts = {
-    fonts = with pkgs; [
+    packages = with pkgs; [
       carlito
       dejavu_fonts
       ipafont
@@ -112,7 +117,9 @@
   # debug with ibus-setup
   # mozc seems to work better
   i18n.inputMethod = {
-    enabled = "ibus";
+    # enabled = "ibus";
+    enable = true;
+    type = "ibus";
     ibus.engines = with pkgs.ibus-engines; [
       anthy
       mozc
@@ -141,25 +148,29 @@
 
   services = {
     # Network shares
-    samba = {
-      package = pkgs.samba4Full;
-      # ^^ `samba4Full` is compiled with avahi, ldap, AD etc support (compared to the default package, `samba`
-      # Required for samba to register mDNS records for auto discovery 
-      # See https://github.com/NixOS/nixpkgs/blob/592047fc9e4f7b74a4dc85d1b9f5243dfe4899e3/pkgs/top-level/all-packages.nix#L27268
-      enable = true;
-      openFirewall = true;
-      # smb://<ip>/<share> is the name of the server
-      shares.share = {
-        path = "/mount/share";
-        writable = "true";
-        comment = "Hello World!";
-      };
-      extraConfig = ''
-        server smb encrypt = required
-        # ^^ Note: Breaks `smbclient -L <ip/host> -U%` by default, might require the client to set `client min protocol`?
-        server min protocol = SMB3_00
-      '';
-    };
+    # samba = {
+    #   package = pkgs.samba4Full;
+    #   # ^^ `samba4Full` is compiled with avahi, ldap, AD etc support (compared to the default package, `samba`
+    #   # Required for samba to register mDNS records for auto discovery 
+    #   # See https://github.com/NixOS/nixpkgs/blob/592047fc9e4f7b74a4dc85d1b9f5243dfe4899e3/pkgs/top-level/all-packages.nix#L27268
+    #   enable = true;
+    #   openFirewall = true;
+    #   # smb://<ip>/<share> is the name of the server
+    #   shares.share = {
+    #     path = "/mount/share";
+    #     writable = "true";
+    #     comment = "Hello World!";
+    #   };
+    #   settings = {
+    #     "server smb encrypt" = "required";
+    #     "server min protocol" = "SMB3_00";
+    #   };
+    #   # extraConfig = ''
+    #   #   server smb encrypt = required
+    #   #   # ^^ Note: Breaks `smbclient -L <ip/host> -U%` by default, might require the client to set `client min protocol`?
+    #   #   server min protocol = SMB3_00
+    #   # '';
+    # };
     avahi = {
       publish.enable = true;
       publish.userServices = true;
@@ -168,8 +179,10 @@
       # ^^ Not one hundred percent sure if this is needed- if it aint broke, don't fix it
       enable = true;
       openFirewall = true;
+      nssmdns4 = true;
     };
   };
+
   # }}}
 
   # {{{ external hdds
@@ -193,9 +206,9 @@
   # Set your time zone.
   time.timeZone = "America/Vancouver";
 
-  sound.enable = true;
+  # sound.enable = true;
   nixpkgs.config.pulseaudio = true;
-  hardware.pulseaudio.enable = true;
+  hardware.pulseaudio.enable = false;
   hardware.enableAllFirmware = true;
 
   programs.steam = {
@@ -245,8 +258,8 @@
   services.openssh = {
     ports = [9272];
     enable = true;
-    passwordAuthentication = false;
-    forwardX11 = true;
+    settings.PasswordAuthentication = false;
+    settings.X11Forwarding = true;
   };
   # users.users.abigailgooding.openssh.authorizedKeys.keys = ["PUBLIC KEY STRING"];
 
@@ -254,8 +267,9 @@
   # one of these options, but not both
   console.useXkbConfig = true;
   # console.keyMap = "us";
+  services.displayManager.defaultSession = "none+i3";
   services.xserver = {
-    layout = "us";
+    xkb.layout = "us";
     # xkbVariant = "dvorak";
     # xkbOptions = "grp:caps_toggle,grp_led:caps";
     enable = true;
@@ -264,9 +278,6 @@
       xterm.enable = false;
     };
 
-    displayManager = {
-      defaultSession = "none+i3";
-    };
 
     windowManager.i3 = {
       enable = true;
@@ -313,7 +324,7 @@
      picom
      firefox
      home-manager
-     exa
+     eza
      fd
      git
      gh

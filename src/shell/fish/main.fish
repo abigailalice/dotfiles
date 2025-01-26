@@ -92,7 +92,7 @@ function cd-fzf-from
     end
 end
 
-alias ls 'env EXA_COLORS="gm=38;5;111:da=38;5;111" exa --long --git --header'
+alias ls 'env EXA_COLORS="gm=38;5;111:da=38;5;111" eza --long --git --header'
 
 alias su 'su -m'
 alias sudo 'sudo -H'

@@ -45,6 +45,7 @@
     docker
     docker-compose
     lsof
+    unzip
     ];
 
 
