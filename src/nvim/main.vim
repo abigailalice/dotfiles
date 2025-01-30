@@ -349,7 +349,8 @@ highlight NonText ctermbg=None ctermfg=60
 " this is used by vim-diminactive to dim the inactive pane
 highlight Normal guifg=NONE guibg=NONE
 highlight Folded ctermfg=33 ctermbg=NONE guibg=NONE
-highlight CursorLine cterm=NONE ctermbg=7 guibg=Grey90
+highlight CursorLine cterm=NONE ctermbg=7 guibg=#2e3440
+highlight CursorLine guibg=#2e3440
 " highlights lines greater than 80 lines. the regex ignores the last
 " character, which vim adds
 
@@ -439,6 +440,7 @@ function! HaskellFold(lnum)
     " endif
 endfunction
 function! s:haskell()
+    echo "s:haskell() was called"
     " stops vim from using error highlighting on lines which begin with #
     hi link cError NONE
 

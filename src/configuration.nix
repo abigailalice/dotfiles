@@ -186,9 +186,17 @@
   # }}}
 
   # {{{ external hdds
+  # You can get the information you need to fill in new entries with
+  # $ sudo blkid
+  # $ lsblk -o NAME,MOUNTPOINT,SIZE,MODEL
   fileSystems = {
     "/media/scidb" = {
       device = "/dev/disk/by-uuid/3E64D4A100914BC7";
+      fsType = "ntfs";
+      options = [ "defaults" "noatime" "nofail" ];
+    };
+    "/media/fast" = {
+      device = "/dev/disk/by-uuid/00AEBB49AEBB364E";
       fsType = "ntfs";
       options = [ "defaults" "noatime" "nofail" ];
     };
