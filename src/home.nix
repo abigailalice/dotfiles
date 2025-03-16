@@ -37,6 +37,7 @@
     jq
     direnv
     nix-direnv
+    pdfstudioviewer
     cabal2nix
     nix-prefetch-git
     cabal-install
@@ -83,6 +84,7 @@
     userName = "Abigail Gooding";
     userEmail = "abigailalicegooding@gmail.com";
     extraConfig = {
+      submodule.recurse = true;
       core = {
         editor = "nvim";
       };
