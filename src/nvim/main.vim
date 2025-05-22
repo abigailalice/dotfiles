@@ -126,8 +126,13 @@ let mapleader="\<Space>"
 let maplocalleader="\\"
 noremap j gj
 noremap k gk
-inoremap jk <Esc>
-inoremap kj <Esc>
+inoremap ah <Esc>
+inoremap ha <Esc>
+set langmap=aj,ok,el,hh
+"nnoremap h h
+"nnoremap a j
+"nnoremap o k
+"nnoremap e l
 inoremap <Esc> <Esc>
 nnoremap ; :
 command! W w !sudo tee "%" > /dev/null
