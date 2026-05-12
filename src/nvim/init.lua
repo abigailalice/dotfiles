@@ -1058,8 +1058,8 @@ vim.api.nvim_set_hl(0, "Comment", { fg = "grey" })
 
 -- Enter command mode with ;
 vim.keymap.set({ "n", "v" }, ";", ":", { desc = "Command mode" })
-vim.keymap.set("t", "<leader><esc>", "<C-\\><C-n>", { noremap = true, silent = true })
-vim.keymap.set({"n","v","t"}, '<leader><esc>', '<C-w><C-p>', { noremap = true, silent = true})
+vim.keymap.set("t", "<leader><esc>", "<C-\\><C-n><C-w><C-p>", { noremap = true, silent = true })
+vim.keymap.set({ "n", "v" }, "<leader><esc>", "<C-w><C-p>", { noremap = true, silent = true })
 
 -- Splits
 vim.keymap.set("n", "<leader>\\", "<cmd>vsplit<cr>", { desc = "Vertical split" })
@@ -1110,6 +1110,15 @@ vim.keymap.set("n", "<leader>nd", function()
 end, { desc = "New folder" })
 
 vim.opt.wrap = false
+
+vim.o.autoread = true
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
+	callback = function()
+		if vim.fn.mode() ~= "c" then
+			vim.cmd("checktime")
+		end
+	end,
+})
 
 -- {{{ claude
 vim.pack.add({
