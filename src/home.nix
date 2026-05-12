@@ -104,16 +104,12 @@
   programs.git = {
     package = pkgs.gitFull;
     enable = true;
-    userName = "Abigail Gooding";
-    userEmail = "abigailalicegooding@gmail.com";
-    extraConfig = {
+    settings = {
+      user.name = "Abigail Gooding";
+      user.email = "abigailalicegooding@gmail.com";
       submodule.recurse = true;
-      core = {
-        editor = "nvim";
-      };
-      status = {
-        showStash = true;
-      };
+      core.editor = "nvim";
+      status.showStash = true;
     };
   };
   nixpkgs.config = {
