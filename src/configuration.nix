@@ -45,6 +45,11 @@
   #   };
   # };
   # }}}
+  services.udev.packages = [
+    pkgs.via
+    pkgs.vial
+    pkgs.qmk-udev-rules
+  ];
 
   services.cron = {
     enable = true;
@@ -298,10 +303,6 @@
   };
 
 
-  services.udev.extraRules = ''
-    ACTION=-"add", SUBSYSTEM=="block", RUN+="${pkgs.bash}/bin/bash -c '${pkgs.pmount}/bin/pmount --sync --umask 000 %N &>> /tmp/udev-pmount.log'
-    '';
-      
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.abigailgooding = {
@@ -321,12 +322,36 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
+  # ensures x server is on even when headless {{{
+  boot.kernelParams = [
+    "i915.modeset=1"
+    "i915.enable_fbc=1"
+    "video=DP-1:1920x1080@60"
+    "video=DP-2:1920x1080@60"
+    "video=DP-3:1920x1080@60"
+    "video=HDMI-A-1:1920x1080@60"
+    "video=HDMI-A-2:1920x1080@60"
+    "simpledrm.modeset=1"
+  ];
+    # Ensure i915 loads early
+  boot.initrd.kernelModules = [ "i915" ];
+
+  # Force a framebuffer device
+  boot.kernelModules = [ "i915" ];
+
+  services.autorandr.enable = true;
+  services.xserver.videoDrivers = [ "modesetting" ];
+  # services.xserver.displayManager.startx.enable = true;
+  services.xserver.displayManager.autoLogin.enable = true;
+  services.xserver.displayManager.autoLogin.user = "abigailgooding";
+  # services.xserver.virtualScreen = true;
+  # }}}
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
-     neovim
      flashfocus
      rofi
      picom
@@ -344,6 +369,12 @@
      polybar
      zathura
      libsecret
+     via
+     qmk
+     qmk-udev-rules
+     brave
+     tor-browser
+     claude-code
   ];
 
   services.gvfs.enable = true;
@@ -356,11 +387,6 @@
     rm = "rm -i";
     cp = "cp -i";
     mkdir = "mkdir -p";
-  };
-
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
   };
 
   # Some programs need SUID wrappers, can be configured further or are

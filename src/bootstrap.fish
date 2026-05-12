@@ -34,4 +34,7 @@ mkdir -p ~/.local/bin
 ln -fs "$HOME/Home/gits/dotfiles/src/scripts/battery" ~/.local/bin/battery
 ln -fs "$HOME/Home/gits/dotfiles/src/scripts/utils/diskusage" ~/.local/bin/diskusage
 ln -fs "$HOME/Home/gits/dotfiles/src/scripts/git_status.fish" /.local/bin/gitstatus
-
+mkdir -p ~/.config/autorandr/capture
+mkdir -p ~/.config/autorandr/monitor
+ln -fs "$HOME/gits/dotfiles/src/autorandr/capture" ~/.config/autorandr/capture/postswitch
+ln -fs "$HOME/gits/dotfiles/src/autorandr/monitor" ~/.config/autorandr/monitor/postswitch

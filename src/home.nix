@@ -1,6 +1,10 @@
 { config, pkgs, ... }:
 
 {
+  imports = [
+    ./modules/neovim.nix
+  ];
+
   programs.home-manager.enable = true;
 
   nixpkgs.config = {allowUnfree = true;};
@@ -17,7 +21,6 @@
     # }}}
     # {{{ Development
     # searches for files based on their contents
-    neovim
     lazygit
     fish
     tmux
@@ -25,13 +28,18 @@
     # }}}
     # {{{ GUI tools
     obelisk
-    opera
     google-chrome
     calibre
     pcmanfm
     # }}}
+    # * Keyboard
+    # qmk
+    # qmk-udev-rules
+    # qmk_hid
+    # via
+    # vial
     # * Unsorted
-    lxde.lxsession
+    lxsession
     polybar
     pasystray
     jq
@@ -48,7 +56,7 @@
     docker-compose
     lsof
     unzip
-    ];
+  ];
 
 
   # services.docker.enable = true;
@@ -79,7 +87,7 @@
   };
 
   programs.git = {
-    package = pkgs.gitAndTools.gitFull;
+    package = pkgs.gitFull;
     enable = true;
     userName = "Abigail Gooding";
     userEmail = "abigailalicegooding@gmail.com";

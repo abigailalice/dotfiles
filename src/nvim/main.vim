@@ -158,6 +158,10 @@ noremap <silent> <c-h> :TmuxNavigateLeft<cr>
 noremap <silent> <c-j> :TmuxNavigateDown<cr>
 noremap <silent> <c-k> :TmuxNavigateUp<cr>
 noremap <silent> <c-l> :TmuxNavigateRight<cr>
+noremap <silent> <c-Up> :TmuxNavigateUp<cr>
+noremap <silent> <c-Left> :TmuxNavigateLeft<cr>
+noremap <silent> <c-Down> :TmuxNavigateDown<cr>
+noremap <silent> <c-Right> :TmuxNavigateRighe<cr>
 nnoremap <leader>- <c-w>s
 nnoremap <leader><bslash> <c-w>v
 set foldnestmax=2
@@ -439,6 +443,9 @@ function! HaskellFold(lnum)
     "     return '>' . len(starstring)
     " endif
 endfunction
+highlight ConId guifg=lightblue
+highlight VarId guifg=lightblue
+highlight hsVarSym guifg=lightred
 function! s:haskell()
     echo "s:haskell() was called"
     " stops vim from using error highlighting on lines which begin with #
@@ -474,6 +481,7 @@ function! s:haskell()
     " in an elegent way, so this code feels needlessly complicated
 
     " this prevents import/module declarations from being hidden
+    highlight hsQualified gui=italic guifg=lightblue
     syntax match hsModuleLine /^module.*/ contains=hsModuleKeyword
     syntax match hsModuleKeyword /^module / contained
     highlight hsModuleKeyword ctermfg=2 guifg=SeaGreen gui=bold
@@ -486,25 +494,37 @@ function! s:haskell()
     syntax match hsBackTickQualifier /\([A-Z][A-Z0-9]*\.\)\+/ conceal contained
     " this needs to be kept in sync with operator. i couldn't find a way to
     " link to operator + add undercurl
-    highlight hsBackTickQualified ctermfg=11 guifg=#ffff60
+    highlight hsBackTickQualified ctermfg=11 guifg=#ffff60 gui=undercurl
     " if it's not qualified we can just color the region
     highlight! link hsBackTick Operator
     " if a region has a qualified infix operator hide/color/underline it
     syntax match hsQualifiedOp /\([A-Z][A-Z0-9]*\.\)\+[:|-~!@#$%^&*\-+=\\<>\.?/]\+/ contains=hsQualifierOp
     syntax match hsQualifierOp /\([A-Z][A-Z0-9]*\.\)\+/ conceal contained
+    
     highlight! link hsQualifiedOp hsBackTickQualified
     " if a region has a qualified identifier hide and underline it
-    syntax match hsQualifiedName /\([A-Z][A-Z0-9]*\.\)\+\([A-Za-z0-9_']\+\)/ contains=hsQualifierName
+    syntax match hsQualifiedName /\([A-Z][A-Z0-9]*\.\)\+\([A-Za-z0-9_']\+\)/ contains=hsQualifierName,hsQualifiedCon,hsQualifiedIdent
+    syntax match hsQualifiedCon /\([A-Z][A-Z0-9]*\.\)\+[A-Z]\([A-Za-z0-9_']\+\)/ contained
+    syntax match hsQualifiedIdent /\([A-Z][A-Z0-9]*\.\)\+[a-z_]\([A-Za-z0-9_']\+\)/ contained
     syntax match hsQualifierName /\([A-Z][A-Z0-9]*\.\)\+/ conceal contained
-    highlight hsQualifiedName
     """ END QUALIFICATION/INFIX CONCEALS
-
+    highlight Keyword gui=bold guifg=lightgreen
+    highlight link hsImport Keyword
+    highlight link hsImportMod Keyword
+    highlight link hsStatement Keyword
+    highlight link hsStructure Keyword
+    highlight link hsConditional Keyword
+    highlight link hsQualifiedName hsQualified 
+    highlight link hsQualifiedOp hsQualified 
+    highlight link hsBackTick hsQualified 
+    highlight link hsQualifiedCon ConId
+    highlight link hsQualifiedIdent VarId
     " hide labels
     syntax clear cError
     syntax match hsLabel /#\(_\)\=\([A-Za-z0-9]\+\)/ contains=hsLabelName,hsLabelHash
     syntax match hsLabelName /\([A-Za-z0-0]\+\)/ contained
     syntax match hsLabelHash /#\(_\)\=/ contained conceal
-    highlight! hsLabelName ctermfg=74
+    highlight! hsLabelName ctermfg=60 guifg=lightmagenta
 
     " replace coneals with their conceal character (or hide them entirely when
     " not defined), even for the current line in normal mode

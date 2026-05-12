@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+# ln -sf ~/gits/dotfiles/src/autorandr/capture ~/.config/autorandr/capture/postswitch
+# autorandr --save capture
+
+OUTPUT="$(xrandr | awk '/ connected/ {print $1; exit}')"
+xrandr --output "$OUTPUT" --scale 0.5x0.5
+
+

@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+# ln -sf ~/gits/dotfiles/src/autorandr/monitor ~/.config/autorandr/monitor/postswitch
+# autorandr --save monitor
+
+OUTPUT="$(xrandr | awk '/ connected/ {print $1; exit}')"
+xrandr --output "$OUTPUT" --scale 1x1
+

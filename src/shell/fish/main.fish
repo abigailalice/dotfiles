@@ -314,5 +314,12 @@ function fgf
 end
 # }}}
 
+# Auto-start X on tty1
+if test -z "$DISPLAY"
+    if test (tty) = "/dev/tty1"
+        exec startx
+    end
+end
+
 set -q GHCUP_INSTALL_BASE_PREFIX[1]; or set GHCUP_INSTALL_BASE_PREFIX $HOME ; set -gx PATH $HOME/.cabal/bin $PATH /Users/abigailgooding/.ghcup/bin # ghcup-env
 direnv hook fish | source
