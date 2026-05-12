@@ -978,11 +978,6 @@ do
 		-- Enable syntax highlighting and other treesitter features
 		vim.treesitter.start(buf, language)
 
-		-- Enable treesitter based folds
-		-- For more info on folds see `:help folds`
-		vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-		vim.wo.foldmethod = "expr"
-
 		-- Check if treesitter indentation is available for this language, and if so enable it
 		-- in case there is no indent query, the indentexpr will fallback to the vim's built in one
 		local has_indent_query = vim.treesitter.query.get(language, "indents") ~= nil
@@ -1120,6 +1115,32 @@ vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHo
 	end,
 })
 
+-- {{{ ufo (better folding)
+vim.o.foldlevel = 99
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
+
+vim.pack.add({
+	gh("kevinhwang91/nvim-ufo"),
+	gh("kevinhwang91/promise-async"),
+})
+
+require("ufo").setup({
+	provider_selector = function(_bufnr, _filetype, _buftype)
+		return { "treesitter", "indent" }
+	end,
+})
+
+vim.keymap.set("n", "zR", require("ufo").openAllFolds, { desc = "Open all folds" })
+vim.keymap.set("n", "zM", require("ufo").closeAllFolds, { desc = "Close all folds" })
+vim.keymap.set("n", "zK", function()
+	local winid = require("ufo").peekFoldedLinesUnderCursor()
+	if not winid then
+		vim.lsp.buf.hover()
+	end
+end, { desc = "Peek fold" })
+-- }}}
+
 -- {{{ claude
 vim.pack.add({
 	{ src = "https://github.com/folke/snacks.nvim" }, -- terminal UI dependency
@@ -1133,7 +1154,6 @@ require("claudecode").setup({
 
 vim.keymap.set("n", "<leader>ac", "<cmd>ClaudeCode<cr>", { desc = "Toggle Claude" })
 vim.keymap.set("n", "<leader>af", "<cmd>ClaudeCodeFocus<cr>", { desc = "Focus Claude" })
-vim.keymap.set("n", "<leader>ar", "<cmd>ClaudeCode --resume<cr>", { desc = "Resume Claude" })
 vim.keymap.set("n", "<leader>aC", "<cmd>ClaudeCode --continue<cr>", { desc = "Continue Claude" })
 vim.keymap.set("n", "<leader>am", "<cmd>ClaudeCodeSelectModel<cr>", { desc = "Select Claude model" })
 vim.keymap.set("n", "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>", { desc = "Add current buffer" })
