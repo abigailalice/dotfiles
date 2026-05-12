@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Usage: brightness up|down  (steps by 0.1, clamped to 0.1–1.0)
+OUTPUT=DP-2
+STEP=0.1
+CURRENT=$(xrandr --verbose | awk '/^DP-2/{found=1} found && /Brightness/{print $2; exit}')
+case "$1" in
+  up)   NEW=$(echo "$CURRENT + $STEP" | bc) ;;
+  down) NEW=$(echo "$CURRENT - $STEP" | bc) ;;
+  *)    echo "Usage: brightness up|down"; exit 1 ;;
+esac
+# clamp to [0.1, 1.0]
+NEW=$(echo "if ($NEW > 1.0) 1.0 else if ($NEW < 0.1) 0.1 else $NEW" | bc)
+xrandr --output "$OUTPUT" --brightness "$NEW"
