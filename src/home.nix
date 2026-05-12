@@ -45,8 +45,6 @@
     polybar
     pasystray
     jq
-    direnv
-    nix-direnv
     pdfstudioviewer
     cabal2nix
     nix-prefetch-git
@@ -99,6 +97,11 @@
     Install = {
       WantedBy = [ "graphical-session.target" ];
     };
+  };
+
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
   };
 
   programs.git = {
