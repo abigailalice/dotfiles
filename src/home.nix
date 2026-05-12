@@ -87,6 +87,20 @@
     notify = false;
   };
 
+  systemd.user.services.ibus-daemon = {
+    Unit = {
+      Description = "IBus input method daemon";
+      PartOf = [ "graphical-session.target" ];
+    };
+    Service = {
+      ExecStart = "${pkgs.ibus}/bin/ibus-daemon --replace";
+      Restart = "on-failure";
+    };
+    Install = {
+      WantedBy = [ "graphical-session.target" ];
+    };
+  };
+
   programs.git = {
     package = pkgs.gitFull;
     enable = true;
