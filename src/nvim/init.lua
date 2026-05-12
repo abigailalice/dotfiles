@@ -1059,6 +1059,7 @@ vim.api.nvim_set_hl(0, "Comment", { fg = "grey" })
 -- Enter command mode with ;
 vim.keymap.set({ "n", "v" }, ";", ":", { desc = "Command mode" })
 vim.keymap.set("t", "<leader><esc>", "<C-\\><C-n>", { noremap = true, silent = true })
+vim.keymap.set({"n","v","t"}, '<leader><esc>', '<C-w><C-p>', { noremap = true, silent = true})
 
 -- Splits
 vim.keymap.set("n", "<leader>\\", "<cmd>vsplit<cr>", { desc = "Vertical split" })

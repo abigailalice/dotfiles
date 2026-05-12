@@ -1,10 +1,6 @@
 
 { lib, config, pkgs, ... }: {
-  programs.neovim = {
-    enable = true;
-    viAlias = true;
-    vimAlias = true;
-  };
+  home.packages = [ pkgs.neovim ];
   home.sessionVariables.EDITOR = "nvim";
 
   home.activation.linkNvimConfig = lib.hm.dag.entryAfter ["writeBoundary"] ''

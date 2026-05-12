@@ -7,7 +7,9 @@
 
   programs.home-manager.enable = true;
 
-  nixpkgs.config = {allowUnfree = true;};
+  nixpkgs.config = {
+    allowUnfree = true;
+  };
   home.packages = with pkgs; [
     # {{{ Sysadmin
     ripgrep
@@ -58,7 +60,6 @@
     unzip
   ];
 
-
   # services.docker.enable = true;
   # services.docker.package = pkgs.docker;
   # containers.docker.enable = true;
@@ -108,8 +109,8 @@
       };
     };
   };
-  /* programs.nvim = { */
-  /*   enable = true; */
-  /*   defaultEditor = true; */
-  /* }; */
+  # programs.nvim = {
+  # enable = true;
+  # defaultEditor = true;
+  # };
 }
