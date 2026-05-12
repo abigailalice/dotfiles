@@ -1052,6 +1052,35 @@ end
 
 vim.api.nvim_set_hl(0, "Comment", { fg = "grey" })
 
+-- Active statusline: bright blue bar so focused window is obvious
+vim.api.nvim_set_hl(0, "StatusLine",            { bg = "#3d59a1", fg = "#c0caf5", bold = true })
+vim.api.nvim_set_hl(0, "MiniStatuslineFilename", { bg = "#3d59a1", fg = "#c0caf5" })
+vim.api.nvim_set_hl(0, "MiniStatuslineFileinfo", { bg = "#3d59a1", fg = "#c0caf5" })
+-- Inactive statusline: dim grey
+vim.api.nvim_set_hl(0, "StatusLineNC",           { bg = "#24283b", fg = "#565f89" })
+vim.api.nvim_set_hl(0, "MiniStatuslineInactive", { bg = "#24283b", fg = "#565f89" })
+
+-- Dim inactive windows uniformly, including terminal buffers (which ignore NormalNC).
+vim.api.nvim_set_hl(0, "NormalNC",    { bg = "#11111a" })
+vim.api.nvim_set_hl(0, "TermNormalNC", { bg = "#11111a" })
+local term_focus_group = vim.api.nvim_create_augroup("term-focus-dim", { clear = true })
+vim.api.nvim_create_autocmd("WinLeave", {
+	group = term_focus_group,
+	callback = function()
+		if vim.bo.buftype == "terminal" then
+			vim.wo.winhighlight = "Normal:TermNormalNC"
+		end
+	end,
+})
+vim.api.nvim_create_autocmd("WinEnter", {
+	group = term_focus_group,
+	callback = function()
+		if vim.bo.buftype == "terminal" then
+			vim.wo.winhighlight = ""
+		end
+	end,
+})
+
 -- Enter command mode with ;
 vim.keymap.set({ "n", "v" }, ";", ":", { desc = "Command mode" })
 vim.keymap.set("t", "<leader><esc>", "<C-\\><C-n><C-w><C-p>", { noremap = true, silent = true })
@@ -1199,6 +1228,8 @@ require("ufo").setup({
 	provider_selector = function(_bufnr, filetype, _buftype)
 		if filetype == "haskell" then
 			return haskell_body_folds
+		elseif filetype == "markdown" then
+			return ""
 		end
 		return { "treesitter", "indent" }
 	end,
@@ -1220,7 +1251,7 @@ vim.pack.add({
 	{ src = "https://github.com/coder/claudecode.nvim" },
 })
 
-require("snacks").setup({}) -- snacks needs an explicit setup
+require("snacks").setup({ dim = { enabled = true } })
 require("claudecode").setup({
 	direction = "vertical",
   diff_opts = {
