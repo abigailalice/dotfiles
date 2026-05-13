@@ -473,7 +473,7 @@ do
 	-- cursor location to LINE:COLUMN
 	---@diagnostic disable-next-line: duplicate-set-field
 	statusline.section_location = function()
-		return "%2l:%-2v"
+		return "%2l/%-2L:%-2v"
 	end
 
 	-- ... and there is more!
@@ -1158,79 +1158,10 @@ vim.pack.add({
 	gh("kevinhwang91/promise-async"),
 })
 
--- Custom provider: folds function bodies, leaving type signatures visible
-local function haskell_body_folds(bufnr)
-	local folds = {}
-	local ok, parser = pcall(vim.treesitter.get_parser, bufnr, "haskell")
-	if not ok or not parser then return folds end
-	local tree = parser:parse()[1]
-	if not tree then return folds end
-	local root = tree:root()
-
-	local function get_name(node)
-		local fields = node:field("name")
-		if fields and fields[1] then
-			return vim.treesitter.get_node_text(fields[1], bufnr)
-		end
-		for child in node:iter_children() do
-			if child:type() == "variable" then
-				return vim.treesitter.get_node_text(child, bufnr)
-			end
-		end
-	end
-
-	local function is_toplevel(node)
-		local p = node:parent()
-		return p and (p:type() == "declarations" or p:type() == "haskell")
-	end
-
-	-- Collect top-level signatures and functions by name
-	local sigs, funcs = {}, {}
-	local function walk(node)
-		local t = node:type()
-		if t == "signature" and is_toplevel(node) then
-			local name = get_name(node)
-			if name then
-				local _, _, end_row, _ = node:range()
-				table.insert(sigs, { name = name, end_row = end_row })
-			end
-		elseif (t == "function" or t == "bind") and is_toplevel(node) then
-			local name = get_name(node)
-			if name then
-				local start_row, _, end_row, _ = node:range()
-				funcs[name] = funcs[name] or {}
-				table.insert(funcs[name], { start_row = start_row, end_row = end_row })
-			end
-		end
-		for child in node:iter_children() do
-			walk(child)
-		end
-	end
-	walk(root)
-
-	-- Pair each signature with its function body equations
-	for _, sig in ipairs(sigs) do
-		local bodies = funcs[sig.name]
-		if bodies then
-			local body_start, body_end
-			for _, fn in ipairs(bodies) do
-				if fn.start_row > sig.end_row then
-					body_start = body_start or fn.start_row
-					body_end = math.max(body_end or 0, fn.end_row)
-				end
-			end
-			if body_start and body_end then
-				table.insert(folds, { body_start, body_end })
-			end
-		end
-	end
-	return folds
-end
-
 require("ufo").setup({
 	provider_selector = function(_bufnr, filetype, _buftype)
 		if filetype == "haskell" then
-			return haskell_body_folds
+			return { "lsp", "indent" }
 		elseif filetype == "markdown" then
 			return ""
 		end
