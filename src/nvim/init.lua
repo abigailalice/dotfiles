@@ -232,6 +232,19 @@ do
 	vim.keymap.set("n", "<C-Right>", "<C-w><C-l>", { desc = "Move focus to the right window" })
 	vim.keymap.set("n", "<C-Down>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
 	vim.keymap.set("n", "<C-Up>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
+	vim.keymap.set("t", "<C-Left>", "<C-\\><C-n><C-w><C-h>", { desc = "Move focus to the left window" })
+	vim.keymap.set("t", "<C-Right>", "<C-\\><C-n><C-w><C-l>", { desc = "Move focus to the right window" })
+	vim.keymap.set("t", "<C-Down>", "<C-\\><C-n><C-w><C-j>", { desc = "Move focus to the lower window" })
+	vim.keymap.set("t", "<C-Up>", "<C-\\><C-n><C-w><C-k>", { desc = "Move focus to the upper window" })
+
+	vim.keymap.set("n", "<leader>ws", function()
+		local layout = vim.fn.winlayout()
+		if layout[1] == "row" then
+			vim.cmd("windo wincmd K")
+		else
+			vim.cmd("windo wincmd H")
+		end
+	end, { desc = "Toggle split orientation" })
 
 	-- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes
 	-- vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
@@ -1198,6 +1211,22 @@ require("claudecode").setup({
   },
 
 })
+
+-- {{{ git
+vim.pack.add({
+	{ src = gh("sindrets/diffview.nvim") },
+	{ src = gh("NeogitOrg/neogit"), depends = {
+		gh("nvim-lua/plenary.nvim"),
+		gh("sindrets/diffview.nvim"),
+	}},
+})
+
+require("neogit").setup({ integrations = { diffview = true } })
+
+vim.keymap.set("n", "<leader>gg", "<cmd>Neogit<cr>", { desc = "Open Neogit" })
+vim.keymap.set("n", "<leader>gd", "<cmd>DiffviewOpen<cr>", { desc = "Open diffview" })
+vim.keymap.set("n", "<leader>gh", "<cmd>DiffviewFileHistory %<cr>", { desc = "File history" })
+-- }}}
 
 vim.keymap.set("n", "<leader>ac", "<cmd>ClaudeCode<cr>", { desc = "Toggle Claude" })
 vim.keymap.set("n", "<leader>af", "<cmd>ClaudeCodeFocus<cr>", { desc = "Focus Claude" })
