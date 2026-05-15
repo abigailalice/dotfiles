@@ -1200,7 +1200,7 @@ vim.pack.add({
 
 require("snacks").setup({ dim = { enabled = true } })
 require("claudecode").setup({
-	direction = "vertical",
+	direction = "horizontal",
   diff_opts = {
     open_in_new_tab = true,
     auto_close_on_accept = true,
