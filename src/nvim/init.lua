@@ -237,7 +237,7 @@ do
 	vim.keymap.set("t", "<C-Down>", "<C-\\><C-n><C-w><C-j>", { desc = "Move focus to the lower window" })
 	vim.keymap.set("t", "<C-Up>", "<C-\\><C-n><C-w><C-k>", { desc = "Move focus to the upper window" })
 
-	vim.keymap.set("n", "<leader>ws", function()
+	vim.keymap.set("n", "<leader>r", function()
 		local layout = vim.fn.winlayout()
 		if layout[1] == "row" then
 			vim.cmd("windo wincmd K")
@@ -555,19 +555,52 @@ do
 	pcall(require("telescope").load_extension, "fzf")
 	pcall(require("telescope").load_extension, "ui-select")
 
-	-- See `:help telescope.builtin`
 	local builtin = require("telescope.builtin")
-	vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
-	vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
-	vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
-	vim.keymap.set("n", "<leader>ss", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
-	vim.keymap.set({ "n", "v" }, "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
-	vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
-	vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
-	vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
-	vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
-	vim.keymap.set("n", "<leader>sc", builtin.commands, { desc = "[S]earch [C]ommands" })
-	vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
+
+	local function git_root()
+		local dir = vim.fn.expand("%:p:h")
+		local root = vim.fn.systemlist("git -C " .. dir .. " rev-parse --show-toplevel")[1]
+		if vim.v.shell_error == 0 and root and root ~= "" then return root end
+		return vim.fn.getcwd()
+	end
+
+	local function git_superproject_root()
+		local dir = vim.fn.expand("%:p:h")
+		local super = vim.fn.systemlist("git -C " .. dir .. " rev-parse --show-superproject-working-tree")[1]
+		if vim.v.shell_error == 0 and super and super ~= "" then return super end
+		return git_root()
+	end
+
+	-- Files
+	vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Buffers" })
+	vim.keymap.set("n", "<leader>fr", builtin.oldfiles, { desc = "Recent files" })
+	vim.keymap.set("n", "<leader>ff", function()
+		builtin.find_files({ cwd = git_root() })
+	end, { desc = "Find files (git root)" })
+	vim.keymap.set("n", "<leader>fF", function()
+		builtin.find_files({ cwd = git_superproject_root() })
+	end, { desc = "Find files (superproject root)" })
+
+	vim.keymap.set("n", "<leader>ss", function()
+		builtin.live_grep({ cwd = git_root() })
+	end, { desc = "Grep (git root)" })
+	vim.keymap.set("n", "<leader>sS", function()
+		builtin.live_grep({ cwd = git_superproject_root() })
+	end, { desc = "Grep (superproject root)" })
+
+	vim.keymap.set({ "n", "v" }, "<leader>sw", builtin.grep_string, { desc = "Grep current word" })
+	vim.keymap.set("n", "<leader>s/", function()
+		builtin.live_grep({ grep_open_files = true, prompt_title = "Live Grep in Open Files" })
+	end, { desc = "Grep open files" })
+	vim.keymap.set("n", "<leader>sb", function()
+		builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({ winblend = 10, previewer = false }))
+	end, { desc = "Fuzzy search buffer" })
+	vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "Diagnostics" })
+
+	-- Utility
+	vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "Help tags" })
+	vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "Keymaps" })
+	vim.keymap.set("n", "<leader>sc", builtin.commands, { desc = "Commands" })
 
 	-- Add Telescope-based LSP pickers when an LSP attaches to a buffer.
 	-- If you later switch picker plugins, this is where to update these mappings.
@@ -613,28 +646,6 @@ do
 		end,
 	})
 
-	-- Override default behavior and theme when searching
-	vim.keymap.set("n", "<leader>/", function()
-		-- You can pass additional configuration to Telescope to change the theme, layout, etc.
-		builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
-			winblend = 10,
-			previewer = false,
-		}))
-	end, { desc = "[/] Fuzzily search in current buffer" })
-
-	-- It's also possible to pass additional configuration options.
-	--  See `:help telescope.builtin.live_grep()` for information about particular keys
-	vim.keymap.set("n", "<leader>s/", function()
-		builtin.live_grep({
-			grep_open_files = true,
-			prompt_title = "Live Grep in Open Files",
-		})
-	end, { desc = "[S]earch [/] in Open Files" })
-
-	-- Shortcut for searching your Neovim configuration files
-	vim.keymap.set("n", "<leader>sn", function()
-		builtin.find_files({ cwd = vim.fn.stdpath("config") })
-	end, { desc = "[S]earch [N]eovim files" })
 end
 
 -- ============================================================
@@ -1099,56 +1110,12 @@ vim.api.nvim_create_autocmd("WinEnter", {
 
 -- Enter command mode with ;
 vim.keymap.set({ "n", "v" }, ";", ":", { desc = "Command mode" })
-vim.keymap.set("t", "<leader><esc>", "<C-\\><C-n><C-w><C-p>", { noremap = true, silent = true })
-vim.keymap.set({ "n", "v" }, "<leader><esc>", "<C-w><C-p>", { noremap = true, silent = true })
 
 -- Splits
 vim.keymap.set("n", "<leader>\\", "<cmd>vsplit<cr>", { desc = "Vertical split" })
 vim.keymap.set("n", "<leader>-", "<cmd>split<cr>", { desc = "Horizontal split" })
 
--- Telescope (assumes telescope is loaded elsewhere)
-local ok, builtin = pcall(require, "telescope.builtin")
-if ok then
-	vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Buffers" })
 
-	local function find_project_root()
-		-- Try git root first
-		local git_root = vim.fn.systemlist("git -C " .. vim.fn.expand("%:p:h") .. " rev-parse --show-toplevel")[1]
-		if vim.v.shell_error == 0 and git_root and git_root ~= "" then
-			return git_root
-		end
-		-- Fall back to current working directory
-		return vim.fn.getcwd()
-	end
-
-	vim.keymap.set("n", "<leader>ff", function()
-		builtin.find_files({ cwd = find_project_root() })
-	end, { desc = "Find files (project root)" })
-
-	vim.keymap.set("n", "<leader>fg", function()
-		builtin.live_grep({ cwd = find_project_root() })
-	end, { desc = "Live grep (project root)" })
-end
-
--- File / folder creation
-vim.keymap.set("n", "<leader>nf", function()
-	local dir = vim.fn.expand("%:p:h")
-	local name = vim.fn.input("File: ", dir .. "/")
-	if name == "" then
-		return
-	end
-	vim.fn.system({ "touch", name })
-	vim.cmd.edit(name)
-end, { desc = "New file" })
-
-vim.keymap.set("n", "<leader>nd", function()
-	local dir = vim.fn.expand("%:p:h")
-	local name = vim.fn.input("Folder: ", dir .. "/")
-	if name == "" then
-		return
-	end
-	vim.fn.mkdir(name, "p")
-end, { desc = "New folder" })
 
 vim.opt.wrap = false
 
@@ -1190,6 +1157,42 @@ vim.keymap.set("n", "zK", function()
 		vim.lsp.buf.hover()
 	end
 end, { desc = "Peek fold" })
+-- }}}
+
+-- {{{ gitsigns
+vim.pack.add({ gh("lewis6991/gitsigns.nvim") })
+require("gitsigns").setup()
+-- }}}
+
+-- {{{ trouble
+vim.pack.add({ gh("folke/trouble.nvim") })
+require("trouble").setup()
+vim.keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics" })
+vim.keymap.set("n", "<leader>xb", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", { desc = "Buffer diagnostics" })
+-- }}}
+
+-- {{{ noice
+vim.pack.add({
+	gh("folke/noice.nvim"),
+	gh("MunifTanjim/nui.nvim"),
+})
+require("noice").setup({
+	lsp = {
+		override = {
+			["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+			["vim.lsp.util.stylize_markdown"] = true,
+			["cmp.entry.get_documentation"] = true,
+		},
+	},
+	presets = {
+		bottom_search = true,
+		command_palette = false,
+		long_message_to_split = true,
+	},
+	routes = {
+		{ filter = { event = "cmdline" }, view = "cmdline" },
+	},
+})
 -- }}}
 
 -- {{{ claude
@@ -1239,38 +1242,6 @@ vim.keymap.set("n", "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", { desc = "Acc
 vim.keymap.set("n", "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", { desc = "Deny diff" })
 -- }}}
 
--- this is a file editor plugin that lets you edit folders like a buffer
-vim.pack.add({ gh("stevearc/oil.nvim") })
-require("oil").setup({
-	float = {
-		padding = 20,
-		border = "rounded",
-		get_win_title = nil,
-		preview_split = "right",
-		override = function(conf)
-			return conf
-		end,
-	},
-	git = {
-		add = function(path)
-			return true
-		end,
-		mv = function(src, dest)
-			return true
-		end,
-		rm = function(path)
-			return true
-		end,
-	},
-	preview_win = {
-		update_on_cursor_moved = true,
-		preview_method = "fast_scratch",
-		disable_preview = function(_filename)
-			return false
-		end,
-	},
-})
-vim.keymap.set("n", "<leader>e", ":Oil --float<cr>")
 
 vim.pack.add({
 	{
@@ -1281,7 +1252,7 @@ vim.pack.add({
 	"https://github.com/MunifTanjim/nui.nvim",
 	"https://github.com/nvim-tree/nvim-web-devicons",
 })
-vim.keymap.set("n", "<leader>nf", "<cmd>Neotree<cr>", { desc = "Open file system" })
+vim.keymap.set("n", "<leader>nt", "<cmd>Neotree toggle<cr>", { desc = "Toggle file system" })
 vim.keymap.set("n", "<leader>ng", "<cmd>Neotree git_status<cr>", { desc = "Open git status" })
 vim.keymap.set("n", "<leader>ns", "<cmd>Neotree document_symbols<cr>", { desc = "Open symbol" })
 
