@@ -109,6 +109,9 @@ do
 	-- Close buffer when its last window is closed
 	vim.o.hidden = false
 
+	vim.o.showcmd = true
+	vim.o.cmdheight = 1
+
 	-- Make line numbers default
 	vim.o.number = true
 	-- You can also add relative line numbers, to help with jumping.
@@ -1188,10 +1191,6 @@ require("noice").setup({
 		bottom_search = true,
 		command_palette = false,
 		long_message_to_split = true,
-	},
-	cmdline = { enabled = false },
-	routes = {
-		{ filter = { event = "cmdline" }, view = "cmdline" },
 	},
 })
 -- }}}
