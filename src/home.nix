@@ -117,6 +117,7 @@
       submodule.recurse = true;
       core.editor = "nvim";
       status.showStash = true;
+      merge.ff = "only";
     };
   };
   nixpkgs.config = {
