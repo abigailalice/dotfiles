@@ -1227,7 +1227,7 @@ vim.pack.add({
 
 require("neogit").setup({ integrations = { diffview = true }, kind = "replace" })
 
-vim.keymap.set("n", "<leader>gg", "<cmd>Neogit kind=vsplit<cr>", { desc = "Open Neogit" })
+vim.keymap.set("n", "<leader>gg", "<cmd>Neogit kind=replace<cr>", { desc = "Open Neogit" })
 vim.keymap.set("n", "<leader>gd", "<cmd>DiffviewOpen<cr>", { desc = "Open diffview" })
 vim.keymap.set("n", "<leader>gh", "<cmd>DiffviewFileHistory %<cr>", { desc = "File history" })
 -- }}}
