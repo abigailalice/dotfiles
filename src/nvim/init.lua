@@ -106,8 +106,10 @@ do
 	-- NOTE: You can change these options as you wish!
 	--  For more options, you can see `:help option-list`
 
-	-- Close buffer when its last window is closed
+	-- Wipe buffer when abandoned, auto-save when switching
 	vim.o.hidden = false
+	vim.o.autowrite = true
+	vim.opt.bufhidden = "wipe"
 
 	vim.o.showcmd = true
 	vim.o.cmdheight = 1
