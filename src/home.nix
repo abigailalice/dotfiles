@@ -114,7 +114,6 @@
     settings = {
       user.name = "Abigail Gooding";
       user.email = "abigailalicegooding@gmail.com";
-      submodule.recurse = true;
       core.editor = "nvim";
       status.showStash = true;
       merge.ff = "only";
