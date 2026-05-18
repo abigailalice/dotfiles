@@ -487,12 +487,31 @@ do
 	-- Set `use_icons` to true if you have a Nerd Font
 	statusline.setup({ use_icons = vim.g.have_nerd_font })
 
-	-- You can configure sections in the statusline by overriding their
-	-- default behavior. For example, here we set the section for
-	-- cursor location to LINE:COLUMN
 	---@diagnostic disable-next-line: duplicate-set-field
 	statusline.section_location = function()
 		return "%2l/%-2L:%-2v"
+	end
+
+	-- Explicit active content with gitsigns branch+diff always visible
+	---@diagnostic disable-next-line: duplicate-set-field
+	statusline.content_active = function()
+		local mode, mode_hl = statusline.section_mode({ trunc_width = 120 })
+		local git           = statusline.section_git({ trunc_width = 40 })
+		local diagnostics   = statusline.section_diagnostics({ trunc_width = 75 })
+		local filename      = statusline.section_filename({ trunc_width = 140 })
+		local fileinfo      = statusline.section_fileinfo({ trunc_width = 120 })
+		local location      = statusline.section_location({ trunc_width = 75 })
+		local search        = statusline.section_searchcount({ trunc_width = 75 })
+
+		return statusline.combine_groups({
+			{ hl = mode_hl,                   strings = { mode } },
+			{ hl = "MiniStatuslineDevinfo",   strings = { git, diagnostics } },
+			"%<",
+			{ hl = "MiniStatuslineFilename",  strings = { filename } },
+			"%=",
+			{ hl = "MiniStatuslineFileinfo",  strings = { fileinfo } },
+			{ hl = mode_hl,                   strings = { search, location } },
+		})
 	end
 
 	-- ... and there is more!
@@ -1165,10 +1184,6 @@ vim.keymap.set("n", "zK", function()
 end, { desc = "Peek fold" })
 -- }}}
 
--- {{{ gitsigns
-vim.pack.add({ gh("lewis6991/gitsigns.nvim") })
-require("gitsigns").setup()
--- }}}
 
 -- {{{ trouble
 vim.pack.add({ gh("folke/trouble.nvim") })
