@@ -220,6 +220,7 @@ do
 	-- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 	-- or just use <C-\><C-n> to exit terminal mode
 	vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+	vim.keymap.set("t", "<leader><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
 	-- TIP: Disable arrow keys in normal mode
 	-- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
@@ -1224,9 +1225,9 @@ vim.pack.add({
 	}},
 })
 
-require("neogit").setup({ integrations = { diffview = true } })
+require("neogit").setup({ integrations = { diffview = true }, kind = "replace" })
 
-vim.keymap.set("n", "<leader>gg", "<cmd>Neogit kind=floating<cr>", { desc = "Open Neogit" })
+vim.keymap.set("n", "<leader>gg", "<cmd>Neogit kind=vsplit<cr>", { desc = "Open Neogit" })
 vim.keymap.set("n", "<leader>gd", "<cmd>DiffviewOpen<cr>", { desc = "Open diffview" })
 vim.keymap.set("n", "<leader>gh", "<cmd>DiffviewFileHistory %<cr>", { desc = "File history" })
 -- }}}
