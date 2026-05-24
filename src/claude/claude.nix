@@ -1,0 +1,17 @@
+{ config, ... }:
+
+let
+  dotfiles = "/home/abigailgooding/gits/dotfiles/src/claude";
+in
+{
+  home.file = {
+    ".claude/settings.json".source =
+      config.lib.file.mkOutOfStoreSymlink "${dotfiles}/settings.json";
+
+    ".claude/CLAUDE.md".source =
+      config.lib.file.mkOutOfStoreSymlink "${dotfiles}/CLAUDE.md";
+
+    ".claude/skills/prepare-squash-merge/SKILL.md".source =
+      "${dotfiles}/skills/prepare-squash-merge/SKILL.md";
+  };
+}

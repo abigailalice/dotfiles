@@ -3,6 +3,7 @@
 {
   imports = [
     ./modules/neovim.nix
+    ./claude/claude.nix
   ];
 
   programs.home-manager.enable = true;

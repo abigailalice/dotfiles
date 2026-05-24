@@ -1,0 +1,56 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(./**/*.hs)",
+      "Read(./**/*.py)",
+      "Read(./**/*.md)",
+      "Read(./**/*.yaml)",
+      "Read(./**/*.toml)",
+      "Read(./**/*.lua)",
+      "Read(./**/*.nix)",
+      "Read(./**/*.css)",
+      "Read(./**/*.scss)",
+      "Read(./**/*.rs)",
+      "Read(./**/*.vim)",
+      "Read(./**/*.fish)",
+      "Read(./**/*.sh)",
+      "Edit(./**/*.hs)",
+      "Edit(./**/*.py)",
+      "Edit(,/**/*.md)",
+      "Edit(./**/*.yaml)",
+      "Edit(./**/*.toml)",
+      "Edit(./**/*.lua)",
+      "Edit(./**/*.nix)",
+      "Edit(./**/*.css)",
+      "Edit(./**/*.scss)",
+      "Edit(./**/*.rs)",
+      "Edit(./**/*.vim)",
+      "Edit(./**/*.fish)",
+      "Edit(./**/*.sh)",
+      "Write(./**/*.hs)",
+      "Write(./**/*.py)",
+      "Write(,/**/*.md)",
+      "Write(./**/*.yaml)",
+      "Write(./**/*.toml)",
+      "Write(./**/*.lua)",
+      "Write(./**/*.nix)",
+      "Write(./**/*.css)",
+      "Write(./**/*.scss)",
+      "Write(./**/*.rs)",
+      "Write(./**/*.vim)",
+      "Write(./**/*.fish)",
+      "Write(./**/*.sh)",
+      "Read(.git/COMMIT_EDITMSG)",
+      "Edit(.git/COMMIT_EDITMSG)",
+      "Bash(process-compose process logs *)"
+    ],
+    "deny": [
+      "Bash(curl *)"
+    ]
+  },
+  "enabledPlugins": {
+    "lua-lsp@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true
+  },
+  "theme": "dark-ansi"
+}
