@@ -264,6 +264,13 @@ do
 	-- [[ Basic Autocommands ]]
 	--  See `:help lua-guide-autocommands`
 
+	vim.api.nvim_create_autocmd("FileType", {
+		pattern = "markdown",
+		callback = function()
+			vim.wo.wrap = true
+		end,
+	})
+
 	-- Highlight when yanking (copying) text
 	--  Try it with `yap` in normal mode
 	--  See `:help vim.hl.on_yank()`
