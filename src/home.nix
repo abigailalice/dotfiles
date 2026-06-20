@@ -17,6 +17,8 @@
     ripgrep
     wget
     ncdu # recursive file size finder
+    navi
+    just
     # }}}
     # {{{ OS/WM
     pavucontrol
