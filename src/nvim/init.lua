@@ -106,6 +106,9 @@ do
 	-- NOTE: You can change these options as you wish!
 	--  For more options, you can see `:help option-list`
 
+	-- Enable 24-bit color (required for themes like tokyonight over SSH)
+	vim.o.termguicolors = true
+
 	-- Wipe buffer when abandoned, auto-save when switching
 	vim.o.hidden = false
 	vim.o.autowrite = true
@@ -952,6 +955,7 @@ do
 			--
 			-- See `:help blink-cmp-config-keymap` for defining your own keymap
 			preset = "default",
+			["<Tab>"] = { "accept", "fallback" },
 			["<Right>"] = { "accept", "fallback" },
 
 			-- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
@@ -1156,7 +1160,8 @@ vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHo
 -- {{{ ufo (better folding)
 vim.o.foldlevel = 99
 vim.o.foldlevelstart = 99
-vim.o.foldenable = true
+vim.o.foldenable = false
+vim.o.foldcolumn = "0"
 
 vim.pack.add({
 	gh("kevinhwang91/nvim-ufo"),
@@ -1221,16 +1226,22 @@ vim.pack.add({
 
 require("snacks").setup({ dim = { enabled = true } })
 require("claudecode").setup({
-	direction = "horizontal",
+  terminal = {
+    provider = "snacks",
+    snacks_win_opts = {
+      position = "float",
+      width = 0.8,
+      height = 0.8,
+    },
+  },
   diff_opts = {
     open_in_new_tab = true,
     auto_close_on_accept = true,
     hide_terminal_in_new_tab = false,
     keep_terminal_focus = true,
     on_new_file_reject = "close_window",
-    layout = "vertical"
+    layout = "vertical",
   },
-
 })
 
 -- {{{ git
@@ -1251,6 +1262,8 @@ vim.keymap.set("n", "<leader>gh", "<cmd>DiffviewFileHistory %<cr>", { desc = "Fi
 
 vim.keymap.set("n", "<leader>an", "<cmd>ClaudeCode<cr>", { desc = "New Claude session" })
 vim.keymap.set("n", "<leader>af", "<cmd>ClaudeCodeFocus<cr>", { desc = "Focus Claude" })
+vim.keymap.set("n", "<M-a>", "<cmd>ClaudeCodeFocus<cr>", { desc = "Toggle Claude" })
+vim.keymap.set("t", "<M-a>", "<cmd>ClaudeCodeFocus<cr>", { desc = "Toggle Claude" })
 vim.keymap.set("n", "<leader>ap", "<cmd>ClaudeCode --continue<cr>", { desc = "Previous Claude session" })
 vim.keymap.set("n", "<leader>al", "<cmd>ClaudeCode --resume<cr>", { desc = "List Claude sessions" })
 vim.keymap.set("n", "<leader>am", "<cmd>ClaudeCodeSelectModel<cr>", { desc = "Select Claude model" })

@@ -552,7 +552,7 @@ au! Syntax purescript source ~/gits/dotfiles/src/nvim/plugins/purescript.vim
 au BufRead,BufNewFile *.py set filetype=python
 au! Syntax python source ~/gits/dotfiles/src/nvim/plugins/python.vim
 
-set foldcolumn=3
+set foldcolumn=0
 set foldmethod=manual
 set viewoptions=folds
 

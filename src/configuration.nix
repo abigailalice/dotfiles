@@ -269,12 +269,21 @@
     };
 
   services.openssh = {
-    ports = [9272];
     enable = true;
-    settings.PasswordAuthentication = false;
-    settings.X11Forwarding = true;
+    ports = [ 9272 ];
+    settings = {
+      PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
+      PermitRootLogin = "no";
+      X11Forwarding = true;
+    };
   };
-  # users.users.abigailgooding.openssh.authorizedKeys.keys = ["PUBLIC KEY STRING"];
+  # users.users.abigailgooding.openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAA..." ];
+
+  services.tailscale = {
+    enable = true;
+    useRoutingFeatures = "client";
+  };
 
   # Configure keymap in X11
   # one of these options, but not both
@@ -309,6 +318,9 @@
     isNormalUser = true;
     description = "Abigail Gooding";
     extraGroups = [ "networkmanager" "wheel" "kvm" "libvirtd" "docker"];
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 dQ8Q1Y0k5U7WPqfCMYv1Sh4r/X7bppRRb6KTjg/o macbookair"
+    ];
     packages = with pkgs; [
       fish
       obsidian
@@ -412,11 +424,16 @@
     };
   };
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [ 9272 ];
+    allowedUDPPortRanges = [
+      { from = 60000; to = 61000; } # mosh
+    ];
+    allowedUDPPorts = [ config.services.tailscale.port ];
+    trustedInterfaces = [ "tailscale0" ];
+    checkReversePath = "loose";
+  };
 
   swapDevices = [{
     device = "/var/lib/swapfile";

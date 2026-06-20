@@ -3,6 +3,7 @@
 {
   imports = [
     ./modules/neovim.nix
+    ./modules/zellij.nix
     ./claude/claude.nix
   ];
 
@@ -28,6 +29,8 @@
     fish
     tmux
     alacritty
+    mosh
+    kitty
     # }}}
     # {{{ GUI tools
     obelisk
