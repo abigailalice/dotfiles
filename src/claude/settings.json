@@ -44,9 +44,7 @@
       "Edit(.git/COMMIT_EDITMSG)",
       "Bash(process-compose process logs *)"
     ],
-    "deny": [
-      "Bash(curl *)"
-    ]
+    "deny": []
   },
   "enabledPlugins": {
     "lua-lsp@claude-plugins-official": true,

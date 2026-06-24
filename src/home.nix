@@ -122,7 +122,8 @@
       user.email = "abigailalicegooding@gmail.com";
       core.editor = "nvim";
       status.showStash = true;
-      merge.ff = "only";
+      merge.ff = true;
+      rerere.enabled = true;
     };
   };
   nixpkgs.config = {

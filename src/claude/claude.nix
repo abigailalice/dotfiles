@@ -14,7 +14,7 @@ in
     ".claude/skills/prepare-squash-merge/SKILL.md".source =
       config.lib.file.mkOutOfStoreSymlink "${dotfiles}/skills/prepare-squash-merge/SKILL.md";
 
-    ".claude/skills/project-health-audit/SKILL.md".source =
-      config.lib.file.mkOutOfStoreSymlink "${dotfiles}/skills/project-health-audit/SKILL.md";
+    ".claude/skills/best-practices/SKILL.md".source =
+      config.lib.file.mkOutOfStoreSymlink "${dotfiles}/skills/best-practices/SKILL.md";
   };
 }

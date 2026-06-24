@@ -1,5 +1,5 @@
 ---
-name: project-health-audit
+name: best-practices
 description: Use when a developer wants to find improvements to project health they may not know they're missing — testing, CI, linting, dependency management, observability, secrets hygiene, documentation — not business logic or features.
 ---
 
@@ -10,6 +10,36 @@ description: Use when a developer wants to find improvements to project health t
 Survey a project for missing or underdeveloped engineering practices. Surface things the developer doesn't know they're missing — not a critique of business logic, but gaps in foundational practices that affect maintainability, reliability, and safety over time.
 
 **This skill is not a checklist to run through.** The categories below are a starting point, not an exhaustive list — and critically, the developer invoking this skill has read these categories and may well have already addressed them. If the project passes everything listed here, that's not the end of the audit; it means you need to look harder and think more broadly. The goal is to find genuine unknown unknowns, not to confirm that known items are handled.
+
+## Known Tooling — Check These First
+
+The developer using this skill is already familiar with the following. Before surfacing anything as an "unknown unknown," check whether these are applicable and in use:
+
+**Testing**
+- Property/generative testing (QuickCheck, Hypothesis, fast-check, etc.) — not just unit tests
+- mypy — Python type checking
+
+**Languages & Frameworks**
+- Haskell — check for HLS, hlint, fourmolu/ormolu, ghcid, cabal/stack, hspec/QuickCheck
+- TypeScript — check for strict mode, tsc --noEmit in CI, ESLint with type-aware rules
+- Rust — check for clippy, cargo audit, cargo test
+- React + shadcn — check for component testing (Testing Library), storybook, a11y linting
+- Python — check for mypy, ruff, pytest, pip audit
+
+**Infrastructure & Dev Tooling**
+- Nix/NixOS — check for flake.lock committed, `nix flake check`, devShell defined
+- Docker/docker-compose — check for .dockerignore, pinned base image tags, multi-stage builds
+- direnv — check for .envrc present and nix-direnv if it's a Nix project
+- just — check for a justfile with common dev tasks (test, lint, fmt, build)
+- process-compose — check if multi-process dev setup is defined and documented
+- OpenAPI — check for schema defined and kept in sync with implementation, generated client/server types
+
+**Problem Classes — check coverage regardless of specific tool**
+- Logging — structured logging in place, not just console/stderr; log levels used appropriately
+- Data sanitization — input validation at system boundaries (user input, external APIs, env vars); no silent coercions
+- Test coverage — coverage measured and not trivially low; property/generative tests for data-heavy logic
+
+These are not things to recommend if absent — they're tools to check for first before looking for genuinely new suggestions.
 
 ## Process
 
