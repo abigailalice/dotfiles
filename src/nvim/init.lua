@@ -1294,5 +1294,11 @@ vim.keymap.set("n", "<leader>nt", "<cmd>Neotree toggle<cr>", { desc = "Toggle fi
 vim.keymap.set("n", "<leader>ng", "<cmd>Neotree git_status<cr>", { desc = "Open git status" })
 vim.keymap.set("n", "<leader>ns", "<cmd>Neotree document_symbols<cr>", { desc = "Open symbol" })
 
+-- {{{ focus
+vim.pack.add({ gh("nvim-focus/focus.nvim") })
+require("focus").setup()
+vim.keymap.set("n", "<leader>z", "<cmd>FocusMaxOrEqual<cr>", { desc = "Toggle window zoom" })
+-- }}}
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
